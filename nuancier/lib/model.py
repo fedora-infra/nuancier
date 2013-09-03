@@ -86,8 +86,8 @@ class Elections(BASE):
 
     __tablename__ = 'Elections'
     id = sa.Column(sa.Integer, nullable=False, primary_key=True)
-    election_name = sa.Column(sa.Text, nullable=False, unique=True)
-    election_folder = sa.Column(sa.Text, nullable=False, unique=True)
+    election_name = sa.Column(sa.String(255), nullable=False, unique=True)
+    election_folder = sa.Column(sa.String(50), nullable=False, unique=True)
     election_year = sa.Column(sa.Integer, nullable=False)
     election_open = sa.Column(sa.Boolean, nullable=False, default=False)
     election_public = sa.Column(sa.Boolean, nullable=False, default=False)
@@ -181,8 +181,8 @@ class Candidates(BASE):
 
     __tablename__ = 'Candidates'
     id = sa.Column(sa.Integer, nullable=False, primary_key=True)
-    candidate_file = sa.Column(sa.Text, nullable=False)
-    candidate_name = sa.Column(sa.Text, nullable=False)
+    candidate_file = sa.Column(sa.String(255), nullable=False)
+    candidate_name = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
         sa.Integer,
         sa.ForeignKey('Elections.id',
@@ -274,7 +274,7 @@ class Votes(BASE):
     '''
 
     __tablename__ = 'Votes'
-    user_name = sa.Column(sa.Text, nullable=False, primary_key=True)
+    user_name = sa.Column(sa.String(50), nullable=False, primary_key=True)
     candidate_id = sa.Column(
         sa.Integer,
         sa.ForeignKey('Candidates.id',
