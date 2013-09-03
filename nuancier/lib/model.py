@@ -119,7 +119,7 @@ class Elections(BASE):
         self.election_n_choice = election_n_choice
 
     def __repr__(self):
-        return 'Election(id:%r, name:%r, year:%r)' % (
+        return 'Elections(id:%r, name:%r, year:%r)' % (
             self.id, self.election_name, self.election_year)
 
     def api_repr(self, version):
@@ -213,7 +213,7 @@ class Candidates(BASE):
         self.election_id = election_id
 
     def __repr__(self):
-        return 'Candidate(file:%r, name:%r, election_id:%r, created:%r' % (
+        return 'Candidates(file:%r, name:%r, election_id:%r, created:%r' % (
             self.candidate_file, self.candidate_name, self.election_id,
             self.date_created)
 
@@ -232,16 +232,6 @@ class Candidates(BASE):
         """ Return the election corresponding to the provided identifier.
         """
         return session.query(cls).get(candidate_id)
-
-    @classmethod
-    def by_name(cls, session, candidate_name):
-        """ Return the candidate associated to the given name.
-
-        :raises sqlalchemy.InvalidRequestError: if the candidate name is
-            not found
-        """
-        return session.query(cls).filter(
-            Candidates.candidate_name == candidate_name).one()
 
     @classmethod
     def by_election(cls, session, election_id):
@@ -307,18 +297,8 @@ class Votes(BASE):
         self.candidate_id = candidate_id
 
     def __repr__(self):
-        return 'Vote(name:%r, candidate_id:%r, created:%r' % (
+        return 'Votes(name:%r, candidate_id:%r, created:%r' % (
             self.user_name, self.candidate_id, self.date_created)
-
-    @classmethod
-    def count_by_candidate(cls, session, candidate_id):
-        """ Return the number of votes on a given candidate.
-
-        :raises sqlalchemy.InvalidRequestError: if the candidate name is
-            not found
-        """
-        return session.query(cls).filter(
-            Votes.candidate_id == candidate_id).count()
 
     @classmethod
     def by_election_user(cls, session, election_id, username):
