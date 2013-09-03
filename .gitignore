@@ -7,3 +7,4 @@ dist/
 nuancier/static/pictures
 nuancier/static/cache
 .coverage
+doc/_build
