@@ -1,0 +1,69 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block head %}
+<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{%block tag %}elections{% endblock %}
+
+{% block content %}
+
+<h1>Vote: {{ election.election_name }} - {{ election.election_year }}</h1>
+
+<p>
+Click on the checkbox to select which wallpaper you like.
+</p>
+
+<p>
+Click on the picture to get a larger version of the image.
+</p>
+
+<p id="fix_info">test</p>
+
+{% if candidates %}
+<form action="{{ url_for('process_vote', election_id=election.id) }}"
+      method="post">
+<table>
+    <tr>
+    {% for candidate in candidates %}
+        <td>
+            <input type="checkbox" name="selection"
+                value="{{ candidate.id }}" />
+            <a href="{{ url_for('static',
+                                 filename='pictures/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('static',
+                                 filename='cache/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        {% if loop.index % 3 == 0 %}
+        </tr>
+        <tr>
+        {% endif %}
+    {% endfor %}
+    </tr>
+</table>
+<input id="fix_submit" type="submit" class="submit positive button" value="Vote"> <br />
+<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">
+</form>
+{% else %}
+<p> No candidate have been registered for this election (yet). </p>
+{% endif %}
+
+{% endblock %}

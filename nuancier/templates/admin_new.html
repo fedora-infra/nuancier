@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+{% from "_formhelpers.html" import render_field_in_row %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}admin{% endblock %}
+
+{% block content %}
+
+<h1>New election</h1>
+
+<form action="{{ url_for('admin_new') }}" method="post">
+<table>
+    {{ render_field_in_row(form.election_name) }}
+    {{ render_field_in_row(form.election_folder) }}
+    {{ render_field_in_row(form.election_year) }}
+    {{ render_field_in_row(form.election_open) }}
+    {{ render_field_in_row(form.election_n_choice) }}
+</table>
+<input type="submit" class="submit positive button" value="Create">
+<input type="button" value="Cancel" class="button" onclick="history.back();">
+{{ form.csrf_token }}
+</form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block head %}
+<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{%block tag %}elections{% endblock %}
+
+{% block content %}
+
+<h1>Election: {{ election.election_name }} - {{ election.election_year }}</h1>
+
+<p>
+Below are presented all the candidates of this election.
+</p>
+
+<p>
+Click on the picture to get a larger version of the image.
+</p>
+
+<p>
+<a class="large_button" href="{{ url_for('vote', election_id=election.id) }}">Vote now!</a>
+</p>
+
+{% if candidates %}
+<table>
+    <tr>
+    {% for candidate in candidates %}
+        <td>
+            <a href="{{ url_for('static',
+                                 filename='pictures/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('static',
+                                 filename='cache/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        {% if loop.index % 3 == 0 %}
+        </tr>
+        <tr>
+        {% endif %}
+    {% endfor %}
+    </tr>
+</table>
+{% else %}
+<p> No candidate have been registered for this election (yet). </p>
+{% endif %}
+
+{% endblock %}

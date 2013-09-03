@@ -1,0 +1,53 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}elections{% endblock %}
+
+{% block content %}
+
+<h1>Elections</h1>
+
+<p>
+Listed here are all the elections that are taking or took place.
+</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Open</th>
+        <th>Published</th>
+    </tr>
+    {% for election in elections %}
+    <tr>
+        <td>
+            <a href="{{ url_for('election', election_id=election.id) }}">
+                {{ election.election_name }}
+            </a>
+        <td>{{ election.election_year }}</td>
+        <td>
+            {% if election.election_open %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Election open"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Election open"/>
+            {% endif %}
+        </td>
+        <td>
+            {% if election.election_public %}
+            <a href="{{ url_for('results', election_id=election.id) }}">
+                <img src="{{ url_for('static', filename='Approved.png') }}"
+                    alt="Election published"/>
+            </a>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Election closed"/>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

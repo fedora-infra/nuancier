@@ -1,0 +1,203 @@
+
+.errors {
+    color: red;
+}
+
+#galleria{
+    height: 250px;
+}
+
+.acls tr td {
+    vertical-align: text-top;
+}
+
+#header input {
+    border-radius: 10px;
+}
+
+#content {
+    font-family: 'Comfortaa', cursive;
+}
+
+body#index #mainNav li#indexTab a,
+body#elections #mainNav li#electionsTab a,
+body#results #mainNav li#resultsTab a,
+body#admin #mainNav li#adminTab a {
+    background-color: #fff;
+    color: #444;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#content {
+    float:left;
+    width:74%px;
+}
+
+#options {
+    float:right;
+    width:23%;
+    margin-right: 5px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15) inset;
+    border-radius: 10px 10px 10px 10px;
+    position: absolute;
+    top:120px;
+    right:0;
+}
+
+#delimiter {
+    background-color:#193b6c;
+    height: 10px;
+}
+
+#options_title {
+    border-radius: 10px 10px 0px 0px;
+    padding: 1px 0em 1px 1em;
+    margin: 0px 0px 0px 0px;
+    background: #34609f;
+    color: #fff;
+}
+
+#options_content ul {
+    list-style-type: none;
+    margin-right: 5px;
+}
+
+#options_content li {
+    margin-bottom: 5px;
+}
+
+#options input[type="submit"] {
+    width: 90%;
+}
+
+/** Web App Styles **/
+/* Links to other web apps */
+a.bodhi {
+  padding-left: 20px;
+  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_bodhi.png) 0 50% no-repeat;
+}
+
+a.koji {
+  padding-left: 20px;
+  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_koji.png) 0 50% no-repeat;
+}
+
+a.bugz {
+  padding-left: 20px;
+  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_bugzilla.png) 0 50% no-repeat;
+}
+
+a.pkgdb {
+  padding-left: 20px;
+  background: url(https://fedoraproject.org/static/mages/icons/fedora-infra-icon_pkgdb.png) 0 50% no-repeat;
+}
+
+a.cvs {
+  padding-left: 20px;
+  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_source-control.png) 0 50% no-repeat;
+}
+
+#actions {
+  line-height: 1;
+  list-style: none;
+  margin: 1ex 0!important;
+  padding: 1ex 0ex 0ex 0ex;
+}
+
+#actions li {
+    display: inline;
+    margin-right: 1ex;
+}
+
+#metainfo th{
+    text-align: left;
+    background: none repeat scroll 0 0 #DDDDDD;
+}
+
+#metainfo th{
+    border: 1px solid #000000;
+    padding: 0.6ex;
+}
+
+.acls, .owner {
+    padding: 0px;
+    margin: 0px;
+}
+
+#legend {
+    margin-top: 4em;
+    font-size: 85%;
+}
+
+#legend td {
+    padding-left: 0.5em;
+}
+
+#legend td img {
+    padding-right: 0.5em;
+}
+
+#legend th {
+    min-width: 0px;
+    padding-left: 0.5em;
+}
+
+#pending th {
+    text-align: left;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+#fix_info {
+    position: fixed;
+    top: 130px;
+    right: 5px;
+}
+
+#fix_submit {
+    position: fixed;
+    bottom: 40px;
+    right: 5px;
+    width: 5em;
+}
+
+#fix_cancel {
+    position: fixed;
+    bottom: 10px;
+    right: 5px;
+    width: 5em;
+}
+
+a.large_button,
+a:hover.large_button,
+a:visited.large_button {
+    color: white;
+}
+
+.large_button {
+    color: white;
+    background: #3C6EB4;
+    padding: 1em;
+    margin-bottom: 1em;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+table {
+    margin-top: 2em;
+}

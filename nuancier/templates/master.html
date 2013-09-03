@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>{% block title %}Fedora supplementary wallpapers{% endblock %}</title>
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon"
+        href="//fedoraproject.org/static/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='koji.css') }}"/>
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='nuancier.css') }}"/>
+    <link rel='stylesheet' type='text/css'
+         href='http://fonts.googleapis.com/css?family=Comfortaa'/>
+
+    {%block head %}{% endblock %}
+  </head>
+  <body id="{%block tag %}{% endblock %}">
+
+    <div id="wrap">
+      <div id="innerwrap">
+
+        <!-- HEADER -->
+        <div id="header">
+          <img src="{{ url_for('static', filename='nuancier-logo.png') }}"
+            alt="Nuancier-lite Logo" id="kojiLogo"/>
+        </div><!-- end header -->
+
+        <!-- MAIN NAVIGATION -->
+        <div id="mainNav">
+          <h4 class="hide">Main Site Links:</h4>
+          <ul>
+            <li id="indexTab"><a href="{{url_for('.index')}}">Home</a></li>
+            <li id="electionsTab"><a href="{{url_for('.elections_list')}}">Elections</a></li>
+            <li id="resultsTab"><a href="{{url_for('.results_list')}}">Results</a></li>
+            {% if is_admin %}
+            <li id="adminTab"><a href="{{url_for('.admin_index')}}">admin</a></li>
+            {% endif %}
+          </ul>
+        </div><!-- end mainNav -->
+
+        <span id="loginInfo">
+          {% if g.fas_user %}
+            <span class="text">logged in as </span>
+            {{ g.fas_user.username }} |
+            <a href="{{ url_for('.logout') }}">log out</a>
+          {% else %}
+            <a href="{{ url_for('.login') }}">login</a>
+          {% endif %}
+        </span>
+
+        <div id="content">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if category, messages %}
+                <ul id="flashes">
+                    {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+
+        {% if options is defined %}
+        <div id="options">
+            <div id="options_title">
+                <h3>Options</h3>
+            </div>
+            <div id="delimiter"></div>
+            <div id="options_content">
+                {% block options %}{% endblock %}
+            </div>
+        </div>
+        {% endif %}
+
+        <p id="footer">
+          Copyright &copy; 2013 Red Hat
+          <a href="https://github.com/fedora-infra/nuancier-lite/"
+          target="_blank">nuancier-lite</a>
+        </p>
+
+      </div>
+    </div>
+
+    {% block jscripts %}
+    {% endblock %}
+
+  </body>
+</html>

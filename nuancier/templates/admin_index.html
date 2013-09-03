@@ -1,0 +1,68 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}admin{% endblock %}
+
+{% block content %}
+
+<h1>Nuancier-lite Admin -- Version 0.1.0</h1>
+
+<h3>Admin interface</h3>
+<p>
+From this page you are able to manage the elections, create new ones, start
+and stop existing one.
+</p>
+
+<a class="large_button" href="{{ url_for('admin_new') }}">Create a new election</a>
+
+<table>
+    <tr>
+        <th>Identifier</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Open</th>
+        <th>Published</th>
+        <th>Max number of votes possible</th>
+    </tr>
+    {% for election in elections %}
+    <tr>
+        <td>{{ election.id }}</td>
+        <td>
+            <a href="{{ url_for('election', election_id=election.id) }}"
+                {{ election.election_name }}
+            </a>
+        </td>
+        <td>{{ election.election_year }}</td>
+        <td>
+            {% if election.election_open %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Election open"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Election open"/>
+            {% endif %}
+            <a href="{{ url_for('admin_open', election_id=election.id) }}">
+                toggle</a>
+        </td>
+        <td>
+            {% if election.election_public %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Election published"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Election closed"/>
+            {% endif %}
+            <a href="{{ url_for('admin_publish', election_id=election.id) }}">
+                toggle</a>
+        </td>
+        <td>{{ election.election_n_choice }}</td>
+        <td>
+            <a href="{{ url_for('admin_cache', election_id=election.id) }}">
+                (Re-)generate cache</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

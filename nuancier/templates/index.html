@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}index{% endblock %}
+
+{% block content %}
+
+<h1>Nuancier-lite -- Version 0.1.0</h1>
+
+<h3>Overview</h3>
+Nuancier-lite is the a simple voting application for the supplementary
+wallpapers included in Fedora.
+
+{% if elections %}
+<ul>
+    {% for election in elections %}
+    <li>
+        <a href="{{ url_for('election', election_id=election.id) }}">
+            {{ election.election_name }} - {{ election.election_year }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="error">No elections are opened to vote for the moment.</p>
+{% endif %}
+
+{% endblock %}

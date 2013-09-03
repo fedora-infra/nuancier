@@ -1,0 +1,62 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block head %}
+<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{%block tag %}results{% endblock %}
+
+{% block content %}
+
+<h1>Election results: {{ election.election_name }} - {{ election.election_year }}</h1>
+
+<h3>Overview</h3>
+<p>Here below are presented the results of the election {{ election.election_name }}
+from {{ election.election_year }}.
+</p>
+
+{% if results %}
+<table>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Votes</th>
+        <th>Image</th>
+    </tr>
+    {% for candidate, votes in results %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td> {{ candidate.candidate_name }} </td>
+        <td> {{ votes }} </td>
+        <td>
+            <a href="{{ url_for('static',
+                                 filename='pictures/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('static',
+                                 filename='cache/%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="error">No results found for this election.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}results{% endblock %}
+
+{% block content %}
+
+<h1>Election results</h1>
+
+<h3>Overview</h3>
+<p>The elections below have ended and their results are now public. </p>
+
+{% if elections %}
+<ul>
+    {% for election in elections %}
+    <li>
+        <a href="{{ url_for('results', election_id=election.id) }}">
+            {{ election.election_name }} - {{ election.election_year }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="error">No elections have their result public (yet).</p>
+{% endif %}
+
+{% endblock %}
