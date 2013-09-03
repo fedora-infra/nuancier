@@ -30,11 +30,12 @@ from flask.ext import wtf
 class AddElectionForm(wtf.Form):
     election_name = wtf.TextField('Election name',
                                   [wtf.validators.Required()])
-    election_folder = wtf.TextField('Name of the folder containing the pictures',
-                                  [wtf.validators.Required()])
+    election_folder = wtf.TextField(
+        'Name of the folder containing the pictures',
+        [wtf.validators.Required()])
     election_year = wtf.TextField('Year',
                                   [wtf.validators.Required()])
     election_open = wtf.BooleanField('Open')
     election_n_choice = wtf.TextField('Number of votes a user can make',
-                                  [wtf.validators.Required(),
-                                   wtf.validators.NumberRange(min=1)])
+                                      [wtf.validators.Required(),
+                                       wtf.validators.NumberRange(min=1)])

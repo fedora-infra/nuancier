@@ -136,7 +136,11 @@ class Elections(BASE):
     def all(cls, session):
         """ Return all the entries in the elections table.
         """
-        return session.query(cls).order_by(Elections.election_year.desc()).all()
+        return session.query(
+            cls
+        ).order_by(
+            Elections.election_year.desc()
+        ).all()
 
     @classmethod
     def by_id(cls, session, election_id):
@@ -151,7 +155,7 @@ class Elections(BASE):
         return session.query(
             cls
         ).filter(
-            Elections.election_open==True
+            Elections.election_open == True
         ).order_by(
             Elections.election_year.desc()
         ).all()
@@ -163,7 +167,7 @@ class Elections(BASE):
         return session.query(
             cls
         ).filter(
-            Elections.election_public==True
+            Elections.election_public == True
         ).order_by(
             Elections.election_year.desc()
         ).all()
@@ -302,7 +306,8 @@ class Votes(BASE):
 
     @classmethod
     def by_election_user(cls, session, election_id, username):
-        """ Return the votes the specified user casted on the specified election.
+        """ Return the votes the specified user casted on the specified
+        election.
 
         :arg session:
         :arg election_id:

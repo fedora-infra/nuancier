@@ -37,6 +37,7 @@ except ImportError:  # pragma: no cover
 
 import model
 
+
 class NuancierException(Exception):
     """ Generic Exception object used to throw nuancier specific error.
     """
@@ -161,7 +162,7 @@ def add_vote(session, candidate_id, username):
         candidate_id=candidate_id,
     )
     session.add(votes)
-    
+
 
 def toggle_open(session, election_id):
     """ Toggle the boolean of the open status for the specified election.
@@ -235,7 +236,7 @@ def generate_cache(session, election, picture_folder, cache_folder,
     :arg election_id:
     :arg picture_folder:
     :arg cache_folder:
-    :kwarg size: 
+    :kwarg size:
     """
     picture_folder = os.path.join(picture_folder, election.election_folder)
     infos_file = os.path.join(picture_folder, 'infos.txt')
@@ -283,8 +284,8 @@ def generate_cache(session, election, picture_folder, cache_folder,
         info = info.replace('"', '').strip()
         if not '\t' in info:
             raise NuancierException(
-            'The information file ``infos.txt`` does not contain a tabulation '
-            'on the row: %s.' % info)
+                'The information file ``infos.txt`` does not contain a '
+                'tabulation on the row: %s.' % info)
         filename, imgname = info.split('\t')
         filename = filename.strip()
         imgname = imgname.strip()

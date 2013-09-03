@@ -112,6 +112,7 @@ def shutdown_session(exception=None):
     """ Remove the DB session at the end of each request. """
     SESSION.remove()
 
+
 @APP.route('/msg/')
 def msg():
     """ Page used to display error messages
@@ -227,6 +228,7 @@ def vote(election_id):
             APP.config['CACHE_FOLDER'], election.election_folder)
     )
 
+
 @APP.route('/election/<int:election_id>/voted/', methods=['GET', 'POST'])
 @fas_login_required
 def process_vote(election_id):
@@ -238,7 +240,8 @@ def process_vote(election_id):
     candidates = nuancierlib.get_candidates(SESSION, election_id)
     candidate_ids = set([candidate.id for candidate in candidates])
 
-    entries = set([int(entry) for entry in flask.request.form.getlist('selection')])
+    entries = set([int(entry)
+                   for entry in flask.request.form.getlist('selection')])
     if not set(entries).issubset(candidate_ids):
         flask.flash('The selection you have made contains element which are '
                     'part of this election, please be careful.', 'error')
@@ -256,18 +259,20 @@ def process_vote(election_id):
 
     if len(votes) + len(entries) > election.election_n_choice:
         flask.flash('You selected %s wallpapers while you are only allowed '
-                    'to select %s' %(len(entries),
-                    (election.election_n_choice - len(votes))), 'error')
+                    'to select %s' % (
+                        len(entries),
+                        (election.election_n_choice - len(votes))),
+                    'error')
         return flask.render_template(
-        'vote.html',
-        election=election,
-        candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
-                    for candidate_id in entries],
-        picture_folder=os.path.join(
-            APP.config['PICTURE_FOLDER'], election.election_folder),
-        cache_folder=os.path.join(
-            APP.config['CACHE_FOLDER'], election.election_folder)
-    )
+            'vote.html',
+            election=election,
+            candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
+                        for candidate_id in entries],
+            picture_folder=os.path.join(
+                APP.config['PICTURE_FOLDER'], election.election_folder),
+            cache_folder=os.path.join(
+                APP.config['CACHE_FOLDER'], election.election_folder)
+        )
 
     try:
         for selection in entries:
