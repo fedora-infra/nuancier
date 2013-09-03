@@ -357,10 +357,11 @@ def admin_new():
 @APP.route('/admin/open/<int:election_id>')
 def admin_open(election_id):
     ''' Flip the open state '''
+    msg = nuancierlib.toggle_open(SESSION, election_id)
     try:
-        msg = nuancierlib.toggle_open(SESSION, election_id)
+        SESSION.commit()
         flask.flash(msg)
-    except nuancierlib.NuancierException as err:
+    except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
     return flask.redirect(flask.url_for('.admin_index'))
 
@@ -368,10 +369,11 @@ def admin_open(election_id):
 @APP.route('/admin/publish/<int:election_id>')
 def admin_publish(election_id):
     ''' Flip the public state '''
+    msg = nuancierlib.toggle_public(SESSION, election_id)
     try:
-        msg = nuancierlib.toggle_public(SESSION, election_id)
+        SESSION.commit()
         flask.flash(msg)
-    except nuancierlib.NuancierException as err:
+    except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
     return flask.redirect(flask.url_for('.admin_index'))
 

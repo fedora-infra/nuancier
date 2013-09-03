@@ -28,7 +28,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 try:
     from PIL import Image
-except ImportError:
+except ImportError:  # pragma: no cover
     try:
         import Image
     except ImportError:
@@ -174,10 +174,6 @@ def toggle_open(session, election_id):
         election.election_open = True
         msg = 'Election opened'
     session.add(election)
-    try:
-        session.commit()
-    except SQLAlchemyError as err:
-        raise NuancierException(err.message)
     return msg
 
 
@@ -192,10 +188,6 @@ def toggle_public(session, election_id):
         election.election_public = True
         msg = 'Election published'
     session.add(election)
-    try:
-        session.commit()
-    except SQLAlchemyError as err:
-        raise NuancierException(err.message)
     return msg
 
 
@@ -215,7 +207,7 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
         im = Image.open(infile)
         im.thumbnail(size, Image.ANTIALIAS)
         im.save(outfile)
-    except IOError:
+    except IOError:  # pragma: no cover
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
 
 
@@ -247,26 +239,35 @@ def generate_cache(session, election, picture_folder, cache_folder,
     """
     picture_folder = os.path.join(picture_folder, election.election_folder)
     infos_file = os.path.join(picture_folder, 'infos.txt')
-    cache_folder = os.path.join(cache_folder, election.election_folder)
 
     if not os.path.exists(picture_folder) or not os.path.isdir(picture_folder):
         raise NuancierException(
             'The folder said to contain the pictures of this election (%s) '
             'does not exist or is not a folder' % picture_folder)
 
+    # Check if the cache folder itself is a file
     if os.path.exists(cache_folder) and not os.path.isdir(cache_folder):
         raise NuancierException(
-            'Something happened in the creation of the cache folder (%) '
+            'Something happened in the creation of the cache folder (%s) '
             'of this election, the path does not lead to a folder'
             % cache_folder)
 
+    cache_folder = os.path.join(cache_folder, election.election_folder)
+
+    # Check if the cache folder of this election is a file
+    if os.path.exists(cache_folder) and not os.path.isdir(cache_folder):
+        raise NuancierException(
+            'Something happened in the creation of the cache folder (%s) '
+            'of this election, the path does not lead to a folder'
+            % cache_folder)
+
+    # Check is the information file is present
     if not os.path.exists(infos_file) or not os.path.isfile(infos_file):
         raise NuancierException(
             'Something is wrong with the information file ``infos.txt`` for '
             'this election, either it is missing or it is not a file.')
 
     # Once we checked everything is in place, let's start to do something.
-
     if not os.path.exists(cache_folder):
         os.makedirs(cache_folder)
 
@@ -293,5 +294,5 @@ def generate_cache(session, election, picture_folder, cache_folder,
 
     try:
         session.commit()
-    except SQLAlchemyError as err:
+    except SQLAlchemyError as err:  # pragma: no cover
         raise NuancierException(err.message)
