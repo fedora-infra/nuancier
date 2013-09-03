@@ -201,3 +201,12 @@ a:visited.large_button {
 table {
     margin-top: 2em;
 }
+
+.cell {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.cell img{
+    margin: 1em;
+}

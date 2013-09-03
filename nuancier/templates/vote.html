@@ -11,6 +11,11 @@
 
 {%block tag %}elections{% endblock %}
 
+{% block jscripts %}
+<script src="{{ url_for('static', filename='nuancier.js') }}"></script>
+
+{% endblock %}
+
 {% block content %}
 
 <h1>Vote: {{ election.election_name }} - {{ election.election_year }}</h1>
@@ -23,38 +28,40 @@ Click on the checkbox to select which wallpaper you like.
 Click on the picture to get a larger version of the image.
 </p>
 
-<p id="fix_info">test</p>
+<p id="fix_info" ></p>
 
 {% if candidates %}
 <form action="{{ url_for('process_vote', election_id=election.id) }}"
       method="post">
 <table>
-    <tr>
+    <tr class="row">
     {% for candidate in candidates %}
-        <td>
-            <input type="checkbox" name="selection"
-                value="{{ candidate.id }}" />
-            <a href="{{ url_for('static',
-                                 filename='pictures/%s/%s' % (
-                                    election.election_folder,
-                                    candidate.candidate_file
+        <td class="cell">
+            <label>
+                <input type="checkbox" name="selection"
+                    value="{{ candidate.id }}"
+                    onclick="updateSelectionCnt(this);"/>
+                <a href="{{ url_for('static',
+                                     filename='pictures/%s/%s' % (
+                                        election.election_folder,
+                                        candidate.candidate_file
+                                        )
                                     )
-                                )
-                      }}"
-                data-lightbox='{{ election.election_name }}'
-                title='{{ candidate.candidate_name }}'>
-                <img src="{{ url_for('static',
-                                 filename='cache/%s/%s' % (
-                                    election.election_folder,
-                                    candidate.candidate_file
+                          }}"
+                    data-lightbox='{{ election.election_name }}'
+                    title='{{ candidate.candidate_name }}'>
+                    <img src="{{ url_for('static',
+                                     filename='cache/%s/%s' % (
+                                        election.election_folder,
+                                        candidate.candidate_file
+                                        )
                                     )
-                                )
-                      }}" alt="img {{ candidate.candidate_file }}"/>
-            </a>
+                          }}" alt="img {{ candidate.candidate_file }}"/>
+                </a>
         </td>
         {% if loop.index % 3 == 0 %}
         </tr>
-        <tr>
+        <tr class="row">
         {% endif %}
     {% endfor %}
     </tr>
