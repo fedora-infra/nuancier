@@ -4,8 +4,8 @@
 *.swp
 build/
 dist/
-nuancier/static/pictures
-nuancier/static/cache
+nuancier/pictures
+nuancier/cache
 .coverage
 doc/_build
 *.egg-info
