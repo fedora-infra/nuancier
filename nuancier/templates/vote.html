@@ -36,7 +36,7 @@ Click on the picture to get a larger version of the image.
 <table>
     <tr class="row">
     {% for candidate in candidates %}
-        <td class="cell">
+        <td class="cell{% if confirm %} large_button{% endif %}">
             <label>
                 <input type="checkbox" name="selection"
                     value="{{ candidate.id }}"
