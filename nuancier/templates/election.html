@@ -23,7 +23,7 @@ Below are presented all the candidates of this election.
 Click on the picture to get a larger version of the image.
 </p>
 
-{% if election.election_open %}
+{% if election.election_open and can_vote %}
 <p>
 <a class="large_button" href="{{ url_for('vote', election_id=election.id) }}">Vote now!</a>
 </p>

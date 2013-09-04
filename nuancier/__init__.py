@@ -190,6 +190,7 @@ def election(election_id):
 
     # How many votes the user made:
     votes = 0
+    can_vote = True
     if flask.g.fas_user:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
                                            flask.g.fas_user.username)
@@ -197,6 +198,7 @@ def election(election_id):
     if election.election_open and len(votes) < election.election_n_choice:
         return flask.redirect(flask.url_for('vote', election_id=election_id))
     elif election.election_open and len(votes) >= election.election_n_choice:
+        can_vote = False
         flask.flash('You have already cast the maximal number of votes '
                     'allowed for this election.', 'error')
     else:
@@ -212,6 +214,7 @@ def election(election_id):
         'election.html',
         candidates=candidates,
         election=election,
+        can_vote=can_vote,
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
         cache_folder=os.path.join(
