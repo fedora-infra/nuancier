@@ -34,8 +34,8 @@ from {{ election.election_year }}.
         <td> {{ candidate.candidate_name }} </td>
         <td> {{ votes }} </td>
         <td>
-            <a href="{{ url_for('static',
-                                 filename='pictures/%s/%s' % (
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
                                     election.election_folder,
                                     candidate.candidate_file
                                     )
@@ -43,8 +43,8 @@ from {{ election.election_year }}.
                       }}"
                 data-lightbox='{{ election.election_name }}'
                 title='{{ candidate.candidate_name }}'>
-                <img src="{{ url_for('static',
-                                 filename='cache/%s/%s' % (
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
                                     election.election_folder,
                                     candidate.candidate_file
                                     )
