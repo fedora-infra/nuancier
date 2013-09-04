@@ -66,10 +66,15 @@ def fas_login_required(function):
     To use this decorator you need to have a function named 'auth_login'.
     Without that function the redirect if the user is not logged in will not
     work.
+
+    We'll always make sure the user is CLA+1 as it's what's needed to be
+    allowed to vote.
     """
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        if flask.g.fas_user is None:
+        if flask.g.fas_user is None \
+                or not flask.g.fas_user.cla_done \
+                or len(flask.g.fas_user.groups) < 1:
             return flask.redirect(flask.url_for(
                 '.login', next=flask.request.url))
         return function(*args, **kwargs)
@@ -338,6 +343,7 @@ def results(election_id):
 
 
 @APP.route('/admin/')
+@nuancier_admin_required
 def admin_index():
     ''' Display the index page of the admin interface. '''
     elections = nuancierlib.get_elections(SESSION)
@@ -370,6 +376,7 @@ def admin_new():
 
 
 @APP.route('/admin/open/<int:election_id>')
+@nuancier_admin_required
 def admin_open(election_id):
     ''' Flip the open state '''
     msg = nuancierlib.toggle_open(SESSION, election_id)
@@ -382,6 +389,7 @@ def admin_open(election_id):
 
 
 @APP.route('/admin/publish/<int:election_id>')
+@nuancier_admin_required
 def admin_publish(election_id):
     ''' Flip the public state '''
     msg = nuancierlib.toggle_public(SESSION, election_id)
@@ -394,6 +402,7 @@ def admin_publish(election_id):
 
 
 @APP.route('/admin/cache/<int:election_id>')
+@nuancier_admin_required
 def admin_cache(election_id):
     ''' Regenerate the cache for this election. '''
     election = nuancierlib.get_election(SESSION, election_id)
