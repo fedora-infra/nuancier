@@ -188,7 +188,9 @@ def election(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
 
-    if not election.election_open:
+    if election.election_open:
+        return flask.redirect(flask.url_for('vote', election_id=election_id))
+    else:
         flask.flash('This election is not open', 'error')
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
