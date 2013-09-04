@@ -65,11 +65,6 @@ install -m 644 nuancier-lite.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
 install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
 
-# Install nuancier static files
-mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/www/nuancier/static
-cp -r nuancier/static $RPM_BUILD_ROOT/%{_localstatedir}/www/nuancier/static
-
-
 %files
 %doc README.rst COPYING doc/
 %doc createdb.py
@@ -77,7 +72,6 @@ cp -r nuancier/static $RPM_BUILD_ROOT/%{_localstatedir}/www/nuancier/static
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/nuancier-lite.conf
 %config(noreplace) %{_sysconfdir}/nuancier/nuancier-lite.cfg
 %{_datadir}/nuancier/
-%{_localstatedir}/www/nuancier/
 %{python_sitelib}/nuancier/
 %{python_sitelib}/nuancier*.egg-info
 
