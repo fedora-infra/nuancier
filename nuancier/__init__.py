@@ -189,7 +189,7 @@ def election(election_id):
         return flask.render_template('msg.html')
 
     # How many votes the user made:
-    votes = 0
+    votes = []
     can_vote = True
     if flask.g.fas_user:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
