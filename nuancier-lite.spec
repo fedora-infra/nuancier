@@ -53,23 +53,31 @@ wallpapers that are included in Fedora at each release.
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
-# Install wsgi, apache configuration and nuancier configuration files
+# Install apache configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/
 install -m 644 nuancier-lite.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/nuancier-lite.conf
 
+# Install nuancier configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier
 install -m 644 nuancier-lite.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier-lite.cfg
 
+# Install nuancier wsgi file
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
 install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
+
+# Install nuancier static files
+mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/www/nuancier/static
+cp -r nuancier/static $RPM_BUILD_ROOT/%{_localstatedir}/www/nuancier/static
+
 
 %files
 %doc README.rst COPYING doc/
 %doc createdb.py
+%dir %{_sysconfdir}/nuancier/
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/nuancier-lite.conf
 %config(noreplace) %{_sysconfdir}/nuancier/nuancier-lite.cfg
-%dir %{_sysconfdir}/nuancier/
 %{_datadir}/nuancier/
+%{_localstatedir}/www/nuancier/
 %{python_sitelib}/nuancier/
 %{python_sitelib}/nuancier*.egg-info
 
