@@ -40,7 +40,8 @@ Click on the picture to get a larger version of the image.
             <label>
                 <input type="checkbox" name="selection"
                     value="{{ candidate.id }}"
-                    onclick="updateSelectionCnt(this);"/>
+                    onclick="updateSelectionCnt(this);"
+                    {% if confirm %} checked {% endif %}/>
                 <a href="{{ url_for('base_picture',
                                      filename='%s/%s' % (
                                         election.election_folder,
@@ -66,6 +67,9 @@ Click on the picture to get a larger version of the image.
     {% endfor %}
     </tr>
 </table>
+{% if confirm %}
+<input type="hidden" name="confirmed" value="1">
+{% endif %}
 <input id="fix_submit" type="submit" class="submit positive button" value="Vote"> <br />
 <input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">
 </form>
