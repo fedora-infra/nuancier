@@ -301,7 +301,7 @@ def process_vote(election_id):
     except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
 
-    return flask.redirect(flask.url_for('vote', election_id=election_id))
+    return flask.redirect(flask.url_for('election', election_id=election_id))
 
 
 @APP.route('/results/')
