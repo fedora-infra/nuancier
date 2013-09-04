@@ -1,5 +1,7 @@
 # Beware that the quotes around the values are mandatory
 
+import os
+
 ### Secret key for the Flask application
 SECRET_KEY='<The web application secret key>'
 
@@ -11,25 +13,27 @@ DB_URL='sqlite:////var/tmp/fedocal_dev.sqlite'
 ### The FAS group in which the admin of fedocal are
 ADMIN_GROUP='sysadmin-nuancier'
 
-### Path to the alembic configuration file
-### When creating the database, we need to tell the database which
-### revision of alembic we are at and to do this we need access to the
-### alembic.ini file.
-PATH_ALEMBIC_INI='/etc/fedocal/alembic.ini'
+
+### Static folder
+### The folder containing the css, javascript as well as the pictures
+### candidates and the cache of those pictures.
+### This directory should be somewhere where apache can access, it's
+### proposed in '/var/www/nuancier'
+STATIC_FOLDER = '/var/www/nuancier'
 
 ### Pictures folder
 ### The folder in which are located the pictures of the different elections.
 ### This folder does not have to be writable by the application but should be
 ### readable.
 ### /!\ It should be the full path to this folder
-PICTURE_FOLDER = '/var/www/nuancier/pictures'
+PICTURE_FOLDER = os.path.join(STATIC_FOLDER, 'pictures')
 
 ### Cache folder
 ### The folder in which the application will generate thumbnails of the pictures
 ### selected for an election.
 ### This folder *must* be *writable* by the application.
 ### /!\ It should be the full path to this folder
-CACHE_FOLDER = '/var/www/nuancier/cache'
+CACHE_FOLDER = os.path.join(STATIC_FOLDER, 'cache')
 
 ### Size of the thumbnails (keeping the ratio)
 ### In order to reduce the loading page of the election page that might contains
