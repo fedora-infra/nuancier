@@ -188,6 +188,12 @@ def election(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
 
+    # How many votes the user made:
+    votes = 0
+    if flask.g.fas_user:
+        votes = nuancierlib.get_votes_user(SESSION, election_id,
+                                           flask.g.fas_user.username)
+
     if election.election_open and len(votes) < election.election_n_choice:
         return flask.redirect(flask.url_for('vote', election_id=election_id))
     elif election.election_open and len(votes) >= election.election_n_choice:
