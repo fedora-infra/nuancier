@@ -27,6 +27,13 @@ import flask
 from flask.ext import wtf
 
 
+def is_number(form, field):
+    try:
+        float(field.data)
+    except ValueError:
+        raise wtf.ValidationError('Field must contain a number')
+
+
 class AddElectionForm(wtf.Form):
     election_name = wtf.TextField('Election name',
                                   [wtf.validators.Required()])
@@ -38,4 +45,4 @@ class AddElectionForm(wtf.Form):
     election_open = wtf.BooleanField('Open')
     election_n_choice = wtf.TextField('Number of votes a user can make',
                                       [wtf.validators.Required(),
-                                       wtf.validators.NumberRange(min=1)])
+                                       is_number])
