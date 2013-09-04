@@ -189,8 +189,7 @@ def election(election_id):
         return flask.render_template('msg.html')
 
     if not election.election_open:
-        flask.flash('This election is not open yet', 'error')
-        return flask.redirect(flask.url_for('index'))
+        flask.flash('This election is not open', 'error')
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
 
@@ -218,6 +217,10 @@ def vote(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
     candidates = nuancierlib.get_candidates(SESSION, election_id)
+
+    if not election.election_open:
+        flask.flash('This election is not open', 'error')
+        return flask.redirect(flask.url_for('index'))
 
     if flask.g.fas_user:
         random.seed(flask.g.fas_user.username)
@@ -250,6 +253,10 @@ def process_vote(election_id):
     election = nuancierlib.get_election(SESSION, election_id)
     if not election:
         flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    if not election.election_open:
+        flask.flash('This election is not open', 'error')
         return flask.render_template('msg.html')
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
