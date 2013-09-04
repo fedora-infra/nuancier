@@ -45,8 +45,6 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
 
 # Set up FAS extension
 FAS = FAS(APP)
-# Set the static folder
-APP.static_folder = APP.config['STATIC_FOLDER']
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
@@ -147,6 +145,16 @@ def logout():
     if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
         FAS.logout()
     return flask.redirect(flask.url_for('.index'))
+
+
+@APP.route('/pictures/<path:filename>')
+def base_picture(filename):
+    return flask.send_from_directory(APP.config['PICTURE_FOLDER'], filename)
+
+
+@APP.route('/cache/<path:filename>')
+def base_cache(filename):
+    return flask.send_from_directory(APP.config['CACHE_FOLDER'], filename)
 
 
 @APP.route('/')

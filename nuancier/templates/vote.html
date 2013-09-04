@@ -41,8 +41,8 @@ Click on the picture to get a larger version of the image.
                 <input type="checkbox" name="selection"
                     value="{{ candidate.id }}"
                     onclick="updateSelectionCnt(this);"/>
-                <a href="{{ url_for('static',
-                                     filename='pictures/%s/%s' % (
+                <a href="{{ url_for('base_picture',
+                                     filename='%s/%s' % (
                                         election.election_folder,
                                         candidate.candidate_file
                                         )
@@ -50,8 +50,8 @@ Click on the picture to get a larger version of the image.
                           }}"
                     data-lightbox='{{ election.election_name }}'
                     title='{{ candidate.candidate_name }}'>
-                    <img src="{{ url_for('static',
-                                     filename='cache/%s/%s' % (
+                    <img src="{{ url_for('base_cache',
+                                     filename='%s/%s' % (
                                         election.election_folder,
                                         candidate.candidate_file
                                         )
