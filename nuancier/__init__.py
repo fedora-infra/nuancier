@@ -188,8 +188,11 @@ def election(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
 
-    if election.election_open:
+    if election.election_open and len(votes) < election.election_n_choice:
         return flask.redirect(flask.url_for('vote', election_id=election_id))
+    elif election.election_open and len(votes) >= election.election_n_choice:
+        flask.flash('You have already cast the maximal number of votes '
+                    'allowed for this election.', 'error')
     else:
         flask.flash('This election is not open', 'error')
 
