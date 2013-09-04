@@ -45,6 +45,8 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
 
 # Set up FAS extension
 FAS = FAS(APP)
+# Set the static folder
+APP.static_folder = APP.config['STATIC_FOLDER']
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 

@@ -35,11 +35,14 @@ SECRET_KEY = '<insert here your own key>'
 #ADMIN_GROUP = 'sysadmin-nuancier'
 ADMIN_GROUP = 'sysadmin-main'
 
+# Static folder
+STATIC_FOLDER = os.path.join(os.path.dirname(__file__), 'static')
+
 # Pictures folder
-PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'static/pictures')
+PICTURE_FOLDER = os.path.join(STATIC_FOLDER, 'pictures')
 
 # Cache folder
-CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'static/cache')
+CACHE_FOLDER = os.path.join(STATIC_FOLDER, 'cache')
 
 # Size of the thumbnails (keeping the ratio)
 THUMB_SIZE = (256, 256)
