@@ -298,3 +298,39 @@ def generate_cache(session, election, picture_folder, cache_folder,
         session.commit()
     except SQLAlchemyError as err:  # pragma: no cover
         raise NuancierException(err.message)
+
+
+def get_stats(session, election_id):
+    """ Return a dictionnary containing a number of statistics for the
+    specified election.
+
+    :arg session:
+    :arg election_id:
+    """
+    votes = model.Votes.cnt_votes(session, election_id)
+    voters = model.Votes.cnt_voters(session, election_id)
+    results = model.Votes.by_election(session, election_id)
+
+    # Count the number of votes for each participant
+    user_votes = {}
+    for vote in results:
+        if vote.user_name in user_votes:
+            user_votes[vote.user_name] += 1
+        else:
+            user_votes[vote.user_name] = 1
+
+    # Invert the dictionnary
+    votes_user = {}
+    for user in user_votes:
+        if user_votes[user] in votes_user:
+            votes_user[user_votes[user]] += 1
+        else:
+            votes_user[user_votes[user]] = 1
+
+    data = [[key, votes_user[key]] for key in votes_user]
+
+    return dict(
+        votes=votes,
+        voters=voters,
+        data=data,
+    )
