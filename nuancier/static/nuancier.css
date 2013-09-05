@@ -197,6 +197,9 @@ a:visited.large_button {
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
+.cell a {
+    color: #193C6E;
+}
 
 table {
     margin-top: 2em;

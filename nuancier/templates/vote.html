@@ -42,15 +42,6 @@ Click on the picture to get a larger version of the image.
                     value="{{ candidate.id }}"
                     onclick="updateSelectionCnt(this);"
                     {% if confirm %} checked {% endif %}/>
-                <a href="{{ url_for('base_picture',
-                                     filename='%s/%s' % (
-                                        election.election_folder,
-                                        candidate.candidate_file
-                                        )
-                                    )
-                          }}"
-                    data-lightbox='{{ election.election_name }}'
-                    title='{{ candidate.candidate_name }}'>
                     <img src="{{ url_for('base_cache',
                                      filename='%s/%s' % (
                                         election.election_folder,
@@ -58,7 +49,19 @@ Click on the picture to get a larger version of the image.
                                         )
                                     )
                           }}" alt="img {{ candidate.candidate_file }}"/>
-                </a>
+            </label>
+            <br />
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                Zoom in
+            </a>
         </td>
         {% if loop.index % 3 == 0 %}
         </tr>
