@@ -33,6 +33,7 @@ Contents:
    usage
    development
    contributing
+   about
 
 
 
