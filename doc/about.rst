@@ -14,6 +14,7 @@ Templates
 Nuancier-lite re-used the layout of `Koji <https://fedorahosted.org/koji/>`_
 adjusted as desired.
 
+(License: LGPLv2)
 
 Lightbox2
 ~~~~~~~~~
