@@ -122,6 +122,7 @@ def create_candidates(session):
     candidate = model.Candidates(
         candidate_file='DSC_0951.JPG',
         candidate_name='DSC_0951',
+        candidate_author='pingou',
         election_id=1,
     )
     session.add(candidate)
@@ -129,6 +130,7 @@ def create_candidates(session):
     candidate = model.Candidates(
         candidate_file='DSC_0930.JPG',
         candidate_name='DSC_0930',
+        candidate_author='pingou',
         election_id=1,
     )
     session.add(candidate)
@@ -136,6 +138,7 @@ def create_candidates(session):
     candidate = model.Candidates(
         candidate_file='DSC_0923.JPG',
         candidate_name='DSC_0923',
+        candidate_author='pingou',
         election_id=2,
     )
     session.add(candidate)
@@ -143,6 +146,7 @@ def create_candidates(session):
     candidate = model.Candidates(
         candidate_file='DSC_0922.JPG',
         candidate_name='DSC_0922',
+        candidate_author='pingou',
         election_id=2,
     )
     session.add(candidate)

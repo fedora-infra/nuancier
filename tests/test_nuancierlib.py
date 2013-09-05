@@ -157,6 +157,7 @@ class NuancierLibtests(Modeltests):
             session=self.session,
             candidate_file='test.png',
             candidate_name='test image',
+            candidate_author='pingou',
             election_id=2,
         )
         self.session.commit()

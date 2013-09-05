@@ -44,20 +44,20 @@ Nuancier-lite will be able to find the pictures there.
 
 However, to give a name to the candidate, nuancier-lite expects to find in
 each folder a file: ``infos.txt`` containing, tab delimited, for each picture
-its name.
+its file name, author and name.
 
 An example of infos.txt would be:
 
 ::
 
-    filename1    image name 1
-    filename3    image name 2
-    filename2    image name 3
+    filename1    author name1     image name 1
+    filename2    author name2     image name 2
+    filename3    author name3     image name 3
     ...
 
 
-The character delimiting ``filename1`` from ``image name 1`` must be a
-tabulation (\t, <tab>).
+The character delimiting ``filename1`` from ``author name1`` and ``author name1``
+from ``image name 1`` must be a tabulation (\t, <tab>).
 
 .. note:: nuancier-lite will only consider the candidate present in the
    ``infos.txt`` file.

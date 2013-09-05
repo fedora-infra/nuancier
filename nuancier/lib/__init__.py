@@ -135,17 +135,20 @@ def add_election(session, election_name, election_folder, election_year,
     return election
 
 
-def add_candidate(session, candidate_file, candidate_name, election_id):
+def add_candidate(session, candidate_file, candidate_name, candidate_author,
+                  election_id):
     """ Add a new candidate to the database.
 
     :arg session:
     :arg candidate_file:
     :arg candidate_name:
+    :arg candidate_author:
     :arg election_id:
     """
     candidate = model.Candidates(
         candidate_file=candidate_file,
         candidate_name=candidate_name,
+        candidate_author=candidate_author,
         election_id=election_id,
     )
     session.add(candidate)
@@ -226,9 +229,9 @@ def generate_cache(session, election, picture_folder, cache_folder,
 
     ::
 
-        filename1    image name 1
-        filename3    image name 2
-        filename2    image name 3
+        filename1    author name1    image name 1
+        filename2    author name2    image name 2
+        filename3    author name3    image name 3
         ...
 
     The character delimiting the values is a tabulation (tab, \t).
@@ -283,15 +286,22 @@ def generate_cache(session, election, picture_folder, cache_folder,
 
     for info in infos:
         info = info.replace('"', '').strip()
-        if not '\t' in info:
+        if info.count('\t') != 2:
+            session.rollback()
             raise NuancierException(
-                'The information file ``infos.txt`` does not contain a '
-                'tabulation on the row: %s.' % info)
-        filename, imgname = info.split('\t')
+                'The information file ``infos.txt`` must contain two (and '
+                'only two) tabulation on the row: %s.' % info)
+        filename, author, imgname = info.split('\t')
         filename = filename.strip()
+        author = author.strip()
         imgname = imgname.strip()
         if filename not in existing_candidates:
-            add_candidate(session, filename, imgname, election.id)
+            add_candidate(
+                session=session,
+                candidate_file=filename,
+                candidate_name=imgname,
+                candidate_author=author,
+                election_id=election.id)
         generate_thumbnail(filename, picture_folder, cache_folder, size)
 
     try:

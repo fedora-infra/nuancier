@@ -183,6 +183,7 @@ class Candidates(BASE):
     id = sa.Column(sa.Integer, nullable=False, primary_key=True)
     candidate_file = sa.Column(sa.String(255), nullable=False)
     candidate_name = sa.Column(sa.String(255), nullable=False)
+    candidate_author = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
         sa.Integer,
         sa.ForeignKey('Elections.id',
@@ -204,16 +205,19 @@ class Candidates(BASE):
         sa.UniqueConstraint('election_id', 'candidate_name'),
     )
 
-    def __init__(self, candidate_file, candidate_name, election_id):
+    def __init__(self, candidate_file, candidate_name, candidate_author,
+                 election_id):
         """ Constructor
 
         :arg candidate_file: the file name of the candidate
         :arg candidate_name: the name of the candidate
+        :arg candidate_author: the name of the author of this candidate
         :arg election_id: the identifier of the election this candidate is
             candidate for.
         """
         self.candidate_file = candidate_file
         self.candidate_name = candidate_name
+        self.candidate_author = candidate_author
         self.election_id = election_id
 
     def __repr__(self):
