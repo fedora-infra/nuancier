@@ -108,7 +108,8 @@ def inject_is_admin():
     """ Inject whether the user is a nuancier admin or not in every page
     (every template).
     """
-    return dict(is_admin=is_nuancier_admin())
+    return dict(is_admin=is_nuancier_admin(),
+                version=__version__)
 
 
 # pylint: disable=W0613
