@@ -467,3 +467,24 @@ def admin_cache(election_id):
         flask.flash(err.message, 'error')
 
     return flask.redirect(flask.url_for('.admin_index'))
+
+@APP.route('/admin/stats/<int:election_id>/')
+@nuancier_admin_required
+def stats(election_id):
+    ''' Return some stats about this election. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    if not election.election_public:
+        flask.flash('The results this election are not public yet', 'error')
+        return flask.redirect(flask.url_for('results_list'))
+
+    stats = nuancierlib.get_stats(SESSION, election_id)
+
+    return flask.render_template(
+        'stats.html',
+        stats=stats,
+        election=election)
