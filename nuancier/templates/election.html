@@ -42,7 +42,7 @@ Click on the picture to get a larger version of the image.
                                 )
                       }}"
                 data-lightbox='{{ election.election_name }}'
-                title='{{ candidate.candidate_name }} - Author {{ candidate.author }}'>
+                title='{{ candidate.candidate_name }} - Author {{ candidate.candidate_author }}'>
                 <img src="{{ url_for('base_cache',
                                  filename='%s/%s' % (
                                     election.election_folder,
@@ -51,7 +51,7 @@ Click on the picture to get a larger version of the image.
                                 )
                       }}" alt="img {{ candidate.candidate_file }}"/>
             </a>
-            Author: {{ candidate.author }}
+            Author: {{ candidate.candidate_author }}
         </td>
         {% if loop.index % 3 == 0 %}
         </tr>
