@@ -398,7 +398,7 @@ def admin_new():
     form = forms.AddElectionForm()
     if form.validate_on_submit():
         try:
-            nuancierlib.add_election(
+            election = nuancierlib.add_election(
                 SESSION,
                 election_name=form.election_name.data,
                 election_folder=form.election_folder.data,
@@ -412,6 +412,8 @@ def admin_new():
             SESSION.commit()
         except SQLAlchemyError as err:
             flask.flash(err.message, 'error')
+        if form.generate_cache.data:
+            return admin_cache(election.id)
         return flask.redirect(flask.url_for('admin_index'))
     return flask.render_template('admin_new.html', form=form)
 

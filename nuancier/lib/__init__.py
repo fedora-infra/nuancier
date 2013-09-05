@@ -132,6 +132,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_n_choice=election_n_choice
     )
     session.add(election)
+    return election
 
 
 def add_candidate(session, candidate_file, candidate_name, election_id):

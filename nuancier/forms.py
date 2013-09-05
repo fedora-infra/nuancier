@@ -46,3 +46,4 @@ class AddElectionForm(wtf.Form):
     election_n_choice = wtf.TextField('Number of votes a user can make',
                                       [wtf.validators.Required(),
                                        is_number])
+    generate_cache = wtf.BooleanField('Generate cache')
