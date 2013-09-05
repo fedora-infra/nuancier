@@ -305,6 +305,51 @@ class Votes(BASE):
             self.user_name, self.candidate_id, self.date_created)
 
     @classmethod
+    def cnt_votes(cls, session, election_id,):
+        """ Return the votes on the specified election.
+
+        :arg session:
+        :arg election_id:
+        """
+        return session.query(
+            cls
+        ).filter(
+            Votes.candidate_id == Candidates.id
+        ).filter(
+            Candidates.election_id == election_id
+        ).count()
+
+    @classmethod
+    def cnt_voters(cls, session, election_id,):
+        """ Return the votes on the specified election.
+
+        :arg session:
+        :arg election_id:
+        """
+        return session.query(
+            sa.func.distinct(cls.user_name)
+        ).filter(
+            Votes.candidate_id == Candidates.id
+        ).filter(
+            Candidates.election_id == election_id
+        ).count()
+
+    @classmethod
+    def by_election(cls, session, election_id):
+        """ Return the votes on the specified election.
+
+        :arg session:
+        :arg election_id:
+        """
+        return session.query(
+            cls
+        ).filter(
+            Votes.candidate_id == Candidates.id
+        ).filter(
+            Candidates.election_id == election_id
+        ).all()
+
+    @classmethod
     def by_election_user(cls, session, election_id, username):
         """ Return the votes the specified user casted on the specified
         election.
