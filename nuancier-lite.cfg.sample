@@ -10,8 +10,10 @@ SECRET_KEY='<The web application secret key>'
 #DB_URL=postgres://user:pass@host/db_name
 DB_URL='sqlite:////var/tmp/fedocal_dev.sqlite'
 
-### The FAS group in which the admin of fedocal are
-ADMIN_GROUP='sysadmin-nuancier'
+### The FAS groups in which the admin of nuancier-lite are
+### This can either be a single group or multiple, defined between
+### parenthesis.
+ADMIN_GROUP=('sysadmin-nuancier', 'sysadmin-main')
 
 
 ### Static folder

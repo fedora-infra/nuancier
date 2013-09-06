@@ -33,7 +33,7 @@ SECRET_KEY = '<insert here your own key>'
 
 # FAS group for the pkgdb admin
 #ADMIN_GROUP = 'sysadmin-nuancier'
-ADMIN_GROUP = 'sysadmin-main'
+ADMIN_GROUP = ('sysadmin-main', 'designteam')
 
 # Pictures folder
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')

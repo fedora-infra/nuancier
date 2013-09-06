@@ -58,7 +58,13 @@ def is_nuancier_admin():
             len(flask.g.fas_user.groups) < 1:
         return False
 
-    return APP.config['ADMIN_GROUP'] in flask.g.fas_user.groups
+    admins = APP.config['ADMIN_GROUP']
+    if isinstance(admins, basestring):
+        admins = set([admins])
+    else:
+        admins = set(admins)
+
+    return len(set(flask.g.fas_user.groups).intersection(admins)) > 0
 
 
 def fas_login_required(function):
