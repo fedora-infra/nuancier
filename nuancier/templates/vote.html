@@ -36,15 +36,14 @@ this election.
 {% if candidates %}
 <form action="{{ url_for('process_vote', election_id=election.id) }}"
       method="post">
-<table>
-    <tr class="row">
+<div id="votechoice">
     {% for candidate in candidates %}
-        <td class="cell{% if confirm %} large_button{% endif %}">
-            <label>
-                <input type="checkbox" name="selection"
-                    value="{{ candidate.id }}"
+        <div class="cell{% if confirm %} large_button{% endif %}">
+            <input type="checkbox" name="selection"
+                    value="{{ candidate.id }}" id="candidate{{ candidate.id }}"
                     onclick="updateSelectionCnt(this);"
                     {% if confirm %} checked {% endif %}/>
+            <label for="candidate{{ candidate.id }}">
                     <img src="{{ url_for('base_cache',
                                      filename='%s/%s' % (
                                         election.election_folder,
@@ -53,8 +52,9 @@ this election.
                                     )
                           }}" alt="img {{ candidate.candidate_file }}"/>
             </label>
+            <div class="hoveroverlay"><a href="#">pants</a></div>
             <br />
-            <a href="{{ url_for('base_picture',
+            <!--<a href="{{ url_for('base_picture',
                                  filename='%s/%s' % (
                                     election.election_folder,
                                     candidate.candidate_file
@@ -64,15 +64,10 @@ this election.
                 data-lightbox='{{ election.election_name }}'
                 title='{{ candidate.candidate_name }}'>
                 Zoom in
-            </a>
-        </td>
-        {% if loop.index % 3 == 0 %}
-        </tr>
-        <tr class="row">
-        {% endif %}
+            </a>-->
+        </div>
     {% endfor %}
-    </tr>
-</table>
+</div>
 {% if confirm %}
 <input type="hidden" name="confirmed" value="1">
 {% endif %}

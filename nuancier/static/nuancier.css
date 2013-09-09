@@ -201,18 +201,6 @@ a:visited.large_button {
     color: #193C6E;
 }
 
-table {
-    margin-top: 2em;
-}
-
-.cell {
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-}
-
-.cell img{
-    margin: 1em;
-}
 
 
 .demo-container {
@@ -228,4 +216,53 @@ table {
     height: 100%;
     font-size: 14px;
     line-height: 1.2em;
+}
+
+#votechoice input[type=checkbox]
+{
+   position: absolute;
+   left: -9999px;
+}
+#votechoice
+{
+   -webkit-column-count: 3;
+   -webkit-column-gap:   5px;
+   -moz-column-count:    3;
+   -moz-column-gap:      5px;
+   column-count:         3;
+   column-gap:           5px;
+   width:900px;
+}
+#votechoice .cell
+{
+position:relative;display:inline-block; width:300px;
+}
+
+#votechoice input[type=checkbox]:checked + label
+{
+	background-color:green;
+}
+#votechoice label
+{
+	height: 100%;
+	width:100%
+	display:block;
+	position:relative;
+}
+
+#votechoice img
+{
+width:100%;
+}
+
+#votechoice .hoveroverlay{position:absolute; width:300px; height:100%; top:0;left:0;background-color:rgba(50,50,50,0.7);z-index:999; display:none;}
+
+#votechoice .cell:hover .hoveroverlay
+{
+display:block;
+}
+
+#votechoice input[type=checkbox]:focus ~ .hoveroverlay
+{
+display:block;
 }
