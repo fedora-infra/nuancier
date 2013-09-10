@@ -438,12 +438,29 @@ def admin_new():
 @nuancier_admin_required
 def admin_open(election_id):
     ''' Flip the open state '''
-    msg = nuancierlib.toggle_open(SESSION, election_id)
+    election = nuancierlib.get_election(SESSION, election_id)
+    state = nuancierlib.toggle_open(SESSION, election_id)
+
+    if state:
+        msg = "Election opened"
+    else:
+        msg = "Election ended"
+
     try:
         SESSION.commit()
-        flask.flash(msg)
     except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
+    else:
+        flask.flash(msg)
+        notifications.publish(
+            topic="open.toggle",
+            msg=dict(
+                agent=flask.g.fas_user.username,
+                election=election.api_repr(version=1),
+                state=state,
+            )
+        )
+
     return flask.redirect(flask.url_for('.admin_index'))
 
 
@@ -451,12 +468,29 @@ def admin_open(election_id):
 @nuancier_admin_required
 def admin_publish(election_id):
     ''' Flip the public state '''
-    msg = nuancierlib.toggle_public(SESSION, election_id)
+    election = nuancierlib.get_election(SESSION, election_id)
+    state = nuancierlib.toggle_public(SESSION, election_id)
+
+    if state:
+        msg = "Election published"
+    else:
+        msg = "Election closed"
+
     try:
         SESSION.commit()
-        flask.flash(msg)
     except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
+    else:
+        flask.flash(msg)
+        notifications.publish(
+            topic="publish.toggle",
+            msg=dict(
+                agent=flask.g.fas_user.username,
+                election=election.api_repr(version=1),
+                state=state,
+            )
+        )
+
     return flask.redirect(flask.url_for('.admin_index'))
 
 
