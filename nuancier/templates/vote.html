@@ -43,18 +43,8 @@ this election.
                     value="{{ candidate.id }}" id="candidate{{ candidate.id }}"
                     onclick="updateSelectionCnt(this);"
                     {% if confirm %} checked {% endif %}/>
-            <label for="candidate{{ candidate.id }}">
-                    <img src="{{ url_for('base_cache',
-                                     filename='%s/%s' % (
-                                        election.election_folder,
-                                        candidate.candidate_file
-                                        )
-                                    )
-                          }}" alt="img {{ candidate.candidate_file }}"/>
-            </label>
-            <div class="hoveroverlay"><a href="#">pants</a></div>
-            <br />
-            <!--<a href="{{ url_for('base_picture',
+            <!--<a href="#" class="resizelink">asdfasdfasdfasdf</a>-->
+            <a class="resizelink" href="{{ url_for('base_picture',
                                  filename='%s/%s' % (
                                     election.election_folder,
                                     candidate.candidate_file
@@ -64,7 +54,17 @@ this election.
                 data-lightbox='{{ election.election_name }}'
                 title='{{ candidate.candidate_name }}'>
                 Zoom in
-            </a>-->
+            </a>
+            <label for="candidate{{ candidate.id }}">
+	    <div class="hoveroverlay"></div>
+                    <img src="{{ url_for('base_cache',
+                                     filename='%s/%s' % (
+                                        election.election_folder,
+                                        candidate.candidate_file
+                                        )
+                                    )
+                          }}" alt="img {{ candidate.candidate_file }}"/>
+            </label>
         </div>
     {% endfor %}
 </div>
