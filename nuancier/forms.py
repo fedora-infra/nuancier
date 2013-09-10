@@ -24,7 +24,8 @@ WTF Forms of the pkgdb Flask application.
 '''
 
 import flask
-from flask.ext import wtf
+import wtforms as wtf
+from flask.ext import wtf as flask_wtf
 
 
 def is_number(form, field):
@@ -34,7 +35,7 @@ def is_number(form, field):
         raise wtf.ValidationError('Field must contain a number')
 
 
-class AddElectionForm(wtf.Form):
+class AddElectionForm(flask_wtf.Form):
     election_name = wtf.TextField('Election name',
                                   [wtf.validators.Required()])
     election_folder = wtf.TextField(
