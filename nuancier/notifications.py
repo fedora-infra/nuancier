@@ -32,10 +32,7 @@ except ImportError:
 fedmsg.init()
 
 def publish(topic, msg):
-    print "HALLO", fedmsg
     if not fedmsg:
-        print "WAAAAAAAAAAT"
         return
 
-    print "these are not the droids you are looking for"
     fedmsg.publish(topic=topic, msg=msg)
