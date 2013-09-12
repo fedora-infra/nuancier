@@ -348,15 +348,6 @@ def process_vote(election_id):
         SESSION.commit()
     except SQLAlchemyError as err:
         flask.flash(err.message, 'error')
-    else:
-        notifications.publish(
-            topic="vote",
-            msg=dict(
-                agent=flask.g.fas_user.username,
-                votes=len(entries),
-                election=election.api_repr(version=1),
-            )
-        )
 
     return flask.redirect(flask.url_for('election', election_id=election_id))
 
