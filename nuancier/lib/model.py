@@ -117,13 +117,14 @@ class Elections(BASE):
         self.election_open = election_open
         self.election_public = election_public
         self.election_n_choice = election_n_choice
+        self.election_badge_link = election_badge_link
 
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
             self.id, self.election_name, self.election_year)
 
     def api_repr(self, version):
-        """ Used by fedmsg to serialize PackageListing in messages. """
+        """ Used by fedmsg to serialize Elections in messages. """
         if version == 1:
             return dict(
                 name=self.election_name,
