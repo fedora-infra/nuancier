@@ -92,6 +92,7 @@ class Elections(BASE):
     election_open = sa.Column(sa.Boolean, nullable=False, default=False)
     election_public = sa.Column(sa.Boolean, nullable=False, default=False)
     election_n_choice = sa.Column(sa.Integer, nullable=False)
+    election_badge_link = sa.Column(sa.String(255), default=None)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -101,7 +102,7 @@ class Elections(BASE):
 
     def __init__(self, election_name, election_folder, election_year,
                  election_open=False, election_public=False,
-                 election_n_choice=16):
+                 election_n_choice=16, election_badge_link=None):
         """ Constructor.
 
         :arg election_name:
@@ -110,6 +111,7 @@ class Elections(BASE):
         :arg election_open:
         :arg election_public:
         :arg election_n_choice:
+        :arg election_badge_link:
         """
         self.election_name = election_name
         self.election_folder = election_folder
