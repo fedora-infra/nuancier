@@ -20,7 +20,7 @@
 #
 
 '''
-WTF Forms of the pkgdb Flask application.
+WTF Forms of the nuancier Flask application.
 '''
 
 import flask

@@ -20,7 +20,7 @@
 #
 
 '''
-pkgdb tests for the Collection object.
+nuancier tests for the internal api lib.
 '''
 
 __requires__ = ['SQLAlchemy >= 0.7']
