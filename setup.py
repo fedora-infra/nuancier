@@ -29,7 +29,7 @@ setup(
     maintainer = 'Pierre-Yves Chibon',
     maintainer_email = 'pingou@pingoured.fr',
     license = 'GPLv3+',
-    download_url = 'https://fedorahosted.org/releases/f/e/fedocal/',
+    download_url = 'https://fedorahosted.org/releases/n/u/nuancier/',
     url = 'https://github.com/fedora-infra/nuancier-lite/',
     packages=['nuancier'],
     include_package_data=True,

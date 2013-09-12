@@ -31,7 +31,7 @@ DB_URL = 'sqlite:////var/tmp/nuancier_lite.sqlite'
 # secret key used to generate unique csrf token
 SECRET_KEY = '<insert here your own key>'
 
-# FAS group for the pkgdb admin
+# FAS group for the nuancier admin
 #ADMIN_GROUP = 'sysadmin-nuancier'
 ADMIN_GROUP = ('sysadmin-main', 'designteam')
 

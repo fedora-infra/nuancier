@@ -11,7 +11,7 @@
 ## Set the environment variable pointing to the configuration file
 #os.environ['NUANCIER_CONFIG'] = '/etc/nuancier/nuancier.cfg'
 
-## The following is only needed if you did not install fedocal
+## The following is only needed if you did not install nuancier
 ## as a python module (for example if you run it from a git clone).
 #import sys
 #sys.path.insert(0, '/path/to/nuancier/')
