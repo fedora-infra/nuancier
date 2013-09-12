@@ -44,6 +44,9 @@ class AddElectionForm(flask_wtf.Form):
     election_year = wtf.TextField('Year',
                                   [wtf.validators.Required()])
     election_open = wtf.BooleanField('Open')
+    election_badge_link = wtf.TextField('URL to claim a badge for voting',
+                                        [wtf.validators.URL(),
+                                         wtf.validators.Optional()])
     election_n_choice = wtf.TextField('Number of votes a user can make',
                                       [wtf.validators.Required(),
                                        is_number])
