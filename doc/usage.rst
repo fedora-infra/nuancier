@@ -119,6 +119,9 @@ Once an election is opened for vote or has ended, the administrator can
 simply log in nuancier-lite, go to the administration panel, find the
 correct election and on the `Open` column click on the ``toggle`` link.
 
+If fedmsg is installed on the server, fedmsg messages are published for these
+events.
+
 
 Publish results of an election
 -------------------------------
@@ -127,6 +130,8 @@ Once an election has ended, to publish its results, the administrator can
 simply log in nuancier-lite, go to the administration panel, find the
 correct election and on the `Published` column click on the ``toggle`` link.
 
+If fedmsg is installed on the server, fedmsg messages are published for these
+events.
 
 Generate cache
 --------------

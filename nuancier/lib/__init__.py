@@ -172,30 +172,24 @@ def add_vote(session, candidate_id, username):
 
 def toggle_open(session, election_id):
     """ Toggle the boolean of the open status for the specified election.
+
+    Returns whether or not the election is available for vote after toggling.
     """
     election = model.Elections.by_id(session, election_id)
-    if election.election_open:
-        election.election_open = False
-        msg = 'Election ended'
-    else:
-        election.election_open = True
-        msg = 'Election opened'
+    new_state = election.election_open = not election.election_open
     session.add(election)
-    return msg
+    return new_state
 
 
 def toggle_public(session, election_id):
     """ Toggle the boolean of the public status for the specified election.
+
+    Returns the state of the election results publicity after toggling.
     """
     election = model.Elections.by_id(session, election_id)
-    if election.election_public:
-        election.election_public = False
-        msg = 'Election closed'
-    else:
-        election.election_public = True
-        msg = 'Election published'
+    new_state = election.election_public = not election.election_public
     session.add(election)
-    return msg
+    return new_state
 
 
 def generate_thumbnail(filename, picture_folder, cache_folder,
