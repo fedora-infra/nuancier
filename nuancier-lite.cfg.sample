@@ -8,7 +8,7 @@ SECRET_KEY='<The web application secret key>'
 ### url to the database server:
 #DB_URL=mysql://user:pass@host/db_name
 #DB_URL=postgres://user:pass@host/db_name
-DB_URL='sqlite:////var/tmp/fedocal_dev.sqlite'
+DB_URL='sqlite:////var/tmp/nuancier_lite.sqlite'
 
 ### The FAS groups in which the admin of nuancier-lite are
 ### This can either be a single group or multiple, defined between
