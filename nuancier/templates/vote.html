@@ -24,6 +24,13 @@
 Click on the checkbox to select which wallpaper you like.
 </p>
 
+{% if election.election_badge_link %}
+<p>
+<a href="{{ election.election_badge_link }}">Claim your badge</a> for voting in
+this election.
+</p>
+{% endif %}
+
 <p id="fix_info" ></p>
 
 {% if candidates %}

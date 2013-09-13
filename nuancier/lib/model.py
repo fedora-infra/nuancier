@@ -92,6 +92,7 @@ class Elections(BASE):
     election_open = sa.Column(sa.Boolean, nullable=False, default=False)
     election_public = sa.Column(sa.Boolean, nullable=False, default=False)
     election_n_choice = sa.Column(sa.Integer, nullable=False)
+    election_badge_link = sa.Column(sa.String(255), default=None)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -101,7 +102,7 @@ class Elections(BASE):
 
     def __init__(self, election_name, election_folder, election_year,
                  election_open=False, election_public=False,
-                 election_n_choice=16):
+                 election_n_choice=16, election_badge_link=None):
         """ Constructor.
 
         :arg election_name:
@@ -110,6 +111,7 @@ class Elections(BASE):
         :arg election_open:
         :arg election_public:
         :arg election_n_choice:
+        :arg election_badge_link:
         """
         self.election_name = election_name
         self.election_folder = election_folder
@@ -117,13 +119,14 @@ class Elections(BASE):
         self.election_open = election_open
         self.election_public = election_public
         self.election_n_choice = election_n_choice
+        self.election_badge_link = election_badge_link
 
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
             self.id, self.election_name, self.election_year)
 
     def api_repr(self, version):
-        """ Used by fedmsg to serialize PackageListing in messages. """
+        """ Used by fedmsg to serialize Elections in messages. """
         if version == 1:
             return dict(
                 name=self.election_name,

@@ -114,7 +114,7 @@ def get_results(session, election_id):
 
 
 def add_election(session, election_name, election_folder, election_year,
-                 election_open, election_n_choice):
+                 election_open, election_n_choice, election_badge_link):
     """ Add a new election to the database.
 
     :arg session:
@@ -123,13 +123,15 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_year:
     :arg election_open:
     :arg election_n_choice:
+    :arg election_badge_link:
     """
     election = model.Elections(
         election_name=election_name,
         election_folder=election_folder,
         election_year=election_year,
         election_open=election_open,
-        election_n_choice=election_n_choice
+        election_n_choice=election_n_choice,
+        election_badge_link=election_badge_link,
     )
     session.add(election)
     return election
