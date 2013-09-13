@@ -411,6 +411,7 @@ def admin_new():
                 election_year=form.election_year.data,
                 election_open=form.election_open.data,
                 election_n_choice=form.election_n_choice.data,
+                election_badge_link=form.election_badge_link.data,
             )
         except nuancierlib.NuancierException as err:
             flask.flash(err.message, 'error')
