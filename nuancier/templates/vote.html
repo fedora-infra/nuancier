@@ -53,11 +53,10 @@ this election.
                       }}"
                 data-lightbox='{{ election.election_name }}'
                 title='{{ candidate.candidate_name }}'>
-                Zoom in
             </a>
             <label for="candidate{{ candidate.id }}">
 	    <div class="hoveroverlay"></div>
-                    <img src="{{ url_for('base_cache',
+                    <img class="smallthumb" src="{{ url_for('base_cache',
                                      filename='%s/%s' % (
                                         election.election_folder,
                                         candidate.candidate_file
