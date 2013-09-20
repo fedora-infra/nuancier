@@ -63,8 +63,8 @@ install -m 644 nuancier-lite.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/
 
 # Install nuancier wsgi file
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
-install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
-install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/createdb.py
+install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite.wsgi
+install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite_createdb.py
 
 %files
 %doc README.rst COPYING doc/
