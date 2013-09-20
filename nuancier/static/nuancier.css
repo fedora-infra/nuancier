@@ -163,7 +163,7 @@ a.cvs {
     text-decoration: underline;
 }
 
-#fix_info {
+/*#fix_info {
     position: fixed;
     top: 130px;
     right: 5px;
@@ -181,7 +181,7 @@ a.cvs {
     bottom: 10px;
     right: 5px;
     width: 5em;
-}
+}*/
 
 a.large_button,
 a:hover.large_button,
@@ -323,4 +323,23 @@ background-image:url(zoomin-hover.png);
 .resizelink:hover + label > .hoveroverlay
 {
 background-image:url(vote.png)!important;
+}
+
+#fixedsidebar
+{
+	position: fixed;
+	right: 0;
+	height:100%;
+	background-color:pink;
+	top:0;
+	margin-top:130px;
+}
+#sideimages
+{
+	max-width:100px;
+}
+
+#sideimages img
+{
+	width:40px;
 }

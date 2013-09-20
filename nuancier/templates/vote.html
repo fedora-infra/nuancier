@@ -7,6 +7,9 @@
 <script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+<script>
+var votelimit = {{election.election_n_choice}};
+</script>
 {% endblock %}
 
 {%block tag %}elections{% endblock %}
@@ -41,7 +44,7 @@ this election.
         <div class="cell{% if confirm %} large_button{% endif %}">
             <input type="checkbox" name="selection"
                     value="{{ candidate.id }}" id="candidate{{ candidate.id }}"
-                    onclick="updateSelectionCnt(this);"
+
                     {% if confirm %} checked {% endif %}/>
             <!--<a href="#" class="resizelink">asdfasdfasdfasdf</a>-->
             <a class="resizelink" href="{{ url_for('base_picture',
@@ -70,8 +73,14 @@ this election.
 {% if confirm %}
 <input type="hidden" name="confirmed" value="1">
 {% endif %}
-<input id="fix_submit" type="submit" class="submit positive button" value="Vote"> <br />
-<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">
+<div id=fixedsidebar>
+	<div id="fix_info" class="large_button"></div>
+	<div id="sideimages"></div>
+	<div id="sidebuttons">
+		<input id="fix_submit" type="submit" class="submit positive button" value="Vote"> <br />
+		<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">
+	</div>
+</div>
 </form>
 {% else %}
 <p> No candidate have been registered for this election (yet). </p>
