@@ -23,7 +23,7 @@ $( document ).ready(function() {
 
 
 	$('input[type=checkbox]').change(function() {
-		if ($('input[type=checkbox]:checked').length == 16)
+		if ($('input[type=checkbox]:checked').length == votelimit)
 		{
 		$('input[type=checkbox]').prop('disabled', true)
 		}
