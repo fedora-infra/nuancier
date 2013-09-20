@@ -332,11 +332,13 @@ background-position: top right;
 left:-9999px!important;
 }
 
-.resizelink:hover
+.resizelink:hover,
+.resizelink:focus
 {
 background-image:url(zoomin-hover.png);
 }
-.resizelink:hover + label > .hoveroverlay
+.resizelink:hover + label > .hoveroverlay,
+.resizelink:focus + label > .hoveroverlay
 {
 background-image:url(vote.png)!important;
 }
