@@ -37,6 +37,7 @@ Requires:  python-wtforms
 Requires:  python-flask-wtf
 Requires:  python-fedora >= 0.3.32.3-3
 Requires:  python-fedora-flask
+Requires:  fedmsg
 Requires:  mod_wsgi
 
 %description
