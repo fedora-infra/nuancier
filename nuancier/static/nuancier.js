@@ -6,7 +6,6 @@ function checkboxCheck(checkbox)
 	checkbox.siblings('label').children('.smallthumb').clone().attr("id", "sidethumb-"+theid).appendTo($("#sideimages"));
 	$("#sidethumb-"+theid).click(function(){
 		myid = $(this).attr("id").replace("sidethumb-","");
-		alert(myid);
 		$("#"+myid).prop('checked', false);
 		$("#fix_info").html($('input[type=checkbox]:checked').length + " of " + votelimit);
 		$("#sidethumb-"+myid).remove();

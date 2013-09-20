@@ -74,11 +74,15 @@ this election.
 <input type="hidden" name="confirmed" value="1">
 {% endif %}
 <div id=fixedsidebar>
+	<div id="fix_static">
+		<h3>Your Votes</h3>
+		<p>Remove a choice by clicking on the image below.</p>
+	</div>
 	<div id="fix_info"></div>
 	<div id="sideimages"></div>
 	<div id="sidebuttons">
-		<input id="fix_submit" type="submit" class="submit positive button" value="Vote"> <br />
-		<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">
+		<input id="fix_submit" type="submit" class="submit positive button" value="Submit Votes"> <br />
+		<!--<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">-->
 	</div>
 </div>
 </form>
