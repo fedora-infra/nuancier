@@ -284,6 +284,14 @@ background-repeat: no-repeat;
 background-position: bottom 10px right 10px;
 }
 
+#votechoice input[type=checkbox]:focus ~ label > .hoveroverlay.limit,
+#votechoice .resizelink:focus ~ label .hoveroverlay.limit,
+#votechoice .cell:hover .hoveroverlay.limit
+{
+display:none!important;
+left:0!important;
+}
+
 #votechoice .cell:hover .hoveroverlay,
 #votechoice .cell:hover .resizelink
 {
@@ -316,6 +324,13 @@ background-repeat:no-repeat;
 background-position: top right;
 }
 
+#votechoice .cell:hover .resizelink.limit,
+#votechoice input[type=checkbox]:focus ~ a.resizelink.limit,
+#votechoice .resizelink.limit:focus
+{
+left:-9999px!important;
+}
+
 .resizelink:hover
 {
 background-image:url(zoomin-hover.png);
@@ -336,10 +351,11 @@ background-image:url(vote.png)!important;
 }
 #sideimages
 {
-	max-width:100px;
+	width:150px;
+	max-width:150px;
 }
 
 #sideimages img
 {
-	width:40px;
+	width:70px;
 }

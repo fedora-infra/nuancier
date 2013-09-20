@@ -11,6 +11,8 @@ function checkboxCheck(checkbox)
 		$("#fix_info").html($('input[type=checkbox]:checked').length + " of " + votelimit);
 		$("#sidethumb-"+myid).remove();
 		$('input[type=checkbox]').prop('disabled', false);
+		$(".hoveroverlay").removeClass("limit");
+		$(".resizelink").removeClass("limit");
 	});
 }
 
@@ -25,7 +27,9 @@ $( document ).ready(function() {
 	$('input[type=checkbox]').change(function() {
 		if ($('input[type=checkbox]:checked').length == votelimit)
 		{
-		$('input[type=checkbox]').prop('disabled', true)
+		$('input[type=checkbox]').prop('disabled', true);
+		$(".hoveroverlay").addClass("limit");
+		$(".resizelink").addClass("limit");
 		}
 		if($(this).is(':checked')) {
 			checkboxCheck($(this));
