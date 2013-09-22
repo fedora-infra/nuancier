@@ -262,6 +262,7 @@ def vote(election_id):
         'vote.html',
         election=election,
         candidates=candidates,
+        n_votes_done = len(votes),
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
         cache_folder=os.path.join(

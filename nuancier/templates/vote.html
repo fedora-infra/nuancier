@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
 <script>
-var votelimit = {{election.election_n_choice}};
+var votelimit = {{election.election_n_choice}} - {{n_votes_done}};
 </script>
 {% endblock %}
 
@@ -58,7 +58,7 @@ this election.
                 title='{{ candidate.candidate_name }}'>
             </a>
             <label for="candidate{{ candidate.id }}">
-	    <div class="hoveroverlay"></div>
+        <div class="hoveroverlay"></div>
                     <img class="smallthumb" src="{{ url_for('base_cache',
                                      filename='%s/%s' % (
                                         election.election_folder,
@@ -74,16 +74,16 @@ this election.
 <input type="hidden" name="confirmed" value="1">
 {% endif %}
 <div id=fixedsidebar>
-	<div id="fix_static">
-		<h3>Your Votes</h3>
-		<p>Remove a choice by clicking on the image below.</p>
-	</div>
-	<div id="fix_info"></div>
-	<div id="sideimages"></div>
-	<div id="sidebuttons">
-		<input id="fix_submit" type="submit" class="submit positive button" value="Submit Votes"> <br />
-		<!--<input id="fix_cancel" type="button" value="Cancel" class="button" onclick="history.back();">-->
-	</div>
+    <div id="fix_static">
+        <h3>Your Votes</h3>
+        <p>Remove a choice by clicking on the image below.</p>
+    </div>
+    <div id="fix_info"></div>
+    <div id="sideimages"></div>
+    <div id="sidebuttons">
+        <input id="fix_submit" type="submit" class="submit positive button"
+            value="Submit Votes"> <br />
+    </div>
 </div>
 </form>
 {% else %}
