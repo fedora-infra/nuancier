@@ -320,22 +320,6 @@ def process_vote(election_id):
                 APP.config['CACHE_FOLDER'], election.election_folder)
         )
 
-    # Did not confirmed choice -> redirect
-    confirmed = flask.request.form.get('confirmed', False)
-    if not confirmed:
-        flask.flash('Please confirm your selection')
-        return flask.render_template(
-            'vote.html',
-            election=election,
-            confirm=True,
-            candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
-                        for candidate_id in entries],
-            picture_folder=os.path.join(
-                APP.config['PICTURE_FOLDER'], election.election_folder),
-            cache_folder=os.path.join(
-                APP.config['CACHE_FOLDER'], election.election_folder)
-        )
-
     # Allowed to vote, selection sufficient, choice confirmed: process
     try:
         for selection in entries:
@@ -347,9 +331,22 @@ def process_vote(election_id):
     try:
         SESSION.commit()
     except SQLAlchemyError as err:
+        session.rollback()
         flask.flash(err.message, 'error')
 
-    return flask.redirect(flask.url_for('election', election_id=election_id))
+    flask.flash('Thank you for voting on %s %s' % (
+        election.election_name, election.election_year))
+
+    return flask.render_template(
+        'election.html',
+        candidates=candidates,
+        election=election,
+        can_vote=False,
+        picture_folder=os.path.join(
+            APP.config['PICTURE_FOLDER'], election.election_folder),
+        cache_folder=os.path.join(
+            APP.config['CACHE_FOLDER'], election.election_folder)
+    )
 
 
 @APP.route('/results/')
