@@ -7,7 +7,7 @@ SECRET_KEY='<The web application secret key>'
 
 ### url to the database server:
 #DB_URL=mysql://user:pass@host/db_name
-#DB_URL=postgres://user:pass@host/db_name
+#DB_URL=postgresql://user:pass@host/db_name
 DB_URL='sqlite:////var/tmp/nuancier_lite.sqlite'
 
 ### The FAS groups in which the admin of nuancier-lite are
@@ -15,27 +15,19 @@ DB_URL='sqlite:////var/tmp/nuancier_lite.sqlite'
 ### parenthesis.
 ADMIN_GROUP=('sysadmin-nuancier', 'sysadmin-main')
 
-
-### Static folder
-### The folder containing the css, javascript as well as the pictures
-### candidates and the cache of those pictures.
-### This directory should be somewhere where apache can access, it's
-### proposed in '/var/www/nuancier'
-STATIC_FOLDER = '/var/www/nuancier'
-
 ### Pictures folder
 ### The folder in which are located the pictures of the different elections.
 ### This folder does not have to be writable by the application but should be
 ### readable.
 ### /!\ It should be the full path to this folder
-PICTURE_FOLDER = os.path.join(STATIC_FOLDER, 'pictures')
+PICTURE_FOLDER = '/var/www/nuancier/pictures'
 
 ### Cache folder
 ### The folder in which the application will generate thumbnails of the pictures
 ### selected for an election.
 ### This folder *must* be *writable* by the application.
 ### /!\ It should be the full path to this folder
-CACHE_FOLDER = os.path.join(STATIC_FOLDER, 'cache')
+CACHE_FOLDER = '/var/www/nuancier/cache'
 
 ### Size of the thumbnails (keeping the ratio)
 ### In order to reduce the loading page of the election page that might contains
