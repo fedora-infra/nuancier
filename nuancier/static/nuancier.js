@@ -3,6 +3,7 @@ var cnter = 0;
 function checkboxCheck(checkbox)
 {
     theid = checkbox.attr('id');
+    $(theid).prop('checked', true);
     checkbox.siblings('label').children('.smallthumb').clone(
         ).attr("id", "sidethumb-"+theid).appendTo($("#sideimages"));
     $("#sidethumb-"+theid).click(function(){
