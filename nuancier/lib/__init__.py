@@ -211,7 +211,7 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
         im.thumbnail(size, Image.ANTIALIAS)
         im.save(outfile)
     except IOError, err:  # pragma: no cover
-        print err.message
+        print >> sys.stderr, "Cannot create thumbnail", err
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
 
 
@@ -308,7 +308,8 @@ def generate_cache(session, election, picture_folder, cache_folder,
     try:
         session.commit()
     except SQLAlchemyError as err:  # pragma: no cover
-        raise NuancierException(err.message)
+        print >> sys.stderr, "Cannot add pictures to election:", err
+        raise NuancierException(err)
 
 
 def get_stats(session, election_id):

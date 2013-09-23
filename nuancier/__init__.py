@@ -348,7 +348,10 @@ def process_vote(election_id):
         SESSION.commit()
     except SQLAlchemyError as err:
         SESSION.rollback()
-        flask.flash(err.message, 'error')
+        print >> sys.stderr, "Error while proccessing the vote:", err
+        flask.flash('An error occured while processing your votes, please '
+                    'report this to your lovely admin or see logs for '
+                    'more details', 'error')
 
     flask.flash('Your vote has been recorded, thank you for voting on '
                 '%s %s' % (election.election_name, election.election_year))
@@ -423,6 +426,8 @@ def admin_new():
         try:
             SESSION.commit()
         except SQLAlchemyError as err:
+            SESSION.rollback()
+            print >> sys.stderr, "Cannot create new election", err
             flask.flash(err.message, 'error')
         if form.generate_cache.data:
             return admin_cache(election.id)
@@ -445,6 +450,8 @@ def admin_open(election_id):
     try:
         SESSION.commit()
     except SQLAlchemyError as err:
+        SESSION.rollback()
+        print >> sys.stderr, "Cannot flip the open state", err
         flask.flash(err.message, 'error')
     else:
         flask.flash(msg)
@@ -475,6 +482,8 @@ def admin_publish(election_id):
     try:
         SESSION.commit()
     except SQLAlchemyError as err:
+        SESSION.rollback()
+        print >> sys.stderr, "Cannot flip the publish state", err
         flask.flash(err.message, 'error')
     else:
         flask.flash(msg)
@@ -510,6 +519,8 @@ def admin_cache(election_id):
         flask.flash('Cache regenerated for election %s' %
                     election.election_name)
     except nuancierlib.NuancierException as err:
+        SESSION.rollback()
+        print >> sys.stderr, "Cannot generate cache", err
         flask.flash(err.message, 'error')
 
     return flask.redirect(flask.url_for('.admin_index'))
