@@ -256,6 +256,12 @@ def vote(election_id):
         return flask.redirect(
             flask.url_for('election', election_id=election_id))
 
+    if len(votes) > 0:
+        candidate_done = [cdt.candidate_id for cdt in votes]
+        candidates = [candidate
+                      for candidate in candidates
+                      if candidate.id not in candidate_done]
+
     return flask.render_template(
         'vote.html',
         election=election,
