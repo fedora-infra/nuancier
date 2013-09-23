@@ -344,18 +344,7 @@ def process_vote(election_id):
     flask.flash('Thank you for voting on %s %s' % (
         election.election_name, election.election_year))
 
-    # How many votes the user made:
-    votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                       flask.g.fas_user.username)
-
-    # Still allowed to vote?
-    if len(votes) < election.election_n_choice:
-        # show the vote page
-        return flask.redirect(
-            flask.url_for('vote', election_id=election_id))
-    else:
-        # show the election overview page
-        return flask.redirect(
+    return flask.redirect(
             flask.url_for('election', election_id=election_id))
 
 
