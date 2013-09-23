@@ -34,6 +34,10 @@ body#admin #mainNav li#adminTab a {
     min-width:0px;
 }
 
+body#admin table {
+    padding-top:2em;
+}
+
 #content {
     float:left;
     width:74%px;
@@ -78,31 +82,6 @@ body#admin #mainNav li#adminTab a {
 
 /** Web App Styles **/
 /* Links to other web apps */
-a.bodhi {
-  padding-left: 20px;
-  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_bodhi.png) 0 50% no-repeat;
-}
-
-a.koji {
-  padding-left: 20px;
-  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_koji.png) 0 50% no-repeat;
-}
-
-a.bugz {
-  padding-left: 20px;
-  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_bugzilla.png) 0 50% no-repeat;
-}
-
-a.pkgdb {
-  padding-left: 20px;
-  background: url(https://fedoraproject.org/static/mages/icons/fedora-infra-icon_pkgdb.png) 0 50% no-repeat;
-}
-
-a.cvs {
-  padding-left: 20px;
-  background: url(https://fedoraproject.org/static/images/icons/fedora-infra-icon_source-control.png) 0 50% no-repeat;
-}
-
 #actions {
   line-height: 1;
   list-style: none;
@@ -198,10 +177,10 @@ a:visited.large_button {
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
+
 .cell a {
     color: #193C6E;
 }
-
 
 
 .demo-container {
@@ -224,6 +203,7 @@ a:visited.large_button {
    position: absolute;
    left: -9999px;
 }
+
 #votechoice
 {
    -webkit-column-count: 3;
@@ -234,9 +214,12 @@ a:visited.large_button {
    column-gap:           5px;
    width:750px;
 }
+
 #votechoice .cell
 {
-position:relative;display:block; width:250px;
+    position:relative;
+    display:block;
+    width:250px;
 }
 
 #votechoice input[type=checkbox]:checked ~ label
@@ -253,6 +236,7 @@ position:relative;display:block; width:250px;
     opacity:0;
     height:0;
 }
+
 #votechoice label
 {
     height: 100%;
@@ -265,7 +249,7 @@ position:relative;display:block; width:250px;
 
 #votechoice img.smallthumb
 {
-width:100%;
+    width:100%;
 }
 
 #votechoice .hoveroverlay
@@ -311,6 +295,7 @@ width:100%;
 {
     left:0;
 }
+
 .resizelink
 {
     position:absolute;
@@ -337,6 +322,7 @@ width:100%;
 {
     background-image:url(zoomin-hover.png);
 }
+
 .resizelink:hover + label > .hoveroverlay,
 .resizelink:focus + label > .hoveroverlay
 {
@@ -356,6 +342,7 @@ width:100%;
     padding:15px;
     box-shadow: 0px 0px 10px 2px #555;
 }
+
 #sideimages
 {
     width:150px;
