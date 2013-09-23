@@ -1,18 +1,21 @@
-var cnter = 0;
-
-function checkboxCheck(checkbox)
-{
+function checkboxCheck(checkbox) {
     theid = checkbox.attr('id');
     $(theid).attr('checked', true);
+
+    if ($('input[type=checkbox]:checked').length > votelimit) {
+        document.getElementById(theid).checked = false;
+        return;
+    }
+
     checkbox.siblings('label').children('.smallthumb').clone(
         ).attr("id", "sidethumb-"+theid).appendTo($("#sideimages"));
+
     $("#sidethumb-"+theid).click(function(){
         myid = $(this).attr("id").replace("sidethumb-","");
         $("#"+myid).attr('checked', false);
         $("#fix_info").html($('input[type=checkbox]:checked'
             ).length + " of " + votelimit);
         $("#sidethumb-"+myid).remove();
-        $('input[type=checkbox]').attr('disabled', false);
         $(".hoveroverlay").removeClass("limit");
         $(".resizelink").removeClass("limit");
     });
@@ -21,7 +24,6 @@ function checkboxCheck(checkbox)
 
 function updateActionAndInfo(){
     if ($('input[type=checkbox]:checked').length == votelimit) {
-        $('input[type=checkbox]').attr('disabled', true);
         $(".hoveroverlay").addClass("limit");
         $(".resizelink").addClass("limit");
 
