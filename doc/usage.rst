@@ -57,7 +57,7 @@ An example of infos.txt would be:
 
 
 The character delimiting ``filename1`` from ``author name1`` and ``author name1``
-from ``image name 1`` must be a *tabulation* (\t, <tab>).
+from ``image name 1`` must be a **tabulation** (\t, <tab>).
 
 .. note:: nuancier-lite will only consider the candidate present in the
    ``infos.txt`` file.
