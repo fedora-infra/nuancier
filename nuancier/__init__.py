@@ -204,6 +204,9 @@ def election(election_id):
                                            flask.g.fas_user.username)
 
     if election.election_open and len(votes) < election.election_n_choice:
+        if len(votes) > 0:
+            flask.flash('You have already voted, but you can still vote '
+                        'on more candidates.')
         return flask.redirect(flask.url_for('vote', election_id=election_id))
     elif election.election_open and len(votes) >= election.election_n_choice:
         can_vote = False
@@ -347,8 +350,8 @@ def process_vote(election_id):
         SESSION.rollback()
         flask.flash(err.message, 'error')
 
-    flask.flash('Thank you for voting on %s %s' % (
-        election.election_name, election.election_year))
+    flask.flash('Your vote has been recorded, thank you for voting on '
+                '%s %s' % (election.election_name, election.election_year))
 
     return flask.redirect(
             flask.url_for('election', election_id=election_id))
