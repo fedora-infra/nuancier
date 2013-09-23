@@ -284,7 +284,9 @@ def generate_cache(session, election, picture_folder, cache_folder,
                            for candidate in existing_candidates]
 
     for info in infos:
-        info = info.replace('"', '').strip()
+        info = info.replace('"', '').strip().decode('utf-8')
+        if info.startswith('#'):
+            continue
         if info.count('\t') != 2:
             session.rollback()
             raise NuancierException(
