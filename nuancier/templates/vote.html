@@ -46,7 +46,6 @@ this election.
                     value="{{ candidate.id }}" id="candidate{{ candidate.id }}"
 
                     {% if confirm %} checked {% endif %}/>
-            <!--<a href="#" class="resizelink">asdfasdfasdfasdf</a>-->
             <a class="resizelink" href="{{ url_for('base_picture',
                                  filename='%s/%s' % (
                                     election.election_folder,
@@ -70,9 +69,6 @@ this election.
         </div>
     {% endfor %}
 </div>
-{% if confirm %}
-<input type="hidden" name="confirmed" value="1">
-{% endif %}
 <div id=fixedsidebar>
     <div id="fix_static">
         <h3>Your Votes</h3>
