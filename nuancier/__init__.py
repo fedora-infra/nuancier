@@ -207,8 +207,6 @@ def election(election_id):
         return flask.redirect(flask.url_for('vote', election_id=election_id))
     elif election.election_open and len(votes) >= election.election_n_choice:
         can_vote = False
-        flask.flash('You have cast the maximal number of votes '
-                    'allowed for this election.', 'error')
     else:
         flask.flash('This election is not open', 'error')
 
@@ -340,22 +338,25 @@ def process_vote(election_id):
     try:
         SESSION.commit()
     except SQLAlchemyError as err:
-        session.rollback()
+        SESSION.rollback()
         flask.flash(err.message, 'error')
 
     flask.flash('Thank you for voting on %s %s' % (
         election.election_name, election.election_year))
 
-    return flask.render_template(
-        'election.html',
-        candidates=candidates,
-        election=election,
-        can_vote=False,
-        picture_folder=os.path.join(
-            APP.config['PICTURE_FOLDER'], election.election_folder),
-        cache_folder=os.path.join(
-            APP.config['CACHE_FOLDER'], election.election_folder)
-    )
+    # How many votes the user made:
+    votes = nuancierlib.get_votes_user(SESSION, election_id,
+                                       flask.g.fas_user.username)
+
+    # Still allowed to vote?
+    if len(votes) < election.election_n_choice:
+        # show the vote page
+        return flask.redirect(
+            flask.url_for('vote', election_id=election_id))
+    else:
+        # show the election overview page
+        return flask.redirect(
+            flask.url_for('election', election_id=election_id))
 
 
 @APP.route('/results/')
