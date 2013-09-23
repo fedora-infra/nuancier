@@ -137,6 +137,7 @@ class NuancierLibtests(Modeltests):
             election_year='2013',
             election_open=False,
             election_n_choice=2,
+            election_badge_link='http://...'
         )
         self.session.commit()
 
@@ -148,6 +149,7 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(False, elections[0].election_open)
         self.assertEqual(False, elections[0].election_public)
         self.assertEqual(2, elections[0].election_n_choice)
+        self.assertEqual('http://...', elections[0].election_badge_link)
 
     def test_add_candidate(self):
         """ Test the add_candidate function. """
