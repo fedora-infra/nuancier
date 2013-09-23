@@ -287,6 +287,13 @@ def process_vote(election_id):
 
     entries = set([int(entry)
                    for entry in flask.request.form.getlist('selection')])
+
+    # If not enough candidates selected
+    if not entries:
+        flask.flash('You did not select any candidate to vote for.', 'error')
+        return flask.redirect(flask.url_for('vote', election_id=election_id))
+
+    # If vote on candidates from other elections
     if not set(entries).issubset(candidate_ids):
         flask.flash('The selection you have made contains element which are '
                     'part of this election, please be careful.', 'error')
@@ -315,6 +322,7 @@ def process_vote(election_id):
             election=election,
             candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
                         for candidate_id in entries],
+            n_votes_done = len(votes),
             picture_folder=os.path.join(
                 APP.config['PICTURE_FOLDER'], election.election_folder),
             cache_folder=os.path.join(
