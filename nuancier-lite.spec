@@ -8,7 +8,7 @@ Summary:        A light weight voting app for wallpapers
 
 License:        GPLv2+
 URL:            https://github.com/fedora-infra/nuancier-lite
-Source0:        https://fedorahosted.org/releases/f/e/fedocal/%{name}-%{version}.tar.gz
+Source0:        https://fedorahosted.org/releases/n/u/nuancier/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
