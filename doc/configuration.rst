@@ -53,6 +53,8 @@ nuancier-lite instance.
 See :doc:`usage` for details explanations on the different administration
 layer of nuancier-lite.
 
+.. note:: Several groups of administrators can be set using either () or [].
+
 
 The pictures folder
 -------------------
@@ -62,17 +64,14 @@ to the folder in which are placed the pictures candidates for the elections
 (within a folder, specific for each election).
 
 
-The static folder
+The cache folder
 -------------------
 
-The ``STATIC_FOLDER`` field provides to the application the full path
-to the folder in which are generated the thumbnails of the pictures
-candidates to the elections.
+The ``CACHE_FOLDER`` field provides to the application the full path
+to the folder in which the application is allowed to generate the thumbnails
+of the pictures present in the ``PICTURE_FOLDER``.
 
-.. note:: This folder must be writable by apache.
-
-.. note:: It might be a good idea to place both ``PICTURE_FOLDER`` and
-   ``STATIC_FOLDER`` under a common place, such as ``/var/www/nuancier/``
+.. note:: This folder should be writtable by the application (ie: apache).
 
 
 The thumb size

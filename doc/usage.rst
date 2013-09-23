@@ -14,8 +14,8 @@ Administrators
 ~~~~~~~~~~~~~~
 
 Administrators are people with an account on the
-`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_ and
-belong the administrator group as set in the :doc:`configuration`.
+`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_
+and belong the one of administrator groups as set in the :doc:`configuration`.
 
 Administrators are the only people allowed to create an election, open or
 close it for votes, open or close the results and generate the cache
@@ -76,8 +76,15 @@ administration panel.
 
 This page shows you all elections registered with their information and for
 each if they are open for vote or not and if their results are public or not.
-It also gives you the possibility to (re-)generate the cache for this
-election.
+It offers the possibility to (re-)generate the cache for an election and
+get some statistics about it :
+- Number of participants
+- Number of votes,
+- Maximum number of vote per person
+- Average vote per person
+- Bar graph indicating how many people voted on how many candidates, for
+    example: 3 person voted to 4 candidates while 10 voted only on 2
+    candidates.
 
 
 .. _create_elections:
@@ -106,11 +113,23 @@ The form to will ask for:
 - ``Open``: This is a checkbox to specify whether this election is already
   open for votes or not.
 
+- ``URL to claim a badge for voting``: this allows to specify a link where
+  people will be able to go to collect a badge announcing they participated
+  on this election. You should coordinate with the people of the
+  `badge <https://fedorahosted.org/fedora-badges/>`_ project to get this
+  link.
+
 - ``Number of votes a user can make``: this specifies the number of choices
   a user can make for this election.
   For example, a user might be allowed to select only 16 wallpapers, thus
   this field should be `16`.
 
+- ``Generate cache``: this is checkbox offering to generate the cache
+  assuming the pictures have already been placed on the ``PICTURE_FOLDER``,
+  together with the ``infos.txt`` file.
+
+
+.. _open_close_election:
 
 Open/Close election for votes
 ------------------------------
@@ -123,6 +142,8 @@ If fedmsg is installed on the server, fedmsg messages are published for these
 events.
 
 
+.. _publish_results:
+
 Publish results of an election
 -------------------------------
 
@@ -132,6 +153,9 @@ correct election and on the `Published` column click on the ``toggle`` link.
 
 If fedmsg is installed on the server, fedmsg messages are published for these
 events.
+
+
+.. _generate_cache:
 
 Generate cache
 --------------

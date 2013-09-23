@@ -35,13 +35,9 @@ Start by install nuancier-lite::
 Adjust the configuration files: ``/etc/nuancier/nuancier-lite.cfg``.
 See :doc:`configuration` for detailed information about the configuration.
 
-Find the file used to create the database::
-
-  rpm -ql nuancier-lite |grep createdb.py
-
 Create the database scheme::
 
-   NUANCIER_CONFIG=/etc/nuancier/nuancier-lite.cfg python /path/to/createdb.py
+   NUANCIER_CONFIG=/etc/nuancier/nuancier-lite.cfg python /usr/share/nuancier/nuancier-lite_createdb.py
 
 Set up the WSGI as described below.
 
@@ -61,7 +57,7 @@ Then configure apache::
 uncomment the content of the file and adjust as desired.
 
 
-Then edit the file ``/usr/lib/python2.*/site-packages/nuancier/nuancier-lite.wsgi`` and
+Then edit the file ``/usr/share/nuancier/nuancier-lite.wsgi`` and
 adjust as needed.
 
 

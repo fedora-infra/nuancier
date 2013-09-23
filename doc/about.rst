@@ -30,3 +30,27 @@ Icons
 The icons used are coming from the `echo icon theme <https://fedorahosted.org/echo-icon-theme/>`_
 
 (License: CC-BY-SA)
+
+
+Contributors
+~~~~~~~~~~~~
+
+Nuancier-lite is the results of a team effort started by Jenn and Gnookii
+and followed by a number of contributors.
+
+
+On September 23 2013, the list looks as follow:
+
+=================  ===========
+Number of commits  Contributor
+=================  ===========
+    93               Pierre-Yves Chibon <pingou@pingoured.fr>
+    18               Ralph Bean <rbean@redhat.com>
+     9               Ryan Lerch <ryanlerch@fedoraporject.org>
+=================  ===========
+
+This list is generated using
+
+::
+
+  git shortlog -s -n -e
