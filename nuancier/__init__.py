@@ -353,8 +353,7 @@ def process_vote(election_id):
     flask.flash('Your vote has been recorded, thank you for voting on '
                 '%s %s' % (election.election_name, election.election_year))
 
-    return flask.redirect(
-            flask.url_for('election', election_id=election_id))
+    return flask.redirect(flask.url_for('elections_list'))
 
 
 @APP.route('/results/')
