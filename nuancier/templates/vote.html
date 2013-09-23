@@ -43,9 +43,7 @@ this election.
     {% for candidate in candidates %}
         <div class="cell{% if confirm %} large_button{% endif %}">
             <input type="checkbox" name="selection"
-                    value="{{ candidate.id }}" id="candidate{{ candidate.id }}"
-
-                    {% if confirm %} checked {% endif %}/>
+                value="{{ candidate.id }}" id="candidate{{ candidate.id }}"/>
             <a class="resizelink" href="{{ url_for('base_picture',
                                  filename='%s/%s' % (
                                     election.election_folder,
@@ -57,14 +55,14 @@ this election.
                 title='{{ candidate.candidate_name }}'>
             </a>
             <label for="candidate{{ candidate.id }}">
-        <div class="hoveroverlay"></div>
-                    <img class="smallthumb" src="{{ url_for('base_cache',
-                                     filename='%s/%s' % (
-                                        election.election_folder,
-                                        candidate.candidate_file
-                                        )
-                                    )
-                          }}" alt="img {{ candidate.candidate_file }}"/>
+                <div class="hoveroverlay"></div>
+                <img class="smallthumb" src="{{ url_for('base_cache',
+                            filename='%s/%s' % (
+                                election.election_folder,
+                                candidate.candidate_file
+                                )
+                            )
+                            }}" alt="img {{ candidate.candidate_file }}"/>
             </label>
         </div>
     {% endfor %}
