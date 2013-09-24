@@ -341,6 +341,12 @@ a:visited.large_button {
     top:0;
     padding:15px;
     box-shadow: 0px 0px 10px 2px #555;
+    overflow: auto;
+}
+
+#fixedsidebar input
+{
+    margin-bottom: 4em;
 }
 
 #sideimages
