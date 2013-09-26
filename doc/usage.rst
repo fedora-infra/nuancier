@@ -1,174 +1,120 @@
 Usage
 =====
 
-Users
------
 
-Nuancier-lite has basically two levels for the users:
+The page organisation
+~~~~~~~~~~~~~~~~~~~~~
 
- - administrators
- - users
+At the top of the page three tabs are presented.
 
-
-Administrators
-~~~~~~~~~~~~~~
-
-Administrators are people with an account on the
-`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_
-and belong the one of administrator groups as set in the :doc:`configuration`.
-
-Administrators are the only people allowed to create an election, open or
-close it for votes, open or close the results and generate the cache
-(thumbnails).
+- The ``Home`` tab brings you back to the front page of the application
+  where is some text explaining what this application is about.
+- The ``Elections`` tab presents you the list of all the election present
+  in the database, with their name, year and status.
+- The ``Results`` tab gives you a list of links pointing to the result page
+  of each election whose results have been published.
 
 
-Users
-~~~~~
+Finding the elections open
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Users are people with an account on the
-`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_ and
-belong to at least one more group than the ``fedora_cla`` group which
-every contributor should sign to contribute to Fedora.
+To find all the election open, go to the ``Elections`` tab at the top of
+the page.
 
+In the column ``Open`` of the table the election open for vote are marked
+with:
 
-.. upload_candidates:
+.. image:: Approved.png
 
-Upload new pictures for an election
------------------------------------
+The elections whose votes are either not yet opened or already closed are
+marked with the symbol:
 
-When preparing an election, the election wrangler needs to gather all the
-candidate wallpapers into a folder, with a unique name and place this folder
-in the directory specified under ``PICTURE_FOLDER`` in :doc:`configuration`.
-
-Nuancier-lite will be able to find the pictures there.
-
-However, to give a name to the candidate, nuancier-lite expects to find in
-each folder a file: ``infos.txt`` containing, tab delimited, for each picture
-its file name, author and name.
-
-An example of infos.txt would be:
-
-::
-
-    filename1    author name1     image name 1
-    filename2    author name2     image name 2
-    filename3    author name3     image name 3
-    ...
+.. image:: Denied.png
 
 
-The character delimiting ``filename1`` from ``author name1`` and ``author name1``
-from ``image name 1`` must be a **tabulation** (\t, <tab>).
+Vote
+~~~~
 
-.. note:: nuancier-lite will only consider the candidate present in the
-   ``infos.txt`` file.
+If an election is opened, it is possible to vote on it.
 
+Go to the ``Elections`` tab at the top of the page and click on the name
+of an election which has the following symbol in the ``Open`` column of the
+table:
 
-.. administration_panel:
+.. image:: Approved.png
 
-Administration panel
----------------------
+This will bring you to the page to vote.
 
-After logging in, if you are in the administrator group, you will see an
-``Admin`` entry in the menu.
+In front of you, in the middle of the page, on a white background are
+presented all the candidates for the election you choosed.
+By hovering your mouse over the image, you can see two icons appearing:
 
-If you click on this ``Admin`` link you will arrive to the index page of the
-administration panel.
+.. mouse_over:
+.. image:: img_over.png
 
-This page shows you all elections registered with their information and for
-each if they are open for vote or not and if their results are public or not.
-It offers the possibility to (re-)generate the cache for an election and
-get some statistics about it :
-- Number of participants
-- Number of votes,
-- Maximum number of vote per person
-- Average vote per person
-- Bar graph indicating how many people voted on how many candidates, for
-    example: 3 person voted to 4 candidates while 10 voted only on 2
-    candidates.
+On the bottom left is a `google` icon.
 
+.. image:: google.png
 
-.. _create_elections:
+If you click on the `google` icon, you will be able to see a bigger version
+of the image, allowing to see it in more detail.
 
-Create elections
-----------------
+On the bottom right is a `check` icon.
 
-Click on the link ``Create a new election`` from the administration panel.
+.. image:: checked.png
 
-The form to will ask for:
+If you click on this `checked` icon, you will select this image to vote on.
 
-- ``election name``: the name of the election, this will be used as link
-  throughout the application.
-  Example name might be : `Fedora 20 wallpaper`
+As you select candidates, these candidates will disapear from the central
+list of candidates and move to the grey column on the right where are
+presented all the candidates you selected.
 
-- ``Name of the folder containing the pictures``: this specifies the name
-  of the folder containing the pictures for that election that has been
-  placed in the folder specified under ``PICTURE_FOLDER`` in
-  :doc:`configuration`.
-  .. note:: It is a good idea to keep this name simple, unique, ascii and
-     and without spaces.
+At the top of this selection, still in the grey column on the right is
+displayed the number of candidates you selected versus the maximum number of
+candidates you are allowed to select.
 
-- ``Year``: the year the election is taking place, this is purely for
-  information.
+Once you selection is made, simply click on ``Submit Votes`` on the grey
+column on the right.
 
-- ``Open``: This is a checkbox to specify whether this election is already
-  open for votes or not.
+You will be brought back to the list of elections and thanks for voting.
 
-- ``URL to claim a badge for voting``: this allows to specify a link where
-  people will be able to go to collect a badge announcing they participated
-  on this election. You should coordinate with the people of the
-  `badge <https://fedorahosted.org/fedora-badges/>`_ project to get this
-  link.
+.. note:: You may vote on as many or as little candidates as you like up
+          to the maximum allowed per elections.
+          If you select less than the maximum number of candidates you will
+          be able to come back on the election page and complete your vote
+          (thus allowing to vote in several times).
 
-- ``Number of votes a user can make``: this specifies the number of choices
-  a user can make for this election.
-  For example, a user might be allowed to select only 16 wallpapers, thus
-  this field should be `16`.
-
-- ``Generate cache``: this is checkbox offering to generate the cache
-  assuming the pictures have already been placed on the ``PICTURE_FOLDER``,
-  together with the ``infos.txt`` file.
+.. warning:: You cannot change your vote once you have submitted it.
 
 
-.. _open_close_election:
 
-Open/Close election for votes
-------------------------------
+Finding the elections published
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once an election is opened for vote or has ended, the administrator can
-simply log in nuancier-lite, go to the administration panel, find the
-correct election and on the `Open` column click on the ``toggle`` link.
+By published, is meant election whose results have been published, thus
+elections whose results are public.
 
-If fedmsg is installed on the server, fedmsg messages are published for these
-events.
+To find all the election whose results are public, go to the ``Elections``
+tab at the top of the page.
 
+In the column ``Published`` of the table the election whose results are
+public are marked with:
 
-.. _publish_results:
+.. image:: Approved.png
 
-Publish results of an election
--------------------------------
+While elections whose results are not yet public are marked with the symbol:
 
-Once an election has ended, to publish its results, the administrator can
-simply log in nuancier-lite, go to the administration panel, find the
-correct election and on the `Published` column click on the ``toggle`` link.
-
-If fedmsg is installed on the server, fedmsg messages are published for these
-events.
+.. image:: Denied.png
 
 
-.. _generate_cache:
+Consulting the results of an election
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Generate cache
---------------
+You can find the list of all the elections whose results are publis by
+clicking on the tab ``Results`` at the top of the page.
 
-To decrease the weight of the page where all the candidates of an election
-are shown, nuancier-lite generates thumbnails.
+There you can click on the election of your interest and access the result
+page.
 
-To generate the cache of an election, the administrator needs to log in
-nuancier-lite, go to the administration panel, find the correct election
-and click on the ``(Re-)generate cache``.
-
-
-.. note:: Nuancier-lite relies on the ``infos.txt`` (see
-   :doc:`upload_candidates` for more information) to import the files as
-   candidate in the database and will only generate the thumbnails of these
-   files.
+The result page will show you a table with for all the candidates, their
+name, number of votes and thumbnails ordered by decreasing number of votes.
