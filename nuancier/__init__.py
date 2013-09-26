@@ -35,6 +35,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import forms
 import lib as nuancierlib
 import notifications
+from utils import ReverseProxied
 
 
 __version__ = '0.1.0'
@@ -48,6 +49,8 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
 FAS = FAS(APP)
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
+
+APP.wsgi_app = ReverseProxied(APP.wsgi_app)
 
 
 def is_nuancier_admin():
