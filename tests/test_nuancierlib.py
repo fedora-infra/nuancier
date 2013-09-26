@@ -112,8 +112,8 @@ class NuancierLibtests(Modeltests):
 
         votes = nuancierlib.get_votes_user(self.session, 1, 'pingou')
         self.assertEqual(2, len(votes))
-        self.assertEqual(2, votes[0].candidate_id)
-        self.assertEqual(1, votes[1].candidate_id)
+        self.assertEqual(1, votes[0].candidate_id)
+        self.assertEqual(2, votes[1].candidate_id)
 
     def test_get_results(self):
         """ Test the get_results function. """
