@@ -25,6 +25,7 @@ Top level of the nuancier-lite Flask application.
 
 import os
 import random
+import sys
 
 import flask
 from functools import wraps
