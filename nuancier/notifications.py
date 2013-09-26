@@ -29,8 +29,10 @@ try:
 except ImportError:
     pass
 
+
 if fedmsg:
-   fedmsg.init()
+    fedmsg.init()
+
 
 def publish(topic, msg):
     if not fedmsg:

@@ -269,7 +269,7 @@ def vote(election_id):
         'vote.html',
         election=election,
         candidates=candidates,
-        n_votes_done = len(votes),
+        n_votes_done=len(votes),
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
         cache_folder=os.path.join(
@@ -329,7 +329,7 @@ def process_vote(election_id):
             election=election,
             candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
                         for candidate_id in entries],
-            n_votes_done = len(votes),
+            n_votes_done=len(votes),
             picture_folder=os.path.join(
                 APP.config['PICTURE_FOLDER'], election.election_folder),
             cache_folder=os.path.join(
@@ -524,6 +524,7 @@ def admin_cache(election_id):
         flask.flash(err.message, 'error')
 
     return flask.redirect(flask.url_for('.admin_index'))
+
 
 @APP.route('/admin/stats/<int:election_id>/')
 @nuancier_admin_required
