@@ -30,6 +30,7 @@ Contents:
 
    deployment
    configuration
+   administrate
    usage
    development
    contributing
