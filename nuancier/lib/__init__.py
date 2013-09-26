@@ -33,8 +33,8 @@ except ImportError:  # pragma: no cover
     try:
         import Image
     except ImportError:
-        print 'Could not import PIL nor Pillow, one of them should '\
-              'be installed'
+        print >> sys.stderr, 'Could not import PIL nor Pillow, one of ' \
+            'them should be installed'
 
 import model
 

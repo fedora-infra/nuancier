@@ -72,7 +72,8 @@ class Modeltests(unittest.TestCase):
             elif os.path.isfile(CACHE_FOLDER):
                 os.unlink(CACHE_FOLDER)
             else:
-                print 'Check %s, it cannot be removed' % CACHE_FOLDER
+                print >> sys.stderr, \
+                    'Check %s, it cannot be removed' % CACHE_FOLDER
         
 
         self.session.rollback()
