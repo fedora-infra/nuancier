@@ -456,8 +456,14 @@ def admin_open(election_id):
         flask.flash(err.message, 'error')
     else:
         flask.flash(msg)
+
+        if state:
+            topic = "open.toggle.on"
+        else:
+            topic = "open.toggle.off"
+
         notifications.publish(
-            topic="open.toggle",
+            topic=topic,
             msg=dict(
                 agent=flask.g.fas_user.username,
                 election=election.api_repr(version=1),
@@ -488,8 +494,14 @@ def admin_publish(election_id):
         flask.flash(err.message, 'error')
     else:
         flask.flash(msg)
+
+        if state:
+            topic = "publish.toggle.on"
+        else:
+            topic = "publish.toggle.off"
+
         notifications.publish(
-            topic="publish.toggle",
+            topic=topic,
             msg=dict(
                 agent=flask.g.fas_user.username,
                 election=election.api_repr(version=1),
