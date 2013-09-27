@@ -36,7 +36,6 @@ from sqlalchemy.exc import SQLAlchemyError
 import forms
 import lib as nuancierlib
 import notifications
-from utils import ReverseProxied
 
 
 __version__ = '0.1.0'
