@@ -45,7 +45,6 @@ APP.config.from_object('nuancier.default_config')
 if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('NUANCIER_CONFIG')
 
-APP.wsgi_app = ReverseProxied(APP.wsgi_app)
 # Set up FAS extension
 FAS = FAS(APP)
 
