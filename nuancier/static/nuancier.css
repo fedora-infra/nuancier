@@ -222,6 +222,7 @@ a:visited.large_button {
     width:250px;
 }
 
+
 #votechoice input[type=checkbox]:checked ~ label
 {
     display:block;
@@ -230,9 +231,11 @@ a:visited.large_button {
     height:0;
 
 }
+
+
 #votechoice input[type=checkbox]:checked ~ .resizelink
 {
-    diplay:block;
+    display:block;
     opacity:0;
     height:0;
 }
