@@ -1,5 +1,5 @@
 @import url("cloud.css");
-@import url("http://fonts.googleapis.com/css?family=Comfortaa");
+@import url("//fonts.googleapis.com/css?family=Comfortaa");
 
 .nuancier-logo span {
     background: url("nuancier.png") no-repeat scroll 50% 0 transparent;
