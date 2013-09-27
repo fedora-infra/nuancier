@@ -6,11 +6,11 @@
 
 {% block head %}
    <script language="javascript" type="text/javascript"
-        src="http://www.flotcharts.org/flot/jquery.js"></script>
+        src="{{ url_for('static', filename='jquery.js') }}"></script>
     <script language="javascript" type="text/javascript"
-        src="http://www.flotcharts.org/flot/jquery.flot.js"></script>
+        src="{{ url_for('static', filename='jquery.flot.js') }}"></script>
     <script language="javascript" type="text/javascript"
-        src="http://www.flotcharts.org/flot/jquery.flot.categories.js"></script>
+        src="{{ url_for('static', filename='jquery.flot.categories.js') }}"></script>
 {% endblock %}
 
 {% block content %}
