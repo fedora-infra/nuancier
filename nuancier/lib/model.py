@@ -129,6 +129,7 @@ class Elections(BASE):
         """ Used by fedmsg to serialize Elections in messages. """
         if version == 1:
             return dict(
+                id=self.id,
                 name=self.election_name,
                 year=self.election_year,
             )
