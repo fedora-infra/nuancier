@@ -37,6 +37,7 @@ Requires:  python-wtforms
 Requires:  python-flask-wtf
 Requires:  python-fedora >= 0.3.32.3-3
 Requires:  python-fedora-flask
+Requires:  python-dogpile-cache
 Requires:  fedmsg
 Requires:  mod_wsgi
 
@@ -78,10 +79,11 @@ install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite_cr
 
 
 %changelog
-* Thu Sep 26 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.0-1
+* Mon Sep 30 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.1-1
 - Update to 0.1.0
 - Bugfixes on the vote
 - CSS bugfixes
+- Add dependency to dogpile.cache
 
 * Sat Sep 21 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.0.3-1
 - Update to version 0.0.3
