@@ -23,6 +23,7 @@
 Top level of the nuancier-lite Flask application.
 '''
 
+import hashlib
 import os
 import random
 import sys
@@ -226,7 +227,10 @@ def election(election_id):
     candidates = nuancierlib.get_candidates(SESSION, election_id)
 
     if flask.g.fas_user:
-        random.seed(flask.g.fas_user.username)
+        random.seed(
+            int(
+                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+            ) % 100000)
     random.shuffle(candidates)
 
     return flask.render_template(
@@ -256,7 +260,10 @@ def vote(election_id):
         return flask.redirect(flask.url_for('index'))
 
     if flask.g.fas_user:
-        random.seed(flask.g.fas_user.username)
+        random.seed(
+            int(
+                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+            ) % 100000)
     random.shuffle(candidates)
 
     # How many votes the user made:
