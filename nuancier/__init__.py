@@ -28,6 +28,7 @@ import random
 import sys
 
 import flask
+import dogpile.cache
 from functools import wraps
 from flask.ext.fas_openid import FAS
 
@@ -47,6 +48,12 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
 
 # Set up FAS extension
 FAS = FAS(APP)
+
+# Initialize the cache.
+CACHE = dogpile.cache.make_region().configure(
+    APP.config.get('NUANCIER_CACHE_BACKEND', 'dogpile.cache.memory'),
+    **APP.config.get('NUANCIER_CACHE_KWARGS', {})
+)
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
@@ -161,11 +168,13 @@ def logout():
     return flask.redirect(flask.url_for('.index'))
 
 
+@CACHE.cache_on_arguments(expiration_time=3600)
 @APP.route('/pictures/<path:filename>')
 def base_picture(filename):
     return flask.send_from_directory(APP.config['PICTURE_FOLDER'], filename)
 
 
+@CACHE.cache_on_arguments(expiration_time=3600)
 @APP.route('/cache/<path:filename>')
 def base_cache(filename):
     return flask.send_from_directory(APP.config['CACHE_FOLDER'], filename)
