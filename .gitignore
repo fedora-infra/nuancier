@@ -9,3 +9,5 @@ nuancier/cache
 .coverage
 doc/_build
 *.egg-info
+cache/
+pictures/
