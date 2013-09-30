@@ -36,10 +36,15 @@ SECRET_KEY = '<insert here your own key>'
 ADMIN_GROUP = ('sysadmin-main', 'designteam')
 
 # Pictures folder
-PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
+PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'pictures')
 
 # Cache folder
-CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
+CACHE_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'cache')
 
 # Size of the thumbnails (keeping the ratio)
 THUMB_SIZE = (256, 256)
+
+# The default backend for dogpile
+# Options are listed at:
+# http://dogpilecache.readthedocs.org/en/latest/api.html  (backend section)
+NUANCIER_CACHE_BACKEND = 'dogpile.cache.memory'
