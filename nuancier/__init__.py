@@ -373,6 +373,9 @@ def process_vote(election_id):
     flask.flash('Your vote has been recorded, thank you for voting on '
                 '%s %s' % (election.election_name, election.election_year))
 
+    if election.election_badge_link:
+        flask.flash('Do not forget to <a href="%s" target="_blank">claim your '
+                     'badge!</a>' % election.election_badge_link)
     return flask.redirect(flask.url_for('elections_list'))
 
 
