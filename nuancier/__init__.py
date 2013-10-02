@@ -40,7 +40,7 @@ import lib as nuancierlib
 import notifications
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 APP = flask.Flask(__name__)
 APP.config.from_object('nuancier.default_config')
@@ -373,6 +373,9 @@ def process_vote(election_id):
     flask.flash('Your vote has been recorded, thank you for voting on '
                 '%s %s' % (election.election_name, election.election_year))
 
+    if election.election_badge_link:
+        flask.flash('Do not forget to <a href="%s" target="_blank">claim your '
+                     'badge!</a>' % election.election_badge_link)
     return flask.redirect(flask.url_for('elections_list'))
 
 
