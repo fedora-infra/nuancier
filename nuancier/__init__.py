@@ -40,7 +40,7 @@ import lib as nuancierlib
 import notifications
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 APP = flask.Flask(__name__)
 APP.config.from_object('nuancier.default_config')
