@@ -558,8 +558,7 @@ def admin_cache(election_id):
     return flask.redirect(flask.url_for('.admin_index'))
 
 
-@APP.route('/admin/stats/<int:election_id>/')
-@nuancier_admin_required
+@APP.route('/stats/<int:election_id>/')
 def stats(election_id):
     ''' Return some stats about this election. '''
     election = nuancierlib.get_election(SESSION, election_id)
