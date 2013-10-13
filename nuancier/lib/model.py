@@ -374,4 +374,6 @@ class Votes(BASE):
             Candidates.election_id == election_id
         ).filter(
             Votes.user_name == username
+        ).order_by(
+            Votes.candidate_id
         ).all()

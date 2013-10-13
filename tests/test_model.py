@@ -91,7 +91,7 @@ class NuancierModeltests(Modeltests):
         election = nuancierlib.get_election(self.session, 1)
         self.assertEqual(
             election.api_repr(1),
-            {'name': 'Wallpaper F19', 'year': 2013}
+            {'id': 1, 'name': 'Wallpaper F19', 'year': 2013}
         )
 
     def test_candidates_api_repr(self):
