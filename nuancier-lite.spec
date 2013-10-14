@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier-lite
-Version:        0.1.0
+Version:        0.1.2
 Release:        1%{?dist}
 Summary:        A light weight voting app for wallpapers
 
@@ -79,7 +79,12 @@ install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite_cr
 
 
 %changelog
-* Mon Sep 30 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.1-1
+* Mon Oct 14 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.2-1
+- Update to 0.1.2
+- Make the result stat page public
+- Couple of bugfixes
+
+* Mon Sep 30 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.0-1
 - Update to 0.1.0
 - Bugfixes on the vote
 - CSS bugfixes
