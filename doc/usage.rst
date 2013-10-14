@@ -110,7 +110,7 @@ While elections whose results are not yet public are marked with the symbol:
 Consulting the results of an election
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can find the list of all the elections whose results are publis by
+You can find the list of all the elections whose results are published by
 clicking on the tab ``Results`` at the top of the page.
 
 There you can click on the election of your interest and access the result
@@ -118,3 +118,20 @@ page.
 
 The result page will show you a table with for all the candidates, their
 name, number of votes and thumbnails ordered by decreasing number of votes.
+
+
+Statistics of an election
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can find the list of all the elections whose results are published by
+clicking on the tab ``Results`` at the top of the page.
+
+There you can click on the ``stats`` link of the election of interest.
+
+This page displays some statistics about the election :
+- Number of participants
+- Number of votes,
+- Maximum number of vote per person
+- Bar graph indicating how many people voted on how many candidates, for
+    example: 3 person voted to 4 candidates while 10 voted only on 2
+    candidates.

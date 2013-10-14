@@ -76,15 +76,8 @@ administration panel.
 
 This page shows you all elections registered with their information and for
 each if they are open for vote or not and if their results are public or not.
-It offers the possibility to (re-)generate the cache for an election and
-get some statistics about it :
-- Number of participants
-- Number of votes,
-- Maximum number of vote per person
-- Average vote per person
-- Bar graph indicating how many people voted on how many candidates, for
-    example: 3 person voted to 4 candidates while 10 voted only on 2
-    candidates.
+It offers the possibility to (re-)generate the cache for an election and once
+the election is closed, a link to some statistics about it.
 
 
 .. _create_elections:
