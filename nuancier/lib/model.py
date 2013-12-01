@@ -89,8 +89,6 @@ class Elections(BASE):
     election_name = sa.Column(sa.String(255), nullable=False, unique=True)
     election_folder = sa.Column(sa.String(50), nullable=False, unique=True)
     election_year = sa.Column(sa.Integer, nullable=False)
-    election_open = sa.Column(sa.Boolean, nullable=False, default=False)
-    election_public = sa.Column(sa.Boolean, nullable=False, default=False)
     election_n_choice = sa.Column(sa.Integer, nullable=False)
     election_badge_link = sa.Column(sa.String(255), default=None)
     election_date_start = sa.Column(sa.Date, nullable=False)
