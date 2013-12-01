@@ -26,3 +26,18 @@
 </form>
 
 {% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+
+<script type="text/javascript">
+    $(function(){
+        $('#election_date_start').datepicker({
+            dateFormat: "yy-mm-dd",
+        });
+        $('#election_date_end').datepicker({
+            dateFormat: "yy-mm-dd",
+        });
+    });
+</script>
+{% endblock %}
