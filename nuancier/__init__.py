@@ -231,6 +231,7 @@ def election(election_id):
         can_vote = False
     else:
         flask.flash('This election is not open', 'error')
+        return flask.redirect(flask.url_for('elections_list'))
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
 
