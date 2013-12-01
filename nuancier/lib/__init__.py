@@ -116,7 +116,7 @@ def get_results(session, election_id):
 
 
 def add_election(session, election_name, election_folder, election_year,
-                 election_open, election_n_choice,
+                 election_date_start, election_date_end, election_n_choice,
                  election_badge_link=None):
     """ Add a new election to the database.
 
@@ -124,7 +124,8 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_name:
     :arg election_folder:
     :arg election_year:
-    :arg election_open:
+    :arg election_date_start:
+    :arg election_date_end:
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
@@ -132,7 +133,8 @@ def add_election(session, election_name, election_folder, election_year,
         election_name=election_name,
         election_folder=election_folder,
         election_year=election_year,
-        election_open=election_open,
+        election_date_start=election_date_start,
+        election_date_end=election_date_end,
         election_n_choice=election_n_choice,
         election_badge_link=election_badge_link,
     )
@@ -171,28 +173,6 @@ def add_vote(session, candidate_id, username):
         candidate_id=candidate_id,
     )
     session.add(votes)
-
-
-def toggle_open(session, election_id):
-    """ Toggle the boolean of the open status for the specified election.
-
-    Returns whether or not the election is available for vote after toggling.
-    """
-    election = model.Elections.by_id(session, election_id)
-    new_state = election.election_open = not election.election_open
-    session.add(election)
-    return new_state
-
-
-def toggle_public(session, election_id):
-    """ Toggle the boolean of the public status for the specified election.
-
-    Returns the state of the election results publicity after toggling.
-    """
-    election = model.Elections.by_id(session, election_id)
-    new_state = election.election_public = not election.election_public
-    session.add(election)
-    return new_state
 
 
 def generate_thumbnail(filename, picture_folder, cache_folder,
@@ -286,7 +266,7 @@ def generate_cache(session, election, picture_folder, cache_folder,
 
     for info in infos:
         info = info.replace('"', '').strip().decode('utf-8')
-        if info.startswith('#'):
+        if info.startswith('#'):  # pragma: no cover
             continue
         if info.count('\t') != 2:
             session.rollback()
