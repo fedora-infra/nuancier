@@ -29,6 +29,7 @@ import pkg_resources
 import unittest
 import sys
 import os
+from datetime import timedelta
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
@@ -39,7 +40,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
 from tests import (Modeltests, create_elections, create_candidates,
-                   create_votes, CACHE_FOLDER, PICTURE_FOLDER)
+                   create_votes, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
 
 
 class NuancierLibtests(Modeltests):
@@ -124,7 +125,7 @@ class NuancierLibtests(Modeltests):
         results = nuancierlib.get_results(self.session, 1)
         self.assertEqual(2, len(results))
         self.assertEqual('DSC_0951', results[0][0].candidate_name)  # candidate
-        self.assertEqual(2, results[0][1])  # number of votes
+        self.assertEqual(3, results[0][1])  # number of votes
         self.assertEqual('DSC_0930', results[1][0].candidate_name)
         self.assertEqual(2, results[1][1])
 
@@ -135,7 +136,8 @@ class NuancierLibtests(Modeltests):
             election_name='Test',
             election_folder='test',
             election_year='2013',
-            election_open=False,
+            election_date_start=TODAY + timedelta(days=3),
+            election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
             election_badge_link='http://...'
         )
@@ -146,7 +148,10 @@ class NuancierLibtests(Modeltests):
         self.assertEqual('Test', elections[0].election_name)
         self.assertEqual('test', elections[0].election_folder)
         self.assertEqual(2013, elections[0].election_year)
-        self.assertEqual(False, elections[0].election_open)
+        self.assertEqual(
+            TODAY + timedelta(days=3), elections[0].election_date_start)
+        self.assertEqual(
+            TODAY + timedelta(days=7), elections[0].election_date_end)
         self.assertEqual(False, elections[0].election_public)
         self.assertEqual(2, elections[0].election_n_choice)
         self.assertEqual('http://...', elections[0].election_badge_link)
@@ -185,40 +190,6 @@ class NuancierLibtests(Modeltests):
         votes = nuancierlib.get_votes_user(self.session, 1, 'pingou')
         self.assertEqual(1, len(votes))
         self.assertEqual(2, votes[0].candidate_id)
-
-    def test_toggle_open(self):
-        """ Test the toggle_open function. """
-        create_elections(self.session)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(False, election.election_open)
-
-        nuancierlib.toggle_open(self.session, 1)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(True, election.election_open)
-
-        nuancierlib.toggle_open(self.session, 1)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(False, election.election_open)
-
-    def test_toggle_public(self):
-        """ Test the toggle_public function. """
-        create_elections(self.session)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(True, election.election_public)
-
-        nuancierlib.toggle_public(self.session, 1)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(False, election.election_public)
-
-        nuancierlib.toggle_public(self.session, 1)
-
-        election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(True, election.election_public)
 
     def test_generate_cache(self):
         """ Test the generate_cache function. """
@@ -336,6 +307,17 @@ class NuancierLibtests(Modeltests):
         )
 
         os.unlink(info_file)
+
+    def test_get_stats(self):
+        """ Test the get_stats function. """
+        create_elections(self.session)
+        create_candidates(self.session)
+        create_votes(self.session)
+
+        stats = nuancierlib.get_stats(self.session, 1)
+        self.assertEqual(5, stats['votes'])
+        self.assertEqual(3, stats['voters'])
+        self.assertEqual([[1, 1], [2, 2]], stats['data'])
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierLibtests)

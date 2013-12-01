@@ -105,6 +105,32 @@ class NuancierModeltests(Modeltests):
             {'election': u'Wallpaper F19', 'name': u'DSC_0951'}
         )
 
+    def test_election_open(self):
+        """ Test the election_open property of Elections. """
+        create_elections(self.session)
+
+        election = nuancierlib.get_election(self.session, 1)
+        self.assertEqual(election.election_open, False)
+
+        election = nuancierlib.get_election(self.session, 2)
+        self.assertEqual(election.election_open, True)
+
+        election = nuancierlib.get_election(self.session, 3)
+        self.assertEqual(election.election_open, False)
+
+    def test_election_public(self):
+        """ Test the election_public property of Elections. """
+        create_elections(self.session)
+
+        election = nuancierlib.get_election(self.session, 1)
+        self.assertEqual(election.election_public, True)
+
+        election = nuancierlib.get_election(self.session, 2)
+        self.assertEqual(election.election_public, False)
+
+        election = nuancierlib.get_election(self.session, 3)
+        self.assertEqual(election.election_public, False)
+
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierModeltests)

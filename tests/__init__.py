@@ -31,6 +31,7 @@ import shutil
 import sys
 import os
 
+from datetime import datetime
 from datetime import date
 from datetime import timedelta
 
@@ -46,6 +47,7 @@ from nuancier.lib import model
 DB_PATH = 'sqlite:///:memory:'
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
+TODAY = datetime.utcnow().date()
 
 
 class Modeltests(unittest.TestCase):
@@ -92,9 +94,9 @@ def create_elections(session):
         election_name='Wallpaper F19',
         election_folder='F19',
         election_year='2013',
-        election_open=False,
-        election_public=True,
-        election_n_choice=16
+        election_n_choice=16,
+        election_date_start = TODAY - timedelta(days=10),
+        election_date_end = TODAY - timedelta(days=8),
     )
     session.add(election)
 
@@ -102,8 +104,9 @@ def create_elections(session):
         election_name='Wallpaper F20',
         election_folder='F20',
         election_year='2013',
-        election_open=True,
-        election_n_choice=16
+        election_n_choice=16,
+        election_date_start = TODAY - timedelta(days=2),
+        election_date_end = TODAY + timedelta(days=3),
     )
     session.add(election)
 
@@ -111,8 +114,9 @@ def create_elections(session):
         election_name='Wallpaper F21',
         election_folder='F21',
         election_year='2014',
-        election_open=False,
-        election_n_choice=16
+        election_n_choice=16,
+        election_date_start = TODAY + timedelta(days=1),
+        election_date_end = TODAY + timedelta(days=6),
     )
     session.add(election)
     session.commit()
@@ -160,6 +164,12 @@ def create_votes(session):
 
     vote = model.Votes(
         user_name='pingou',
+        candidate_id=1,
+    )
+    session.add(vote)
+
+    vote = model.Votes(
+        user_name='ralph',
         candidate_id=1,
     )
     session.add(vote)
