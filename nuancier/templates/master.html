@@ -6,6 +6,8 @@
     <title>{% block title %}Fedora supplementary wallpapers{% endblock %}</title>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon"
         href="//fedoraproject.org/static/images/favicon.ico"/>
+    <link rel='stylesheet' type='text/css'
+        href="{{ url_for('static', filename='jquery-ui-1.9.2.custom.css') }}"/>
     <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='koji.css') }}"/>
     <link rel="stylesheet" type="text/css" media="screen"
