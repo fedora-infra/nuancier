@@ -21,7 +21,7 @@ and stop existing one.
         <th>Identifier</th>
         <th>Name</th>
         <th>Year</th>
-        <th>Open</th>
+        <th>Opened</th>
         <th>Published</th>
         <th>Max number of votes possible</th>
         <th></th>
@@ -43,8 +43,6 @@ and stop existing one.
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Election open"/>
             {% endif %}
-            <a href="{{ url_for('admin_open', election_id=election.id) }}">
-                toggle</a>
         </td>
         <td>
             {% if election.election_public %}
@@ -54,8 +52,6 @@ and stop existing one.
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Election closed"/>
             {% endif %}
-            <a href="{{ url_for('admin_publish', election_id=election.id) }}">
-                toggle</a>
         </td>
         <td>{{ election.election_n_choice }}</td>
         <td>
