@@ -101,25 +101,38 @@ class Elections(BASE):
                              onupdate=sa.func.current_timestamp())
 
     def __init__(self, election_name, election_folder, election_year,
-                 election_open=False, election_public=False,
+                 election_date_start, election_date_end,
                  election_n_choice=16, election_badge_link=None):
         """ Constructor.
 
         :arg election_name:
         :arg election_folder:
         :arg election_year:
-        :arg election_open:
-        :arg election_public:
+        :arg election_date_start:
+        :arg election_date_end:
         :arg election_n_choice:
         :arg election_badge_link:
         """
         self.election_name = election_name
         self.election_folder = election_folder
         self.election_year = election_year
-        self.election_open = election_open
-        self.election_public = election_public
+        self.election_date_start = election_date_start
+        self.election_date_end = election_date_end
         self.election_n_choice = election_n_choice
         self.election_badge_link = election_badge_link
+
+    @property
+    def election_open(self):
+        ''' Return if this election is opened or not. '''
+        today = datetime.datetime.utcnow().date()
+        return (self.election_date_start <= today
+                and self.election_date_end >= today)
+
+    @property
+    def election_public(self):
+        ''' Return if this election is opened or not. '''
+        today = datetime.datetime.utcnow().date()
+        return self.election_date_end <= today
 
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
@@ -156,10 +169,13 @@ class Elections(BASE):
     def get_open(cls, session):
         """ Return all the election open.
         """
+        today = datetime.datetime.utcnow().date()
         return session.query(
             cls
         ).filter(
-            Elections.election_open == True
+            Elections.election_date_start <= today
+        ).filter(
+            Elections.election_date_end >= today
         ).order_by(
             Elections.election_year.desc()
         ).all()
@@ -168,10 +184,11 @@ class Elections(BASE):
     def get_public(cls, session):
         """ Return all the election public.
         """
+        today = datetime.datetime.utcnow().date()
         return session.query(
             cls
         ).filter(
-            Elections.election_public == True
+            Elections.election_date_end <= today
         ).order_by(
             Elections.election_year.desc()
         ).all()
