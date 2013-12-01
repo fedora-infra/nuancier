@@ -446,7 +446,8 @@ def admin_new():
                 election_name=form.election_name.data,
                 election_folder=form.election_folder.data,
                 election_year=form.election_year.data,
-                election_open=form.election_open.data,
+                election_date_start=form.election_date_start.data,
+                election_date_end=form.election_date_end.data,
                 election_n_choice=form.election_n_choice.data,
                 election_badge_link=form.election_badge_link.data,
             )
