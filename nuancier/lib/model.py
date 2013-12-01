@@ -93,6 +93,8 @@ class Elections(BASE):
     election_public = sa.Column(sa.Boolean, nullable=False, default=False)
     election_n_choice = sa.Column(sa.Integer, nullable=False)
     election_badge_link = sa.Column(sa.String(255), default=None)
+    election_date_start = sa.Column(sa.Date, nullable=False)
+    election_date_end = sa.Column(sa.Date, nullable=False)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
