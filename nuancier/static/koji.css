@@ -184,7 +184,7 @@ table {
 th {
     font-weight: bold;
     vertical-align: text-top;
-    min-width: 100px;
+    /*min-width: 100px;*/
     /*text-align:right;*/
 }
 
