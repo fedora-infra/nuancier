@@ -64,12 +64,15 @@ def create_session(db_url, debug=False, pool_recycle=3600):
     return scopedsession
 
 
-def get_candidates(session, election_id):
+def get_candidates(session, election_id, approved=None):
     """ Return the candidates for a specified election.
 
     :arg election_id: the identifier of the election of interest.
+    :kwarg approved: a boolean specifying wether to filter the candidates
+        for approved or not-approved candidates. If left to default (None),
+        no filtering of the approval is performed.
     """
-    return model.Candidates.by_election(session, election_id)
+    return model.Candidates.by_election(session, election_id, approved)
 
 
 def get_candidate(session, candidate_id):

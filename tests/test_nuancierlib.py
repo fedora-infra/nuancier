@@ -51,15 +51,21 @@ class NuancierLibtests(Modeltests):
         create_elections(self.session)
         create_candidates(self.session)
 
-        candidates = nuancierlib.get_candidates(self.session, 1)
+        candidates = nuancierlib.get_candidates(self.session, 1, False)
         self.assertEqual(2, len(candidates))
         self.assertEqual('DSC_0930', candidates[0].candidate_name)
         self.assertEqual('DSC_0951', candidates[1].candidate_name)
 
-        candidates = nuancierlib.get_candidates(self.session, 2)
+        candidates = nuancierlib.get_candidates(self.session, 1, True)
+        self.assertEqual(0, len(candidates))
+
+        candidates = nuancierlib.get_candidates(self.session, 2, False)
         self.assertEqual(2, len(candidates))
         self.assertEqual('DSC_0922', candidates[0].candidate_name)
         self.assertEqual('DSC_0923', candidates[1].candidate_name)
+
+        candidates = nuancierlib.get_candidates(self.session, 2, True)
+        self.assertEqual(0, len(candidates))
 
     def test_get_candidate(self):
         """ Test the get_candidate function. """
@@ -169,10 +175,13 @@ class NuancierLibtests(Modeltests):
         )
         self.session.commit()
 
-        candidates = nuancierlib.get_candidates(self.session, 2)
+        candidates = nuancierlib.get_candidates(self.session, 2, False)
         self.assertEqual(1, len(candidates))
         self.assertEqual('test image', candidates[0].candidate_name)
         self.assertEqual('test.png', candidates[0].candidate_file)
+
+        candidates = nuancierlib.get_candidates(self.session, 2, True)
+        self.assertEqual(0, len(candidates))
 
     def test_add_vote(self):
         """ Test the add_vote function. """
