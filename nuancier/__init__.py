@@ -535,6 +535,20 @@ def admin_process_review(election_id):
         return flask.redirect(
             flask.url_for('admin_review', election_id=election_id))
 
+    if action == 'Denied':
+        req_motif = False
+        if not motifs:
+            req_motif = True
+        for motif in motifs:
+            if not motif.strip():
+                req_motif = True
+                break
+        if req_motif:
+            flask.flash(
+                'You must provide a motif to deny a candidate',
+                'error')
+            return flask.redirect(
+                flask.url_for('admin_review', election_id=election_id))
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
     candidates_id = [str(candidate.id) for candidate in candidates]
