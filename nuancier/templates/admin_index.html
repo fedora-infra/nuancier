@@ -41,17 +41,19 @@ and stop an existing election.
                 alt="Election open"/>
             {% else %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
-                alt="Election open"/>
+                alt="Election closed"/>
             {% endif %}
+            {{ election.election_date_start }}
         </td>
         <td>
             {% if election.election_public %}
             <img src="{{ url_for('static', filename='Approved.png') }}"
-                alt="Election published"/>
+                alt="Election's results published"/>
             {% else %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
-                alt="Election closed"/>
+                alt="Election's results closed"/>
             {% endif %}
+            {{ election.election_date_end }}
         </td>
         <td>{{ election.election_n_choice }}</td>
         <td>

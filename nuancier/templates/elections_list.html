@@ -34,6 +34,7 @@ Listed here are all current and past elections.
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Election open"/>
             {% endif %}
+            {{ election.election_date_start }}
         </td>
         <td>
             {% if election.election_public %}
@@ -45,6 +46,7 @@ Listed here are all current and past elections.
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Election closed"/>
             {% endif %}
+            {{ election.election_date_end }}
         </td>
     </tr>
     {% endfor %}
