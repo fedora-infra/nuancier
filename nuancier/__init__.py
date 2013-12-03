@@ -437,42 +437,35 @@ def admin_index():
     return flask.render_template('admin_index.html', elections=elections)
 
 
-@APP.route('/admin/open/<int:election_id>')
+@APP.route('/admin/new/', methods=['GET', 'POST'])
 @nuancier_admin_required
-def admin_open(election_id):
-    ''' Flip the open state '''
-    election = nuancierlib.get_election(SESSION, election_id)
-    state = nuancierlib.toggle_open(SESSION, election_id)
-
-    if state:
-        msg = "Election opened"
-    else:
-        msg = "Election ended"
-
-    try:
-        SESSION.commit()
-    except SQLAlchemyError as err:
-        SESSION.rollback()
-        print >> sys.stderr, "Cannot flip the open state", err
-        flask.flash(err.message, 'error')
-    else:
-        flask.flash(msg)
-
-        if state:
-            topic = "open.toggle.on"
-        else:
-            topic = "open.toggle.off"
-
-        notifications.publish(
-            topic=topic,
-            msg=dict(
-                agent=flask.g.fas_user.username,
-                election=election.api_repr(version=1),
-                state=state,
+def admin_new():
+    ''' Create a new election. '''
+    form = forms.AddElectionForm()
+    if form.validate_on_submit():
+        try:
+            election = nuancierlib.add_election(
+                SESSION,
+                election_name=form.election_name.data,
+                election_folder=form.election_folder.data,
+                election_year=form.election_year.data,
+                election_date_start=form.election_date_start.data,
+                election_date_end=form.election_date_end.data,
+                election_n_choice=form.election_n_choice.data,
+                election_badge_link=form.election_badge_link.data,
             )
-        )
-
-    return flask.redirect(flask.url_for('.admin_index'))
+        except nuancierlib.NuancierException as err:
+            flask.flash(err.message, 'error')
+        try:
+            SESSION.commit()
+        except SQLAlchemyError as err:
+            SESSION.rollback()
+            print >> sys.stderr, "Cannot create new election", err
+            flask.flash(err.message, 'error')
+        if form.generate_cache.data:
+            return admin_cache(election.id)
+        return flask.redirect(flask.url_for('admin_index'))
+    return flask.render_template('admin_new.html', form=form)
 
 
 @APP.route('/admin/cache/<int:election_id>')
