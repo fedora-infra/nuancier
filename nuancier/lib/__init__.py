@@ -144,6 +144,7 @@ def add_election(session, election_name, election_folder, election_year,
     session.add(election)
     return election
 
+
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
                   election_n_choice, election_badge_link=None):

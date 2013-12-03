@@ -43,10 +43,10 @@ class AddElectionForm(flask_wtf.Form):
         [wtf.validators.Required()])
     election_year = wtf.TextField('Year',
                                   [wtf.validators.Required()])
-    election_date_start =wtf.DateField('Start date (in utc)',
-                                  [wtf.validators.Required()])
+    election_date_start = wtf.DateField('Start date (in utc)',
+                                        [wtf.validators.Required()])
     election_date_end = wtf.DateField('End date (in utc)',
-                                  [wtf.validators.Required()])
+                                      [wtf.validators.Required()])
     election_badge_link = wtf.TextField('URL to claim a badge for voting',
                                         [wtf.validators.URL(),
                                          wtf.validators.Optional()])

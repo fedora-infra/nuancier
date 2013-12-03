@@ -331,4 +331,3 @@ class NuancierLibtests(Modeltests):
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierLibtests)
     unittest.TextTestRunner(verbosity=2).run(SUITE)
-

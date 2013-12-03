@@ -65,8 +65,8 @@ class NuancierModeltests(Modeltests):
         self.assertTrue(
             candidate.__repr__().startswith(
                 "Candidates(file:u'DSC_0951.JPG', "
-                       "name:u'DSC_0951', "
-                       "election_id:1, "
+                "name:u'DSC_0951', "
+                "election_id:1, "
             )
         )
 
@@ -135,4 +135,3 @@ class NuancierModeltests(Modeltests):
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierModeltests)
     unittest.TextTestRunner(verbosity=2).run(SUITE)
-

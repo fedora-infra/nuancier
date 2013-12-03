@@ -387,7 +387,7 @@ def process_vote(election_id):
 
     if election.election_badge_link:
         flask.flash('Do not forget to <a href="%s" target="_blank">claim your '
-                     'badge!</a>' % election.election_badge_link)
+                    'badge!</a>' % election.election_badge_link)
     return flask.redirect(flask.url_for('elections_list'))
 
 
@@ -435,6 +435,7 @@ def admin_index():
     ''' Display the index page of the admin interface. '''
     elections = nuancierlib.get_elections(SESSION)
     return flask.render_template('admin_index.html', elections=elections)
+
 
 @APP.route('/admin/<election_id>/edit/', methods=['GET', 'POST'])
 @nuancier_admin_required
@@ -617,7 +618,6 @@ def admin_process_review(election_id):
 
     return flask.redirect(
         flask.url_for('admin_review', election_id=election_id))
-
 
 
 @APP.route('/admin/cache/<int:election_id>')

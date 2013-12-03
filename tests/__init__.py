@@ -76,7 +76,6 @@ class Modeltests(unittest.TestCase):
             else:
                 print >> sys.stderr, \
                     'Check %s, it cannot be removed' % CACHE_FOLDER
-        
 
         self.session.rollback()
 
@@ -95,8 +94,8 @@ def create_elections(session):
         election_folder='F19',
         election_year='2013',
         election_n_choice=16,
-        election_date_start = TODAY - timedelta(days=10),
-        election_date_end = TODAY - timedelta(days=8),
+        election_date_start=TODAY - timedelta(days=10),
+        election_date_end=TODAY - timedelta(days=8),
     )
     session.add(election)
 
@@ -105,8 +104,8 @@ def create_elections(session):
         election_folder='F20',
         election_year='2013',
         election_n_choice=16,
-        election_date_start = TODAY - timedelta(days=2),
-        election_date_end = TODAY + timedelta(days=3),
+        election_date_start=TODAY - timedelta(days=2),
+        election_date_end=TODAY + timedelta(days=3),
     )
     session.add(election)
 
@@ -115,8 +114,8 @@ def create_elections(session):
         election_folder='F21',
         election_year='2014',
         election_n_choice=16,
-        election_date_start = TODAY + timedelta(days=1),
-        election_date_end = TODAY + timedelta(days=6),
+        election_date_start=TODAY + timedelta(days=1),
+        election_date_end=TODAY + timedelta(days=6),
     )
     session.add(election)
     session.commit()
