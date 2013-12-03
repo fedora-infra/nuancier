@@ -214,6 +214,7 @@ class Candidates(BASE):
         nullable=False,
     )
     approved = sa.Column(sa.Boolean, default=False, nullable=False)
+    approved_motif = sa.Column(sa.Text, nullable=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
