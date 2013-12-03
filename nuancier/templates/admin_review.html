@@ -20,6 +20,11 @@
 from {{ election.election_year }}, regardless of wether they are valid
 candidates or not.
 </p>
+<p>
+  You may select one or more candidates using the checkbox in the first
+  column of the table below and approve or deny them all using the buttons
+  at the bottom.
+</p>
 
 {% if candidates %}
 <form action="{{ url_for('admin_process_review', election_id=election.id) }}" method="POST">
