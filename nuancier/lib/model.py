@@ -213,6 +213,7 @@ class Candidates(BASE):
                       ),
         nullable=False,
     )
+    approved = sa.Column(sa.Boolean, default=False, nullable=False)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -227,7 +228,7 @@ class Candidates(BASE):
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
-                 election_id):
+                 election_id, approved=False):
         """ Constructor
 
         :arg candidate_file: the file name of the candidate
@@ -235,11 +236,14 @@ class Candidates(BASE):
         :arg candidate_author: the name of the author of this candidate
         :arg election_id: the identifier of the election this candidate is
             candidate for.
+        :kwarg approved: a boolean specifying if this candidate is approved
+            or not for this election.
         """
         self.candidate_file = candidate_file
         self.candidate_name = candidate_name
         self.candidate_author = candidate_author
         self.election_id = election_id
+        self.approved = approved
 
     def __repr__(self):
         return 'Candidates(file:%r, name:%r, election_id:%r, created:%r' % (
@@ -263,13 +267,24 @@ class Candidates(BASE):
         return session.query(cls).get(candidate_id)
 
     @classmethod
-    def by_election(cls, session, election_id):
+    def by_election(cls, session, election_id, approved=None):
         """ Return the candidate associated to the given election
-        identifier.
+        identifier. Filter them if they are approved or not for the
+        election.
 
         """
-        return session.query(cls).filter(
-            Candidates.election_id == election_id).all()
+        query = session.query(
+            cls
+        ).filter(
+            Candidates.election_id == election_id
+        )
+
+        if approved is not None:
+            query = query.filter(
+                Candidates.approved == approved
+            )
+
+        return query.all()
 
     @classmethod
     def get_results(cls, session, election_id):
