@@ -436,6 +436,39 @@ def admin_index():
     elections = nuancierlib.get_elections(SESSION)
     return flask.render_template('admin_index.html', elections=elections)
 
+@APP.route('/admin/<election_id>/edit/', methods=['GET', 'POST'])
+@nuancier_admin_required
+def admin_edit():
+    ''' Edit an election. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    form = forms.AddElectionForm()
+    if form.validate_on_submit():
+        election = nuancierlib.edit_election(
+            SESSION,
+            election_name=form.election_name.data,
+            election_folder=form.election_folder.data,
+            election_year=form.election_year.data,
+            election_date_start=form.election_date_start.data,
+            election_date_end=form.election_date_end.data,
+            election_n_choice=form.election_n_choice.data,
+            election_badge_link=form.election_badge_link.data,
+        )
+        try:
+            SESSION.commit()
+        except SQLAlchemyError as err:
+            SESSION.rollback()
+            print >> sys.stderr, "Cannot edit election", err
+            flask.flash(err.message, 'error')
+        return flask.redirect(flask.url_for('admin_index'))
+    else:
+        form = forms.AddElectionForm(election=election)
+    return flask.render_template('admin_edit.html', form=form)
+
 
 @APP.route('/admin/new/', methods=['GET', 'POST'])
 @nuancier_admin_required

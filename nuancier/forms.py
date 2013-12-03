@@ -54,3 +54,18 @@ class AddElectionForm(flask_wtf.Form):
                                       [wtf.validators.Required(),
                                        is_number])
     generate_cache = wtf.BooleanField('Generate cache')
+
+    def __init__(self, *args, **kwargs):
+        """ Calls the default constructor and fill in additional information.
+        """
+        super(DistroForm, self).__init__(*args, **kwargs)
+
+        if 'election' in kwargs:
+            election = kwargs['election']
+            self.election_name.data = election.election_name
+            self.election_folder.data = election.election_folder
+            self.election_year.data = election.election_year
+            self.election_date_start.data = election.election_date_start
+            self.election_date_end.data = election.election_date_end
+            self.election_badge_link.data = election.election_badge_link
+            self.election_n_choice.data = election.election_n_choice

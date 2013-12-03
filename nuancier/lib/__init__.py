@@ -144,6 +144,54 @@ def add_election(session, election_name, election_folder, election_year,
     session.add(election)
     return election
 
+def edit_election(session, election, election_name, election_folder,
+                  election_year, election_date_start, election_date_end,
+                  election_n_choice, election_badge_link=None):
+    """ Edit an election of the database.
+
+    :arg session:
+    :arg election:
+    :arg election_name:
+    :arg election_folder:
+    :arg election_year:
+    :arg election_date_start:
+    :arg election_date_end:
+    :arg election_n_choice:
+    :kwarg election_badge_link:
+    """
+    edited = []
+    if election.election_name != election_name:
+        election.election_name = election_name
+        edited.append('election name')
+
+    if election.election_folder != election_folder:
+        election.election_folder = election_folder
+        edited.append('election folder')
+
+    if election.election_year != election_year:
+        election.election_year = election_year
+        edited.append('election year')
+
+    if election.election_date_start != election_date_start:
+        election.election_date_start = election_date_start
+        edited.append('election start date')
+
+    if election.election_date_end != election_date_end:
+        election.election_date_end = election_date_end
+        edited.append('election end date')
+
+    if election.election_n_choice != election_n_choice:
+        election.election_n_choice = election_n_choice
+        edited.append('election name')
+
+    if election.election_badge_link != election_badge_link:
+        election.election_badge_link = election_badge_link
+        edited.append('election badge link')
+
+    if edited:
+        session.add(election)
+    return election
+
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
                   election_id):
