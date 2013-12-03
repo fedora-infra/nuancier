@@ -468,6 +468,111 @@ def admin_new():
     return flask.render_template('admin_new.html', form=form)
 
 
+@APP.route('/admin/review/<election_id>/', methods=['GET'])
+@nuancier_admin_required
+def admin_review(election_id):
+    ''' Review a new election. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    if election.election_open:
+        flask.flash(
+            'This election is already open to public votes and can no '
+            'longer be changed', 'error')
+        return flask.redirect(flask.url_for('results_list'))
+
+    if election.election_open:
+        flask.flash(
+            'The results of this election are already public, this election'
+            ' can no longer be changed', 'error')
+        return flask.redirect(flask.url_for('results_list'))
+
+    candidates = nuancierlib.get_candidates(SESSION, election_id)
+
+    return flask.render_template(
+        'admin_review.html',
+        election=election,
+        candidates=candidates,
+        picture_folder=os.path.join(
+            APP.config['PICTURE_FOLDER'], election.election_folder),
+        cache_folder=os.path.join(
+            APP.config['CACHE_FOLDER'], election.election_folder))
+
+
+@APP.route('/admin/review/<election_id>/process', methods=['POST'])
+@nuancier_admin_required
+def admin_process_review(election_id):
+    ''' Process the reviewing of a new election. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    if election.election_open:
+        flask.flash(
+            'This election is already open to public votes and can no '
+            'longer be changed', 'error')
+        return flask.redirect(flask.url_for('results_list'))
+
+    if election.election_open:
+        flask.flash(
+            'The results of this election are already public, this election'
+            ' can no longer be changed', 'error')
+        return flask.redirect(flask.url_for('results_list'))
+
+    candidates_selected = flask.request.form.getlist('candidates_id')
+    motifs = flask.request.form.getlist('motifs')
+    action = flask.request.form.get('action').strip()
+
+    if action not in ['Approved', 'Denied']:
+        flask.flash(
+            'Only the actions "Approve" or "Deny" are accepted',
+            'error')
+        return flask.redirect(
+            flask.url_for('admin_review', election_id=election_id))
+
+
+    candidates = nuancierlib.get_candidates(SESSION, election_id)
+    candidates_id = [str(candidate.id) for candidate in candidates]
+
+    cnt = 0
+    for candidate in candidates_selected:
+        if candidate not in candidates_id:
+            flask.flash(
+                'One of the candidate submitted was not candidate in this '
+                'election', 'error')
+            return flask.redirect(
+                flask.url_for('admin_review', election_id=election_id))
+        else:
+            candidate = nuancierlib.get_candidate(SESSION, candidate)
+            motif = None
+            if len(motifs) > cnt:
+                motif = motifs[cnt].strip()
+            if action == 'Approved':
+                candidate.approved = True
+                candidate.approved_motif = motif
+            else:
+                candidate.approved = False
+                candidate.approved_motif = motif
+            SESSION.add(candidate)
+        cnt += 1
+
+    try:
+        SESSION.commit()
+    except Exception as err:
+        SESSION.rollback()
+        print >> sys.stderr, "Cannot approve/deny candidate: ", err
+        flask.flash(err.message, 'error')
+
+    return flask.redirect(
+        flask.url_for('admin_review', election_id=election_id))
+
+
+
 @APP.route('/admin/cache/<int:election_id>')
 @nuancier_admin_required
 def admin_cache(election_id):
@@ -489,7 +594,7 @@ def admin_cache(election_id):
                     election.election_name)
     except nuancierlib.NuancierException as err:
         SESSION.rollback()
-        print >> sys.stderr, "Cannot generate cache", err
+        print >> sys.stderr, "Cannot generate cache: ", err
         flask.flash(err.message, 'error')
 
     return flask.redirect(flask.url_for('.admin_index'))

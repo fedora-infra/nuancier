@@ -61,6 +61,10 @@ and stop an existing election.
                 (Re-)generate cache</a>
         </td>
         <td>
+            <a href="{{ url_for('admin_review', election_id=election.id) }}">
+                Review</a>
+        </td>
+        <td>
             <a href="{{ url_for('stats', election_id=election.id) }}">
                 Stats</a>
         </td>

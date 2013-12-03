@@ -1,0 +1,88 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block head %}
+<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{%block tag %}admin{% endblock %}
+
+{% block content %}
+
+<h1>Review election: {{ election.election_name }} - {{ election.election_year }}</h1>
+
+<h3>Overview</h3>
+<p>Here below are presented all the candidates of the election {{ election.election_name }}
+from {{ election.election_year }}, regardless of wether they are valid
+candidates or not.
+</p>
+
+{% if candidates %}
+<form action="{{ url_for('admin_process_review', election_id=election.id) }}" method="POST">
+<table>
+    <tr>
+        <th></th>
+        <th></th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Approved</th>
+        <th>Motif</th>
+    </tr>
+    {% for candidate in candidates %}
+    <tr>
+        <td>
+            <input type="checkbox" name="candidates_id" value="{{ candidate.id }}"/>
+        </td>
+        <td>{{ loop.index }}</td>
+        <td> {{ candidate.candidate_name }} </td>
+        <td>
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        <td>
+            {% if candidate.approved %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Candidate approved"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Candidate denied"/>
+            {% endif %}
+        </td>
+        <td>
+            <input type="text" name="motif" value="{{ candidate.motif }}" />
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<button type="submit" name="action" value="Approved" class="btn btn-danger">
+  Approve
+</button>
+<button type="submit" name="action" value="Denied" class="btn btn-danger">
+  Deny
+</button>
+
+</form>
+{% else %}
+<p class="error">No results found for this election.</p>
+{% endif %}
+
+{% endblock %}
