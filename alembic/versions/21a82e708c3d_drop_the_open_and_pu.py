@@ -40,4 +40,3 @@ def downgrade():
             default=False
         )
     )
-

@@ -28,8 +28,7 @@ def upgrade():
 
 
 def downgrade():
-   ''' Remove the columns election_date_start and election_date_end from the
-   Elections table. '''
-   op.drop_column('Elections', 'election_date_start')
-   op.drop_column('Elections', 'election_date_end')
-
+    ''' Remove the columns election_date_start and election_date_end from the
+    Elections table. '''
+    op.drop_column('Elections', 'election_date_start')
+    op.drop_column('Elections', 'election_date_end')
