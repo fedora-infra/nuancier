@@ -195,19 +195,22 @@ def edit_election(session, election, election_name, election_folder,
 
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
-                  election_id):
+                  candidate_license, candidate_submitter, election_id):
     """ Add a new candidate to the database.
 
     :arg session:
     :arg candidate_file:
     :arg candidate_name:
     :arg candidate_author:
+    :arg candidate_license:
     :arg election_id:
     """
     candidate = model.Candidates(
         candidate_file=candidate_file,
         candidate_name=candidate_name,
         candidate_author=candidate_author,
+        candidate_license=candidate_license,
+        candidate_submitter=candidate_submitter,
         election_id=election_id,
     )
     session.add(candidate)
