@@ -26,14 +26,6 @@ def upgrade():
         sa.Column('election_date_end', sa.Date)
     )
 
-    ## Update the current election (there is only one in the db)
-    ins = "UPDATE 'Elections' SET (election_date_start, election_date_end) "\
-        "VALUES ('2013-09-30', '2013-10-04') WHERE 'Elections'.id == 1;"
-    try:
-        op.execute(ins)
-    except:
-        pass
-
     ## Enforce the nullable=False
     op.alter_column('Elections', 'election_date_start', nullable=False)
     op.alter_column('Elections', 'election_date_end', nullable=False)
