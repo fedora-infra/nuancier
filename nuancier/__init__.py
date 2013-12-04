@@ -665,7 +665,7 @@ def admin_review(election_id):
             'longer be changed', 'error')
         return flask.redirect(flask.url_for('admin_index'))
 
-    if election.election_open:
+    if election.election_public:
         flask.flash(
             'The results of this election are already public, this election'
             ' can no longer be changed', 'error')
