@@ -3,6 +3,10 @@
     color: red;
 }
 
+.warnings {
+    color: orange;
+}
+
 #galleria{
     height: 250px;
 }
@@ -20,6 +24,7 @@
 }
 
 body#index #mainNav li#indexTab a,
+body#contribute #mainNav li#contributeTab a,
 body#elections #mainNav li#electionsTab a,
 body#results #mainNav li#resultsTab a,
 body#admin #mainNav li#adminTab a {
@@ -137,6 +142,10 @@ body#admin table {
 
 .bold {
     font-weight: bold;
+}
+
+.small {
+    font-size: 75%
 }
 
 .underline {
