@@ -38,7 +38,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 try:
     from PIL import Image
-except ImportError:
+except ImportError:  # pragma: no cover
     # This is for the old versions not using pillow
     import Image
 
