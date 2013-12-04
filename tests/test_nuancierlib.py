@@ -171,6 +171,8 @@ class NuancierLibtests(Modeltests):
             candidate_file='test.png',
             candidate_name='test image',
             candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
             election_id=2,
         )
         self.session.commit()
@@ -276,46 +278,6 @@ class NuancierLibtests(Modeltests):
             cache_folder=CACHE_FOLDER,
             size=(128, 128)
         )
-
-    def test_generate_cache_no_info_file(self):
-        """ Test the generate_cache function. """
-
-        create_elections(self.session)
-        election = nuancierlib.get_election(self.session, 3)
-
-        self.assertRaises(
-            nuancierlib.NuancierException,
-            nuancierlib.generate_cache,
-            session=self.session,
-            election=election,
-            picture_folder=PICTURE_FOLDER,
-            cache_folder=CACHE_FOLDER,
-            size=(128, 128)
-        )
-
-    def test_generate_cache_wrong_info_file(self):
-        """ Test the generate_cache function. """
-
-        create_elections(self.session)
-        election = nuancierlib.get_election(self.session, 3)
-
-        info_file = os.path.join(PICTURE_FOLDER, election.election_folder,
-                                 'infos.txt')
-        stream = open(info_file, 'w')
-        stream.write('test')
-        stream.close()
-
-        self.assertRaises(
-            nuancierlib.NuancierException,
-            nuancierlib.generate_cache,
-            session=self.session,
-            election=election,
-            picture_folder=PICTURE_FOLDER,
-            cache_folder=CACHE_FOLDER,
-            size=(128, 128)
-        )
-
-        os.unlink(info_file)
 
     def test_get_stats(self):
         """ Test the get_stats function. """
