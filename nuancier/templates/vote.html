@@ -14,6 +14,7 @@ var votelimit = {{election.election_n_choice}} - {{n_votes_done}};
 {%block tag %}elections{% endblock %}
 
 {% block jscripts %}
+{{ super() }}
 <script src="{{ url_for('static', filename='nuancier.js') }}"></script>
 
 {% endblock %}
