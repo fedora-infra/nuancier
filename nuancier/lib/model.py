@@ -230,6 +230,7 @@ class Candidates(BASE):
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
+                 candidate_license, candidate_submitter,
                  election_id, approved=False):
         """ Constructor
 
@@ -245,6 +246,8 @@ class Candidates(BASE):
         self.candidate_name = candidate_name
         self.candidate_author = candidate_author
         self.election_id = election_id
+        self.candidate_license = candidate_license
+        self.candidate_submitter = candidate_submitter
         self.approved = approved
 
     def __repr__(self):

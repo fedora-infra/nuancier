@@ -1,4 +1,4 @@
-"""Add candidate license
+"""Add candidate license and submitter
 
 Revision ID: 154f23ea945d
 Revises: 1bd4db428323
@@ -21,8 +21,13 @@ def upgrade():
         sa.Column('candidate_license', sa.String(255),
                   default='CC-BY-SA', nullable=False)
     )
+    op.add_column(
+        'Candidates',
+        sa.Column('candidate_submitter', sa.String(255))
+    )
 
 
 def downgrade():
     ''' Drop the candidate_license column from the Candidates table. '''
     op.drop_column('Candidates', 'candidate_license')
+    op.drop_column('Candidates', 'candidate_submitter')
