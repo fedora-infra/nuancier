@@ -32,6 +32,9 @@
   Be sure that the information provided here are correct, you will not be
   able to change them later.
 </p>
+<p>
+  Files submitted are limited to {{ config['MAX_CONTENT_LENGTH'] / 1024 / 1024 }} MB.
+</p>
 
 <input type="submit" class="submit positive button" value="Submit">
 <input type="button" value="Cancel" class="button" onclick="history.back();">
