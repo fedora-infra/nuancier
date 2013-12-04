@@ -39,6 +39,9 @@ candidates or not.
         <th></th>
         <th>Name</th>
         <th>Image</th>
+        <th>Author</th>
+        <th>License</th>
+        <th>Submitter</th>
         <th>Approved</th>
         <th>Motif</th>
     </tr>
@@ -68,6 +71,9 @@ candidates or not.
                       }}" alt="img {{ candidate.candidate_file }}"/>
             </a>
         </td>
+        <td> {{ candidate.candidate_author }} </td>
+        <td> {{ candidate.candidate_license }} </td>
+        <td> {{ candidate.candidate_submitter }} </td>
         <td>
             {% if candidate.approved %}
             <img src="{{ url_for('static', filename='Approved.png') }}"
