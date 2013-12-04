@@ -58,7 +58,7 @@ class AddElectionForm(flask_wtf.Form):
     def __init__(self, *args, **kwargs):
         """ Calls the default constructor and fill in additional information.
         """
-        super(DistroForm, self).__init__(*args, **kwargs)
+        super(AddElectionForm, self).__init__(*args, **kwargs)
 
         if 'election' in kwargs:
             election = kwargs['election']
@@ -69,3 +69,22 @@ class AddElectionForm(flask_wtf.Form):
             self.election_date_end.data = election.election_date_end
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
+
+
+class AddCandidateForm(flask_wtf.Form):
+    candidate_name = wtf.TextField(
+        'Name', [wtf.validators.Required()])
+    candidate_author = wtf.TextField(
+        'Author', [wtf.validators.Required()])
+    candidate_file = wtf.FileField(
+        'File', [wtf.validators.Required()])
+    candidate_license = wtf.TextField(
+        'License', [wtf.validators.Required()])
+
+    def __init__(self, *args, **kwargs):
+        """ Calls the default constructor and fill in default values.
+        """
+        super(AddCandidateForm, self).__init__(*args, **kwargs)
+
+        self.candidate_author.data = flask.g.fas_user.username
+        self.candidate_license.data = 'CC-BY-SA'
