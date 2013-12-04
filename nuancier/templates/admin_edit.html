@@ -9,7 +9,7 @@
 
 <h1>Edit election: {{ election.name }} {{ election.election_year }}</h1>
 
-<form action="{{ url_for('admin_edit') }}" method="post">
+<form action="{{ url_for('admin_edit', election_id=election.id) }}" method="post">
 <table>
     {{ render_field_in_row(form.election_name) }}
     {{ render_field_in_row(form.election_folder) }}
