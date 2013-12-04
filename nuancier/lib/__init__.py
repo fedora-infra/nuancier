@@ -205,6 +205,13 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg candidate_license:
     :arg election_id:
     """
+    candidate = model.Candidates.by_election_and_name(
+        session, election_id, candidate_name)
+    if candidate:
+        raise NuancierException(
+            'A candidate with the name "%s" has already been submitted' %
+                candidate_name)
+
     candidate = model.Candidates(
         candidate_file=candidate_file,
         candidate_name=candidate_name,
