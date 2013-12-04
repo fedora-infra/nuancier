@@ -1,0 +1,41 @@
+{% extends "master.html" %}
+{% from "_formhelpers.html" import render_field_in_row %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}contribute{% endblock %}
+
+{% block content %}
+
+<h1>Contribute a supplemental wallpaper</h1>
+
+<p>
+  You are going to submit a new supplemental wallpaper, before you do so,
+  make sure you have carefully read <a href="{{ url_for('contribute_index')
+  }}">the instruction</a>.
+</p>
+
+<p>
+    Election : {{ election.election_name }} -- {{ election.election_year }}
+</p>
+
+<form action="{{ url_for('contribute', election_id=election.id) }}"
+      method="post" enctype="multipart/form-data">
+<table>
+    {{ render_field_in_row(form.candidate_name) }}
+    {{ render_field_in_row(form.candidate_author) }}
+    {{ render_field_in_row(form.candidate_file) }}
+    {{ render_field_in_row(form.candidate_license) }}
+</table>
+
+<p class="warnings">
+  Be sure that the information provided here are correct, you will not be
+  able to change them later.
+</p>
+
+<input type="submit" class="submit positive button" value="Submit">
+<input type="button" value="Cancel" class="button" onclick="history.back();">
+{{ form.csrf_token }}
+</form>
+
+{% endblock %}
