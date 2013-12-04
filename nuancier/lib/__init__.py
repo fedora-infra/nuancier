@@ -93,6 +93,11 @@ def get_election(session, election_id):
     return model.Elections.by_id(session, election_id)
 
 
+def get_elections_to_contribute(session):
+    """ Return all the election that are open. """
+    return model.Elections.get_to_contribute(session)
+
+
 def get_elections_open(session):
     """ Return all the election that are open. """
     return model.Elections.get_open(session)

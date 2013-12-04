@@ -193,6 +193,19 @@ class Elections(BASE):
             Elections.election_year.desc()
         ).all()
 
+    @classmethod
+    def get_to_contribute(cls, session):
+        """ Return all the election public.
+        """
+        today = datetime.datetime.utcnow().date()
+        return session.query(
+            cls
+        ).filter(
+            Elections.election_date_start >= today
+        ).order_by(
+            Elections.election_year.desc()
+        ).all()
+
 
 class Candidates(BASE):
     ''' This table lists the candidates for the elections.
