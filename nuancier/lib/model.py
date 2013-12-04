@@ -292,6 +292,22 @@ class Candidates(BASE):
         return query.all()
 
     @classmethod
+    def by_election_and_name(cls, session, election_id, name):
+        """ Return the candidate associated to the given election
+        identifier and having the specified name.
+
+        """
+        query = session.query(
+            cls
+        ).filter(
+            Candidates.election_id == election_id
+        ).filter(
+            Candidates.candidate_name == name
+        )
+
+        return query.first()
+
+    @classmethod
     def get_results(cls, session, election_id):
         """ Return the candidate of a given election ranked by the number
         of vote each received.
