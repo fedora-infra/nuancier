@@ -48,6 +48,16 @@ DB_PATH = 'sqlite:///:memory:'
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
 TODAY = datetime.utcnow().date()
+FAITOUT_URL = 'http://209.132.184.152/faitout/'
+
+try:
+    import requests
+    req = requests.get('%s/new' % FAITOUT_URL)
+    if req.status_code == 200:
+        DB_PATH = req.text
+        print 'Using faitout at: %s' % DB_PATH
+except:
+    pass
 
 
 class Modeltests(unittest.TestCase):
