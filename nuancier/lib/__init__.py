@@ -290,14 +290,13 @@ def generate_cache(session, election, picture_folder, cache_folder,
     :kwarg size:
     """
     picture_folder = os.path.join(picture_folder, election.election_folder)
-    infos_file = os.path.join(picture_folder, 'infos.txt')
 
     if not os.path.exists(picture_folder) or not os.path.isdir(picture_folder):
         raise NuancierException(
             'The folder said to contain the pictures of this election (%s) '
             'does not exist or is not a folder' % picture_folder)
 
-    # Check if the cache folder itself is a file
+    # Check if the cache folder itself exists or is a file
     if os.path.exists(cache_folder) and not os.path.isdir(cache_folder):
         raise NuancierException(
             'Something happened in the creation of the cache folder (%s) '
@@ -306,58 +305,25 @@ def generate_cache(session, election, picture_folder, cache_folder,
 
     cache_folder = os.path.join(cache_folder, election.election_folder)
 
-    # Check if the cache folder of this election is a file
+    # Check if the cache folder *of this election* exists or is a file
     if os.path.exists(cache_folder) and not os.path.isdir(cache_folder):
         raise NuancierException(
             'Something happened in the creation of the cache folder (%s) '
             'of this election, the path does not lead to a folder'
             % cache_folder)
 
-    # Check is the information file is present
-    if not os.path.exists(infos_file) or not os.path.isfile(infos_file):
-        raise NuancierException(
-            'Something is wrong with the information file ``infos.txt`` for '
-            'this election, either it is missing or it is not a file.')
-
     # Once we checked everything is in place, let's start to do something.
     if not os.path.exists(cache_folder):
         os.makedirs(cache_folder)
 
-    stream = open(infos_file)
-    infos = stream.readlines()
-    stream.close()
+    candidates = model.Candidates.by_election(session, election.id)
 
-    existing_candidates = model.Candidates.by_election(session, election.id)
-    existing_candidates = [candidate.candidate_file
-                           for candidate in existing_candidates]
-
-    for info in infos:
-        info = info.replace('"', '').strip().decode('utf-8')
-        if info.startswith('#'):  # pragma: no cover
-            continue
-        if info.count('\t') != 2:
-            session.rollback()
-            raise NuancierException(
-                'The information file ``infos.txt`` must contain two (and '
-                'only two) tabulation on the row: %s.' % info)
-        filename, author, imgname = info.split('\t')
-        filename = filename.strip()
-        author = author.strip()
-        imgname = imgname.strip()
-        if filename not in existing_candidates:
-            add_candidate(
-                session=session,
-                candidate_file=filename,
-                candidate_name=imgname,
-                candidate_author=author,
-                election_id=election.id)
-        generate_thumbnail(filename, picture_folder, cache_folder, size)
-
-    try:
-        session.commit()
-    except SQLAlchemyError as err:  # pragma: no cover
-        print >> sys.stderr, "Cannot add pictures to election:", err
-        raise NuancierException(err)
+    for candidate in candidates:
+        generate_thumbnail(
+            candidate.candidate_file,
+            picture_folder,
+            cache_folder,
+            size)
 
 
 def get_stats(session, election_id):
