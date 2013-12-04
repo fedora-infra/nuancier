@@ -48,3 +48,13 @@ THUMB_SIZE = (256, 256)
 # Options are listed at:
 # http://dogpilecache.readthedocs.org/en/latest/api.html  (backend section)
 NUANCIER_CACHE_BACKEND = 'dogpile.cache.memory'
+
+ALLOWED_EXTENSIONS = ['svg', 'png', 'jpeg', 'jpg']
+ALLOWED_MIMETYPES = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+]
+
+PICTURE_MIN_WIDTH = 1600
+PICTURE_MIN_HEIGHT = 1200
