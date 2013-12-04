@@ -24,9 +24,9 @@ fedmsg shim for nuancier-lite
 '''
 
 fedmsg = None
-try:
+try:  # pragma: no cover
     import fedmsg
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 
 
@@ -34,7 +34,7 @@ if fedmsg:
     fedmsg.init()
 
 
-def publish(topic, msg):
+def publish(topic, msg):  # pragma: no cover
     if not fedmsg:
         return
 
