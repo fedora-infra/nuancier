@@ -3,7 +3,6 @@
 {% block title %} {{ super() }} {% endblock %}
 
 {%block head %}
-<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
 <script>
@@ -15,8 +14,10 @@ var votelimit = {{election.election_n_choice}} - {{n_votes_done}};
 
 {% block jscripts %}
 {{ super() }}
-<script src="{{ url_for('static', filename='nuancier.js') }}"></script>
-
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.9.2.custom.min.js') }}"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='nuancier.js') }}"></script>
 {% endblock %}
 
 {% block content %}

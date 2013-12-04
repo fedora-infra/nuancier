@@ -3,10 +3,15 @@
 {% block title %} {{ super() }} {% endblock %}
 
 {%block head %}
-<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
-<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.9.2.custom.min.js') }}"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
 {% endblock %}
 
 {%block tag %}admin{% endblock %}
