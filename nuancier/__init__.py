@@ -32,8 +32,15 @@ import flask
 import dogpile.cache
 from functools import wraps
 from flask.ext.fas_openid import FAS
+from werkzeug import secure_filename
 
 from sqlalchemy.exc import SQLAlchemyError
+
+try:
+    from PIL import Image
+except ImportError:
+    # This is for the old versions not using pillow
+    import Image
 
 import forms
 import lib as nuancierlib
@@ -125,6 +132,46 @@ def nuancier_admin_required(function):
     return decorated_function
 
 
+def validate_input_file(input_file):
+    ''' Validate the submitted input file.
+
+    This validation has four layers:
+      - extension of the file provided
+      - MIMETYPE of the file provided
+      - size of the image (1600x1200 minimal)
+      - ratio of the image (16:9)
+
+    :arg input_file: a File object of the candidate submitted/uploaded and
+        for which we want to check that it compliants with our expectations.
+    '''
+
+    extension = os.path.splitext(
+        secure_filename(input_file.filename))[1][1:].lower()
+    if extension not in APP.config.get('ALLOWED_EXTENSIONS', []):
+        raise nuancierlib.NuancierException(
+            'The submitted candidate has the file extension "%s" which is '
+            'not an allowed format' % extension)
+
+    mimetype = input_file.mimetype.lower()
+    if mimetype not in APP.config.get('ALLOWED_MIMETYPES', []):
+        raise nuancierlib.NuancierException(
+            'The submitted candidate has the MIME type "%s" which is '
+            'not an allowed MIME type' % mimetype)
+
+    image = Image.open(input_file.stream)
+    width, height = image.size
+    min_width = APP.config.get('PICTURE_MIN_WIDTH', 1600)
+    min_height = APP.config.get('PICTURE_MIN_HEIGHT', 1200)
+    if width < min_width:
+        raise nuancierlib.NuancierException(
+            'The submitted candidate has a width of %s pixels which is lower'
+            ' than the minimum %s pixels required' % (width, min_width))
+    if height < min_height:
+        raise nuancierlib.NuancierException(
+            'The submitted candidate has a height of %s pixels which is lower'
+            ' than the minimum %s pixels required' % (height, min_height))
+
+
 ## APP
 
 @APP.context_processor
@@ -194,6 +241,97 @@ def index():
     ''' Display the index page. '''
     elections = nuancierlib.get_elections_open(SESSION)
     return flask.render_template('index.html', elections=elections)
+
+
+@APP.route('/contribute/')
+def contribute_index():
+    ''' Display the index page for interested contributor. '''
+    elections = nuancierlib.get_elections_to_contribute(SESSION)
+    return flask.render_template(
+        'contribute_index.html',
+        elections=elections)
+
+
+@APP.route('/contribute/<election_id>', methods=['GET', 'POST'])
+@fas_login_required
+def contribute(election_id):
+    ''' Display the index page for interested contributor. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    form = forms.AddCandidateForm()
+    if form.validate_on_submit():
+        candidate_file = flask.request.files['candidate_file']
+
+        if not candidate_file:
+            flask.flash('No file submitted')
+            return flask.render_template(
+                'contribute.html',
+                election=election,
+                form=form)
+
+        try:
+            validate_input_file(candidate_file)
+        except nuancierlib.NuancierException as err:
+            print >> sys.stderr, "Uploaded file is not valid: ", err
+            flask.flash(err.message)
+            return flask.render_template(
+                'contribute.html',
+                election=election,
+                form=form)
+
+        try:
+            candidate = nuancierlib.add_candidate(
+                SESSION,
+                candidate_file=filename,
+                candidate_name=form.candidate_name.data,
+                candidate_author=form.candidate_author.data,
+                candidate_license=form.candidate_license.data,
+                candidate_submitter=flask.g.fas_user.username,
+                election_id=election.id
+            )
+        except nuancierlib.NuancierException as err:
+            flask.flash(err.message, 'error')
+            return flask.render_template(
+                'contribute.html',
+                election=election,
+                form=form)
+
+        try:
+            SESSION.commit()
+        except SQLAlchemyError as err:
+            SESSION.rollback()
+            print >> sys.stderr, "Cannot add candidate: ", err
+            flask.flash(err.message, 'error')
+            return flask.render_template(
+                'contribute.html',
+                election=election,
+                form=form)
+
+        # Only save the file once everything has been safely saved in the DB
+        upload_folder = os.path.join(
+            APP.config['PICTURE_FOLDER'],
+            election.election_folder)
+        if not os.path.exists(upload_folder):
+            os.mkdir(upload_folder)
+        filename = secure_filename(candidate_file.filename)
+        # The PIL module has already read the stream so we need to back up
+        candidate_file.seek(0)
+
+        candidate_file.save(
+            os.path.join(upload_folder, filename))
+
+        flask.flash('Thanks for your submission')
+        return flask.redirect(flask.url_for('admin_index'))
+    else:
+        form = forms.AddCandidateForm(election=election)
+
+    return flask.render_template(
+        'contribute.html',
+        election=election,
+        form=form)
 
 
 @APP.route('/elections/')
