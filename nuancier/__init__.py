@@ -439,7 +439,7 @@ def admin_index():
 
 @APP.route('/admin/<election_id>/edit/', methods=['GET', 'POST'])
 @nuancier_admin_required
-def admin_edit():
+def admin_edit(election_id):
     ''' Edit an election. '''
     election = nuancierlib.get_election(SESSION, election_id)
 
@@ -451,6 +451,7 @@ def admin_edit():
     if form.validate_on_submit():
         election = nuancierlib.edit_election(
             SESSION,
+            election=election,
             election_name=form.election_name.data,
             election_folder=form.election_folder.data,
             election_year=form.election_year.data,
@@ -465,10 +466,18 @@ def admin_edit():
             SESSION.rollback()
             print >> sys.stderr, "Cannot edit election", err
             flask.flash(err.message, 'error')
+            return flask.render_template(
+                'admin_edit.html',
+                election=election,
+                form=form)
+
         return flask.redirect(flask.url_for('admin_index'))
     else:
         form = forms.AddElectionForm(election=election)
-    return flask.render_template('admin_edit.html', form=form)
+    return flask.render_template(
+        'admin_edit.html',
+        election=election,
+        form=form)
 
 
 @APP.route('/admin/new/', methods=['GET', 'POST'])
