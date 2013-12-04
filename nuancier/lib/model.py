@@ -205,6 +205,7 @@ class Candidates(BASE):
     candidate_file = sa.Column(sa.String(255), nullable=False)
     candidate_name = sa.Column(sa.String(255), nullable=False)
     candidate_author = sa.Column(sa.String(255), nullable=False)
+    candidate_license = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
         sa.Integer,
         sa.ForeignKey('Elections.id',
