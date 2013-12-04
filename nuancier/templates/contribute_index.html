@@ -166,7 +166,7 @@
 <ul>
     {% for election in elections %}
     <li>
-        <a href="{{ url_for('contribute', election_id=election.id) }}">
+        <a class="large_button" href="{{ url_for('contribute', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
         </a>
     </li>
