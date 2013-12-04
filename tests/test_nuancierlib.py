@@ -193,6 +193,18 @@ class NuancierLibtests(Modeltests):
         candidates = nuancierlib.get_candidates(self.session, 2, True)
         self.assertEqual(0, len(candidates))
 
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_candidate,
+            session=self.session,
+            candidate_file='test.png',
+            candidate_name='test image',
+            candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
+            election_id=2,
+        )
+
     def test_add_vote(self):
         """ Test the add_vote function. """
         create_elections(self.session)
@@ -210,10 +222,38 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(1, len(votes))
         self.assertEqual(2, votes[0].candidate_id)
 
+    def test_edit_election(self):
+        """ Test the edit_election function. """
+        create_elections(self.session)
+        election = nuancierlib.get_election(self.session, 2)
+
+        new_election = nuancierlib.edit_election(
+            self.session,
+            election=election,
+            election_name='elec name',
+            election_folder='Test',
+            election_year=2048,
+            election_date_start=TODAY,
+            election_date_end=TODAY + timedelta(days=2),
+            election_n_choice=42,
+            election_badge_link='http://badges.fp.o/1234',
+        )
+
+        self.assertEqual(new_election.election_name, 'elec name')
+        self.assertEqual(new_election.election_folder, 'Test')
+        self.assertEqual(new_election.election_year, 2048)
+        self.assertEqual(new_election.election_date_start, TODAY)
+        self.assertEqual(
+            new_election.election_date_end, TODAY + timedelta(days=2))
+        self.assertEqual(new_election.election_n_choice, 42)
+        self.assertEqual(
+            new_election.election_badge_link, 'http://badges.fp.o/1234')
+
     def test_generate_cache(self):
         """ Test the generate_cache function. """
 
         create_elections(self.session)
+        create_candidates(self.session)
         election = nuancierlib.get_election(self.session, 2)
 
         self.assertFalse(os.path.exists(CACHE_FOLDER))
@@ -297,6 +337,8 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(5, stats['votes'])
         self.assertEqual(3, stats['voters'])
         self.assertEqual([[1, 1], [2, 2]], stats['data'])
+
+
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierLibtests)
