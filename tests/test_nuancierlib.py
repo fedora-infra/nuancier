@@ -111,6 +111,14 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(1, len(elections))
         self.assertEqual('Wallpaper F19', elections[0].election_name)
 
+    def test_get_elections_to_contribute(self):
+        """ Test the get_elections_to_contribute function. """
+        create_elections(self.session)
+
+        elections = nuancierlib.get_elections_to_contribute(self.session)
+        self.assertEqual(1, len(elections))
+        self.assertEqual('Wallpaper F21', elections[0].election_name)
+
     def test_get_votes_user(self):
         """ Test the get_votes_user function. """
         create_elections(self.session)
