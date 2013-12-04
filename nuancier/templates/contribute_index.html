@@ -1,0 +1,179 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}contribute{% endblock %}
+
+{% block content %}
+
+<h1>Contribute a supplemental wallpaper</h1>
+
+<p>
+  Before submitting a supplemental wallpaper make sure to read these sections
+  carefully. Any submission not fullfilling these rules will be rejected.
+</p>
+
+<h3>Rules</h3>
+
+<ul>
+  <li>
+    Contributor must have signed the <span class="bold">Contributor
+    license agreement</span> which can be done via the <a
+    href="https://admin.fedoraproject.org/accounts">Fedora account system</a>.
+  </li>
+  <li>
+    Contribution must <span class="bold">not violate or infringe someone's
+    else rights</span> (including but not limited to privacy, publicity or
+    intellectual property rights).
+  </li>
+  <li>
+    Contribution should have the <span class="bold">consent and approval of
+    the author or creator</span>.
+  </li>
+  <li>
+    Contributions will be treated as being <span class="bold">licensed under <a
+    href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></span>
+    unless otherwise specified. Note that all contribution must have an <a
+    href="http://fedoraproject.org/wiki/Licensing#Good_Licenses_3">approved
+    license</a>.
+  </li>
+</ul>
+
+
+
+<h3>Subject matters</h3>
+
+<p>
+  You are free to submit wallpaper covering a wide range of subject. Not any
+  subject though.
+</p>
+
+<p>Subject should not contain any:</p>
+<ul>
+  <li>
+    brand or trademark of any kind
+  </li>
+  <li>
+    inappropriate material, offensive, indecent, obscene, hateful, tortuous,
+    defamatory, slanderous or libelous.
+    <ul>
+      <li>no sexually explicit or provocative subject matter</li>
+      <li>no images of weapons or violent imagery</li>
+      <li>no alcohol, smoking, or drug use imagery</li>
+    </ul>
+  </li>
+  <li>
+    promotion of bigotry, racism, hatred or harm against any group or
+    individual or promotes discrimination based on race, gender, religion,
+    nationality, disability, sexual orientation or age.
+  </li>
+  <li>
+    unlawful material, in violation of or contrary to the laws or
+    regulations in the jurisdiction where the work is created.
+  </li>
+  <li>
+    religious, political, or nationalist imagery (including flags)
+  </li>
+  <li>
+    images of hats, particularly fedoras. <span class="small italic">(This is a
+    matter of respect for our primary sponsor, Red Hat, Inc., and is not
+    negotiable. Of course, passive appearance of hats, such as those upon
+    heads in a crowd, may be allowed.)</span>
+  </li>
+  <li>
+    version numbers. <span class="small italic">End users might prefer to
+    continue to use an older theme, or use the latest theme in their older
+    version of Fedora</span>.
+  </li>
+  <li>
+    text. <span class="small italic">The artwork is intended for a global
+    audience and text prevent it from being reused by derivative
+    distributions</span>.
+  </li>
+  <li>
+    identifiable people (contemporary, historical, or fictional).
+  </li>
+  <li>
+    pets or captive or mistreated animals.
+  </li>
+</ul>
+
+
+
+<h3>Technical requirements</h3>
+
+<ul>
+  <li>
+    <span class="bold">16:9 ratio</span> is recommanded, if possible
+    <span class="bold">2560x1440</span> but the bigger the better
+    (Yoda agrees when it's about wallpapers).
+  </li>
+  <li>
+    Format should be readable by standard tools. Preferred formats are:
+    <span class="bold">SVG and PNG.</span>
+    <span class="small italic">Master files, which may be further edited,
+    should be maintained in non-lossy formats. Preserving vector graphics,
+    raster layers, and channels is important for such materials. </span>
+  </li>
+  <li>
+    <span class="bold">Minimal resolution is 1600x1200</span> that is 1600
+    pixels wide by 1200 pixels high but again, the larger the better.
+  </li>
+  <li>
+    <span class="bold">No watermarks, signatures, photographer/creator names,
+    or messages</span> in any part of the work.
+    <span class="small italic">However if the license allows, and the photo is
+    compelling enough, we could remove watermarks.</span>
+  </li>
+</ul>
+
+
+
+<h3>Composition</h3>
+
+<ul>
+  <li>
+    Should strive for subtlety and poetry
+  </li>
+  <li>
+    Avoid <a href="http://forensicphotoshop.blogspot.com/2009/04/low-frequency-vs-high-frequency.html"
+    >high frequency images</a>.
+    <span class="small italic">A soft focus is one way to achieve this </span>
+  </li>
+  <li>
+    As the name suggests, visually, it should settle into the "background"
+    of the activity scene.
+  </li>
+  <li>
+    Fewer details on left side allows for good readability for primary
+    icons on the desktop.
+    <ul>
+      <li>
+        Keep in mind that many users have icons covering the entire desktop
+        view.
+      </li>
+    </ul>
+  </li>
+  <li>
+    Do not compete for the user's attention
+  </li>
+</ul>
+
+
+
+<h3>Contribute to an elections</h3>
+{% if elections %}
+<ul>
+    {% for election in elections %}
+    <li>
+        <a href="{{ url_for('contribute', election_id=election.id) }}">
+            {{ election.election_name }} - {{ election.election_year }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="error">No elections are opened to vote for the moment.</p>
+{% endif %}
+
+{% endblock %}
