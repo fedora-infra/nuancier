@@ -58,3 +58,7 @@ ALLOWED_MIMETYPES = [
 
 PICTURE_MIN_WIDTH = 1600
 PICTURE_MIN_HEIGHT = 1200
+
+# Flask configuration option
+# Set the maximum size of an upload someone may do, defaults here to 16MB
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024
