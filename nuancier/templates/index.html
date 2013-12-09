@@ -12,11 +12,14 @@
 Nuancier-lite is a simple voting application for the supplementary
 wallpapers included in Fedora.
 
+
+<h3>Vote</h3>
+
 {% if elections %}
 <ul>
     {% for election in elections %}
     <li>
-        <a href="{{ url_for('election', election_id=election.id) }}">
+        <a class="large_button" href="{{ url_for('election', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
         </a>
     </li>
@@ -24,6 +27,26 @@ wallpapers included in Fedora.
 </ul>
 {% else %}
 <p class="error">No elections are currently open for voting.</p>
+{% endif %}
+
+
+<h3>Contribute</h3>
+
+Before you contribute to an election make sure to <a href="{{ url_for('contribute_index') }}">
+    read the guidelines</a>
+
+{% if contributions %}
+<ul>
+    {% for election in contributions %}
+    <li>
+        <a class="large_button" href="{{ url_for('election', election_id=election.id) }}">
+            {{ election.election_name }} - {{ election.election_year }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="error">No elections are opened for contributions for the moment.</p>
 {% endif %}
 
 {% endblock %}

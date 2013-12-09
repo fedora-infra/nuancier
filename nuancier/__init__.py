@@ -240,7 +240,11 @@ def base_cache(filename):
 def index():
     ''' Display the index page. '''
     elections = nuancierlib.get_elections_open(SESSION)
-    return flask.render_template('index.html', elections=elections)
+    contributions = nuancierlib.get_elections_to_contribute(SESSION)
+    return flask.render_template(
+        'index.html',
+        elections=elections,
+        contributions=contributions)
 
 
 @APP.route('/contribute/')
