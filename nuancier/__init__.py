@@ -94,7 +94,7 @@ def fas_login_required(function):
     """
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        if flask.g.fas_user is None:
+        if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             flask.flash('Login required', 'errors')
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
@@ -365,7 +365,7 @@ def election(election_id):
     # How many votes the user made:
     votes = []
     can_vote = True
-    if flask.g.fas_user:
+    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
                                            flask.g.fas_user.username)
 
@@ -376,14 +376,14 @@ def election(election_id):
         return flask.redirect(flask.url_for('vote', election_id=election_id))
     elif election.election_open and len(votes) >= election.election_n_choice:
         can_vote = False
-    else:
+    elif not election.election_public:
         flask.flash('This election is not open', 'error')
         return flask.redirect(flask.url_for('elections_list'))
 
     candidates = nuancierlib.get_candidates(
         SESSION, election_id, approved=True)
 
-    if flask.g.fas_user:
+    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
         random.seed(
             int(
                 hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
@@ -452,7 +452,7 @@ def vote(election_id):
     )
 
 
-@APP.route('/election/<int:election_id>/voted/', methods=['GET', 'POST'])
+@APP.route('/election/<int:election_id>/voted/', methods=['POST'])
 @fas_login_required
 def process_vote(election_id):
     election = nuancierlib.get_election(SESSION, election_id)
