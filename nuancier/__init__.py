@@ -152,12 +152,17 @@ def validate_input_file(input_file):
             'not an allowed format' % extension)
 
     mimetype = input_file.mimetype.lower()
-    if mimetype not in APP.config.get('ALLOWED_MIMETYPES', []):
+    if mimetype not in APP.config.get(
+            'ALLOWED_MIMETYPES', []):  # pragma: no cover
         raise nuancierlib.NuancierException(
             'The submitted candidate has the MIME type "%s" which is '
             'not an allowed MIME type' % mimetype)
 
-    image = Image.open(input_file.stream)
+    try:
+        image = Image.open(input_file.stream)
+    except:
+        raise nuancierlib.NuancierException(
+            'The submitted candidate could not be opened as an Image')
     width, height = image.size
     min_width = APP.config.get('PICTURE_MIN_WIDTH', 1600)
     min_height = APP.config.get('PICTURE_MIN_HEIGHT', 1200)
@@ -272,13 +277,6 @@ def contribute(election_id):
     if form.validate_on_submit():
         candidate_file = flask.request.files['candidate_file']
 
-        if not candidate_file:
-            flask.flash('No file submitted')
-            return flask.render_template(
-                'contribute.html',
-                election=election,
-                form=form)
-
         try:
             validate_input_file(candidate_file)
         except nuancierlib.NuancierException as err:
@@ -310,10 +308,12 @@ def contribute(election_id):
 
         try:
             SESSION.commit()
-        except SQLAlchemyError as err:
+        except SQLAlchemyError as err:  #pragma: no cover
             SESSION.rollback()
             print >> sys.stderr, "Cannot add candidate: ", err
-            flask.flash(err.message, 'error')
+            flask.flash(
+                'Someone has already upload a file with the same file name'
+                ' for this election', 'error')
             return flask.render_template(
                 'contribute.html',
                 election=election,
@@ -323,7 +323,7 @@ def contribute(election_id):
         upload_folder = os.path.join(
             APP.config['PICTURE_FOLDER'],
             election.election_folder)
-        if not os.path.exists(upload_folder):
+        if not os.path.exists(upload_folder):  #pragma: no cover
             os.mkdir(upload_folder)
         filename = secure_filename(candidate_file.filename)
         # The PIL module has already read the stream so we need to back up
@@ -333,7 +333,7 @@ def contribute(election_id):
             os.path.join(upload_folder, filename))
 
         flask.flash('Thanks for your submission')
-        return flask.redirect(flask.url_for('admin_index'))
+        return flask.redirect(flask.url_for('index'))
     else:
         form = forms.AddCandidateForm(election=election)
 
