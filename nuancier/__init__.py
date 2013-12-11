@@ -205,7 +205,7 @@ def msg():
 
 
 @APP.route('/login/', methods=['GET', 'POST'])
-def login():
+def login():  # pragma: no cover
     """ Login mechanism for this application.
     """
     next_url = None
@@ -222,7 +222,7 @@ def login():
 
 
 @APP.route('/logout/')
-def logout():
+def logout():  # pragma: no cover
     """ Log out if the user is logged in other do nothing.
     Return to the index page at the end.
     """
