@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # EASY-INSTALL-ENTRY-SCRIPT: 'nose==1.3.0','console_scripts','nosetests'
 __requires__ = ['nose>=0.10.0', 'SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
 import sys
