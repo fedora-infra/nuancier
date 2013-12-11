@@ -75,7 +75,7 @@ def is_nuancier_admin(user):
         return False
 
     admins = APP.config['ADMIN_GROUP']
-    if isinstance(admins, basestring):
+    if isinstance(admins, basestring):  #pragma: no cover
         admins = set([admins])
     else:
         admins = set(admins)
@@ -178,7 +178,10 @@ def inject_is_admin():
     """ Inject whether the user is a nuancier admin or not in every page
     (every template).
     """
-    return dict(is_admin=is_nuancier_admin(flask.g.fas_user),
+    user = None
+    if hasattr(flask.g, 'fas_user'):
+        user = flask.g.fas_user
+    return dict(is_admin=is_nuancier_admin(user),
                 version=__version__)
 
 
