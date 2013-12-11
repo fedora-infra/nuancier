@@ -66,13 +66,12 @@ CACHE = dogpile.cache.make_region().configure(
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
 
-def is_nuancier_admin():
+def is_nuancier_admin(user):
     """ Is the user a nuancier admin.
     """
-    if not hasattr(flask.g, 'fas_user') or not flask.g.fas_user:
+    if not user:
         return False
-    if not flask.g.fas_user.cla_done or \
-            len(flask.g.fas_user.groups) < 1:
+    if not user.cla_done or len(user.groups) < 1:
         return False
 
     admins = APP.config['ADMIN_GROUP']
@@ -81,7 +80,7 @@ def is_nuancier_admin():
     else:
         admins = set(admins)
 
-    return len(set(flask.g.fas_user.groups).intersection(admins)) > 0
+    return len(set(user.groups).intersection(admins)) > 0
 
 
 def fas_login_required(function):
@@ -123,7 +122,7 @@ def nuancier_admin_required(function):
                 len(flask.g.fas_user.groups) < 1:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
-        elif not is_nuancier_admin():
+        elif not is_nuancier_admin(flask.g.fas_user):
             flask.flash('You are not an administrator of nuancier-lite',
                         'errors')
             return flask.redirect(flask.url_for('msg'))
@@ -179,7 +178,7 @@ def inject_is_admin():
     """ Inject whether the user is a nuancier admin or not in every page
     (every template).
     """
-    return dict(is_admin=is_nuancier_admin(),
+    return dict(is_admin=is_nuancier_admin(flask.g.fas_user),
                 version=__version__)
 
 
