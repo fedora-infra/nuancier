@@ -321,6 +321,22 @@ class Candidates(BASE):
         return query.first()
 
     @classmethod
+    def by_election_and_file(cls, session, election_id, filename):
+        """ Return the candidate associated to the given election
+        identifier and having the specified filename.
+
+        """
+        query = session.query(
+            cls
+        ).filter(
+            Candidates.election_id == election_id
+        ).filter(
+            Candidates.candidate_file == filename
+        )
+
+        return query.first()
+
+    @classmethod
     def get_results(cls, session, election_id):
         """ Return the candidate of a given election ranked by the number
         of vote each received.
