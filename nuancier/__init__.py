@@ -492,7 +492,7 @@ def process_vote(election_id):
     # If vote on candidates from other elections
     if not set(entries).issubset(candidate_ids):
         flask.flash('The selection you have made contains element which are '
-                    'part of this election, please be careful.', 'error')
+                    'not part of this election, please be careful.', 'error')
         return flask.redirect(flask.url_for('vote', election_id=election_id))
 
     # How many votes the user made:
@@ -515,6 +515,7 @@ def process_vote(election_id):
                     'error')
         return flask.render_template(
             'vote.html',
+            form=forms.ConfirmationForm(),
             election=election,
             candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
                         for candidate_id in entries],
@@ -526,16 +527,13 @@ def process_vote(election_id):
         )
 
     # Allowed to vote, selection sufficient, choice confirmed: process
-    try:
-        for selection in entries:
-            nuancierlib.add_vote(SESSION, selection,
-                                 flask.g.fas_user.username)
-    except nuancierlib.NuancierException, err:
-        flask.flash(err.message, 'error')
+    for selection in entries:
+        nuancierlib.add_vote(SESSION, selection,
+                             flask.g.fas_user.username)
 
     try:
         SESSION.commit()
-    except SQLAlchemyError as err:
+    except SQLAlchemyError as err:  # pragma: no cover
         SESSION.rollback()
         print >> sys.stderr, "Error while proccessing the vote:", err
         flask.flash('An error occured while processing your votes, please '
