@@ -7,3 +7,4 @@ python-fedora
 Pillow
 SQLAlchemy>=0.6
 dogpile.cache
+blinker # required by flask for tests
