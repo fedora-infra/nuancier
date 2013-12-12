@@ -641,20 +641,17 @@ def admin_new():
     ''' Create a new election. '''
     form = forms.AddElectionForm()
     if form.validate_on_submit():
-        try:
-            election = nuancierlib.add_election(
-                SESSION,
-                election_name=form.election_name.data,
-                election_folder=form.election_folder.data,
-                election_year=form.election_year.data,
-                election_date_start=form.election_date_start.data,
-                election_date_end=form.election_date_end.data,
-                election_n_choice=form.election_n_choice.data,
-                election_badge_link=form.election_badge_link.data,
-            )
-        except nuancierlib.NuancierException as err:
-            flask.flash(err.message, 'error')
-            return flask.render_template('admin_new.html', form=form)
+
+        election = nuancierlib.add_election(
+            SESSION,
+            election_name=form.election_name.data,
+            election_folder=form.election_folder.data,
+            election_year=form.election_year.data,
+            election_date_start=form.election_date_start.data,
+            election_date_end=form.election_date_end.data,
+            election_n_choice=form.election_n_choice.data,
+            election_badge_link=form.election_badge_link.data,
+        )
 
         try:
             SESSION.commit()
