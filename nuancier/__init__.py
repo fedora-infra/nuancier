@@ -94,6 +94,8 @@ def fas_login_required(function):
     """
     @wraps(function)
     def decorated_function(*args, **kwargs):
+        """ Wrapped function actually checking if the user is logged in.
+        """
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             flask.flash('Login required', 'errors')
             return flask.redirect(flask.url_for('.login',
@@ -117,6 +119,9 @@ def nuancier_admin_required(function):
     """
     @wraps(function)
     def decorated_function(*args, **kwargs):
+        """ Wrapped function actually checking if the user is an admin for
+        nuancier.
+        """
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
