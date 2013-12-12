@@ -246,9 +246,9 @@ class Nuanciertests(Modeltests):
                 output = self.app.post('/contribute/1', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="message">The submitted candidate has a width of'
-                    ' 1280 pixels which is lower than the minimum 1600 pixels '
-                    'required</li>' in output.data
+                    '<li class="message">The submitted candidate has a '
+                    'width of 1280 pixels which is lower than the minimum '
+                    '1600 pixels required</li>' in output.data
                 )
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
@@ -544,7 +544,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/election/1/vote/')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">No election found</li>'
-                        in output.data)
+                            in output.data)
 
         create_elections(self.session)
         create_candidates(self.session)
@@ -807,7 +807,7 @@ class Nuanciertests(Modeltests):
                             '</li>' in output.data)
             self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
             self.assertTrue('Nuancier-lite is a simple voting application'
-                        in output.data)
+                            in output.data)
 
         # Fails - is not CLA + 1
         user.cla_done = True
@@ -822,7 +822,7 @@ class Nuanciertests(Modeltests):
                             'group than the CLA</li>' in output.data)
             self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
             self.assertTrue('Nuancier-lite is a simple voting application'
-                        in output.data)
+                            in output.data)
 
         # Success
         user.groups = ['packager', 'cla_done', 'sysadmin-main']
@@ -1076,8 +1076,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="message">Election created</li>'
                             in output.data)
             self.assertFalse('<li class="error">The folder said to contain '
-                            'the pictures of this election'
-                            in output.data)
+                             'the pictures of this election'
+                             in output.data)
             self.assertTrue('election1' in output.data)
             self.assertTrue('election2' in output.data)
             self.assertTrue('Wallpaper F19' in output.data)
@@ -1240,7 +1240,7 @@ class Nuanciertests(Modeltests):
 
             # Fails: results public
             output = self.app.post('/admin/review/1/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">The results of this election'
                             ' are already public, this election can no '
@@ -1248,7 +1248,7 @@ class Nuanciertests(Modeltests):
 
             # Fails: vote open
             output = self.app.post('/admin/review/2/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">This election is already open'
                             ' to public votes and can no longer be changed'
@@ -1256,7 +1256,7 @@ class Nuanciertests(Modeltests):
 
             # Fails: no input submitted (beside the csrf_token)
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">Only the actions "Approved" '
                             'or "Denied" are accepted</li>' in output.data)
@@ -1270,7 +1270,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(' <li class="error">One of the candidate '
                             'submitted was not candidate in this election'
@@ -1285,7 +1285,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(' <li class="error">One of the candidate '
                             'submitted was not candidate in this election'
@@ -1308,7 +1308,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Candidate(s) updated</li>'
                             in output.data)
@@ -1330,7 +1330,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must provide a motif to '
                             'deny a candidate</li>' in output.data)
@@ -1343,7 +1343,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must provide a motif to '
                             'deny a candidate</li>' in output.data)
@@ -1357,7 +1357,7 @@ class Nuanciertests(Modeltests):
             }
 
             output = self.app.post('/admin/review/3/process', data=data,
-                                  follow_redirects=True)
+                                   follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Candidate(s) updated</li>'
                             in output.data)
