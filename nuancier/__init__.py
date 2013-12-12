@@ -75,7 +75,7 @@ def is_nuancier_admin(user):
         return False
 
     admins = APP.config['ADMIN_GROUP']
-    if isinstance(admins, basestring):  #pragma: no cover
+    if isinstance(admins, basestring):  # pragma: no cover
         admins = set([admins])
     else:
         admins = set(admins)
@@ -314,7 +314,7 @@ def contribute(election_id):
 
         try:
             SESSION.commit()
-        except SQLAlchemyError as err:  #pragma: no cover
+        except SQLAlchemyError as err:  # pragma: no cover
             SESSION.rollback()
             print >> sys.stderr, "Cannot add candidate: ", err
             flask.flash(
@@ -329,7 +329,7 @@ def contribute(election_id):
         upload_folder = os.path.join(
             APP.config['PICTURE_FOLDER'],
             election.election_folder)
-        if not os.path.exists(upload_folder):  #pragma: no cover
+        if not os.path.exists(upload_folder):  # pragma: no cover
             os.mkdir(upload_folder)
         filename = secure_filename(candidate_file.filename)
         # The PIL module has already read the stream so we need to back up
