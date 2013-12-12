@@ -712,6 +712,11 @@ def admin_process_review(election_id):
     ''' Process the reviewing of a new election. '''
     election = nuancierlib.get_election(SESSION, election_id)
 
+    form = forms.ConfirmationForm()
+    if not form.validate_on_submit():
+        flask.flash('Wrong input submitted', 'error')
+        return flask.render_template('msg.html')
+
     if not election:
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
