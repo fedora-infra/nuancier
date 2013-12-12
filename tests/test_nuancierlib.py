@@ -339,7 +339,6 @@ class NuancierLibtests(Modeltests):
         self.assertEqual([[1, 1], [2, 2]], stats['data'])
 
 
-
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(NuancierLibtests)
     unittest.TextTestRunner(verbosity=2).run(SUITE)
