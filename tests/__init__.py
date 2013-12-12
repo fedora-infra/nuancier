@@ -35,6 +35,9 @@ from datetime import datetime
 from datetime import date
 from datetime import timedelta
 
+from contextlib import contextmanager
+from flask import appcontext_pushed, g
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
@@ -58,6 +61,30 @@ try:
         print 'Using faitout at: %s' % DB_PATH
 except:
     pass
+
+
+@contextmanager
+def user_set(APP, user):
+    """ Set the provided user as fas_user in the provided application."""
+
+    # Hack used to remove the before_request function set by
+    # flask.ext.fas_openid.FAS which otherwise kills our effort to set a
+    # flask.g.fas_user.
+    APP.before_request_funcs[None] = []
+
+    def handler(sender, **kwargs):
+        g.fas_user = user
+
+    with appcontext_pushed.connected_to(handler, APP):
+        yield
+
+
+class FakeFasUser(object):
+    """ Fake FAS user used for the tests. """
+    id = 100
+    username = 'pingou'
+    cla_done = True
+    groups = ['packager', 'cla_done']
 
 
 class Modeltests(unittest.TestCase):
@@ -103,7 +130,7 @@ def create_elections(session):
         election_name='Wallpaper F19',
         election_folder='F19',
         election_year='2013',
-        election_n_choice=16,
+        election_n_choice=2,
         election_date_start=TODAY - timedelta(days=10),
         election_date_end=TODAY - timedelta(days=8),
     )
@@ -113,9 +140,10 @@ def create_elections(session):
         election_name='Wallpaper F20',
         election_folder='F20',
         election_year='2013',
-        election_n_choice=16,
+        election_n_choice=2,
         election_date_start=TODAY - timedelta(days=2),
         election_date_end=TODAY + timedelta(days=3),
+        election_badge_link="http://badges.fp.org",
     )
     session.add(election)
 
@@ -123,7 +151,7 @@ def create_elections(session):
         election_name='Wallpaper F21',
         election_folder='F21',
         election_year='2014',
-        election_n_choice=16,
+        election_n_choice=2,
         election_date_start=TODAY + timedelta(days=1),
         election_date_end=TODAY + timedelta(days=6),
     )
@@ -134,8 +162,8 @@ def create_elections(session):
 def create_candidates(session):
     """ Create some basic candidates for testing. """
     candidate = model.Candidates(
-        candidate_file='DSC_0951.JPG',
-        candidate_name='DSC_0951',
+        candidate_file='ok.JPG',
+        candidate_name='Image ok',
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
@@ -144,8 +172,8 @@ def create_candidates(session):
     session.add(candidate)
 
     candidate = model.Candidates(
-        candidate_file='DSC_0930.JPG',
-        candidate_name='DSC_0930',
+        candidate_file='narrow.JPG',
+        candidate_name='Image too narrow',
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
@@ -154,8 +182,8 @@ def create_candidates(session):
     session.add(candidate)
 
     candidate = model.Candidates(
-        candidate_file='DSC_0923.JPG',
-        candidate_name='DSC_0923',
+        candidate_file='small.JPG',
+        candidate_name='Image too small',
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
@@ -164,14 +192,56 @@ def create_candidates(session):
     session.add(candidate)
 
     candidate = model.Candidates(
-        candidate_file='DSC_0922.JPG',
-        candidate_name='DSC_0922',
+        candidate_file='small2.JPG',
+        candidate_name='Image too small2',
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
         election_id=2,
     )
     session.add(candidate)
+
+    candidate = model.Candidates(
+        candidate_file='small3.JPG',
+        candidate_name='Image too small3',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='pingou',
+        election_id=2,
+    )
+    session.add(candidate)
+
+    candidate = model.Candidates(
+        candidate_file='small2.0.JPG',
+        candidate_name='Image too small2.0',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='pingou',
+        election_id=3,
+    )
+    session.add(candidate)
+
+    candidate = model.Candidates(
+        candidate_file='small2.1.JPG',
+        candidate_name='Image too small2.1',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='pingou',
+        election_id=3,
+    )
+    session.add(candidate)
+
+    session.commit()
+
+
+def approve_candidate(session):
+    """ Approve the all candidates for testing. """
+
+    for ids in [1, 2, 3, 4, 5]:
+        candidate = model.Candidates.by_id(session, ids)
+        candidate.approved = True
+
+        session.add(candidate)
 
     session.commit()
 
@@ -210,8 +280,20 @@ def create_votes(session):
     session.add(vote)
 
     vote = model.Votes(
+        user_name='pingou',
+        candidate_id=3,
+    )
+    session.add(vote)
+
+    vote = model.Votes(
         user_name='ralph',
         candidate_id=3,
+    )
+    session.add(vote)
+
+    vote = model.Votes(
+        user_name='ralph',
+        candidate_id=4,
     )
     session.add(vote)
 

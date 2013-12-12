@@ -53,16 +53,16 @@ class NuancierLibtests(Modeltests):
 
         candidates = nuancierlib.get_candidates(self.session, 1, False)
         self.assertEqual(2, len(candidates))
-        self.assertEqual('DSC_0930', candidates[0].candidate_name)
-        self.assertEqual('DSC_0951', candidates[1].candidate_name)
+        self.assertEqual('Image ok', candidates[0].candidate_name)
+        self.assertEqual('Image too narrow', candidates[1].candidate_name)
 
         candidates = nuancierlib.get_candidates(self.session, 1, True)
         self.assertEqual(0, len(candidates))
 
-        candidates = nuancierlib.get_candidates(self.session, 2, False)
+        candidates = nuancierlib.get_candidates(self.session, 3, False)
         self.assertEqual(2, len(candidates))
-        self.assertEqual('DSC_0922', candidates[0].candidate_name)
-        self.assertEqual('DSC_0923', candidates[1].candidate_name)
+        self.assertEqual('Image too small2.0', candidates[0].candidate_name)
+        self.assertEqual('Image too small2.1', candidates[1].candidate_name)
 
         candidates = nuancierlib.get_candidates(self.session, 2, True)
         self.assertEqual(0, len(candidates))
@@ -73,10 +73,10 @@ class NuancierLibtests(Modeltests):
         create_candidates(self.session)
 
         candidate = nuancierlib.get_candidate(self.session, 1)
-        self.assertEqual('DSC_0951', candidate.candidate_name)
+        self.assertEqual('Image ok', candidate.candidate_name)
 
-        candidate = nuancierlib.get_candidate(self.session, 4)
-        self.assertEqual('DSC_0922', candidate.candidate_name)
+        candidate = nuancierlib.get_candidate(self.session, 10)
+        self.assertEqual(None, candidate)
 
     def test_get_elections(self):
         """ Test the get_elections function. """
@@ -138,9 +138,9 @@ class NuancierLibtests(Modeltests):
 
         results = nuancierlib.get_results(self.session, 1)
         self.assertEqual(2, len(results))
-        self.assertEqual('DSC_0951', results[0][0].candidate_name)  # candidate
+        self.assertEqual('Image ok', results[0][0].candidate_name)  # candidate
         self.assertEqual(3, results[0][1])  # number of votes
-        self.assertEqual('DSC_0930', results[1][0].candidate_name)
+        self.assertEqual('Image too narrow', results[1][0].candidate_name)
         self.assertEqual(2, results[1][1])
 
     def test_add_election(self):

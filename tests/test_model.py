@@ -64,8 +64,8 @@ class NuancierModeltests(Modeltests):
         candidate = nuancierlib.get_candidate(self.session, 1)
         self.assertTrue(
             candidate.__repr__().startswith(
-                "Candidates(file:u'DSC_0951.JPG', "
-                "name:u'DSC_0951', "
+                "Candidates(file:u'ok.JPG', "
+                "name:u'Image ok', "
                 "election_id:1, "
             )
         )
@@ -102,7 +102,7 @@ class NuancierModeltests(Modeltests):
         candidate = nuancierlib.get_candidate(self.session, 1)
         self.assertEqual(
             candidate.api_repr(1),
-            {'election': u'Wallpaper F19', 'name': u'DSC_0951'}
+            {'election': u'Wallpaper F19', 'name': u'Image ok'}
         )
 
     def test_election_open(self):
