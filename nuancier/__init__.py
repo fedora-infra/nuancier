@@ -736,6 +736,9 @@ def admin_process_review(election_id):
             ' can no longer be changed', 'error')
         return flask.redirect(flask.url_for('results_list'))
 
+    candidates = nuancierlib.get_candidates(SESSION, election_id)
+    candidates_id = [str(candidate.id) for candidate in candidates]
+
     candidates_selected = flask.request.form.getlist('candidates_id')
     motifs = flask.request.form.getlist('motifs')
     action = flask.request.form.get('action')
@@ -750,12 +753,20 @@ def admin_process_review(election_id):
         return flask.redirect(
             flask.url_for('admin_review', election_id=election_id))
 
+    selections = []
+    for cand in candidates_id:
+        if cand not in candidates_selected:
+            selections.append(None)
+        else:
+            selections.append(cand)
+
     if action == 'Denied':
         req_motif = False
         if not motifs:
             req_motif = True
-        for motif in motifs:
-            if not motif.strip():
+        for cnt in range(len(motifs)):
+            motif = motifs[cnt]
+            if selections[cnt] and not motif.strip():
                 req_motif = True
                 break
         if req_motif:
@@ -765,9 +776,6 @@ def admin_process_review(election_id):
             return flask.redirect(
                 flask.url_for('admin_review', election_id=election_id))
 
-    candidates = nuancierlib.get_candidates(SESSION, election_id)
-    candidates_id = [str(candidate.id) for candidate in candidates]
-
     cnt = 0
     for candidate in candidates_selected:
         if candidate not in candidates_id:
@@ -776,7 +784,9 @@ def admin_process_review(election_id):
                 'election', 'error')
             return flask.redirect(
                 flask.url_for('admin_review', election_id=election_id))
-        else:
+
+    for candidate in selections:
+        if candidate:
             candidate = nuancierlib.get_candidate(SESSION, candidate)
             motif = None
             if len(motifs) > cnt:
