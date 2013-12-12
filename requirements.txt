@@ -6,3 +6,4 @@ flask
 python-fedora
 Pillow
 SQLAlchemy>=0.6
+dogpile.cache
