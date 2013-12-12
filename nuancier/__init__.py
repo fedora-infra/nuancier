@@ -449,6 +449,7 @@ def vote(election_id):
     return flask.render_template(
         'vote.html',
         election=election,
+        form=forms.ConfirmationForm(),
         candidates=candidates,
         n_votes_done=len(votes),
         picture_folder=os.path.join(
@@ -461,6 +462,12 @@ def vote(election_id):
 @APP.route('/election/<int:election_id>/voted/', methods=['POST'])
 @fas_login_required
 def process_vote(election_id):
+
+    form = forms.ConfirmationForm()
+    if not form.validate_on_submit():
+        flask.flash('Wrong input submitted', 'error')
+        return flask.render_template('msg.html')
+
     election = nuancierlib.get_election(SESSION, election_id)
     if not election:
         flask.flash('No election found', 'error')

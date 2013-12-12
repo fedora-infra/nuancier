@@ -40,6 +40,7 @@ Click on the wallpapers to select the ones you like.
 {% if candidates %}
 <form action="{{ url_for('process_vote', election_id=election.id) }}"
       method="post">
+{{ form.csrf_token }}
 <div id="votechoice">
     {% for candidate in candidates %}
         <div class="cell{% if confirm %} large_button{% endif %}">
