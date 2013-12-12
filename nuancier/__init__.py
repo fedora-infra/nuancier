@@ -618,12 +618,14 @@ def admin_edit(election_id):
         except SQLAlchemyError as err:
             SESSION.rollback()
             print >> sys.stderr, "Cannot edit election", err
-            flask.flash(err.message, 'error')
+            flask.flash('Could not edit this election, is this name or '
+                        'folder already used?', 'error')
             return flask.render_template(
                 'admin_edit.html',
                 election=election,
                 form=form)
 
+        flask.flash('Election updated')
         return flask.redirect(flask.url_for('admin_index'))
     else:
         form = forms.AddElectionForm(election=election)
@@ -652,12 +654,17 @@ def admin_new():
             )
         except nuancierlib.NuancierException as err:
             flask.flash(err.message, 'error')
+            return flask.render_template('admin_new.html', form=form)
+
         try:
             SESSION.commit()
         except SQLAlchemyError as err:
             SESSION.rollback()
             print >> sys.stderr, "Cannot create new election", err
-            flask.flash(err.message, 'error')
+            flask.flash('Could not add this election, is this name or '
+                        'folder already used?', 'error')
+            return flask.render_template('admin_new.html', form=form)
+
         if form.generate_cache.data:
             return admin_cache(election.id)
         return flask.redirect(flask.url_for('admin_index'))
