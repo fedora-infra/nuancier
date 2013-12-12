@@ -101,12 +101,12 @@ def fas_login_required(function):
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'errors')
-            return flask.redirect(flask.url_for('.index'))
+            return flask.redirect(flask.url_for('index'))
         else:
             if len(flask.g.fas_user.groups) == 0:
                 flask.flash('You must be in one more group than the CLA',
                             'errors')
-                return flask.redirect(flask.url_for('.index'))
+                return flask.redirect(flask.url_for('index'))
         return function(*args, **kwargs)
     return decorated_function
 
@@ -117,11 +117,17 @@ def nuancier_admin_required(function):
     """
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        if flask.g.fas_user is None or \
-                not flask.g.fas_user.cla_done or \
-                len(flask.g.fas_user.groups) < 1:
+        if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
+        elif not flask.g.fas_user.cla_done:
+            flask.flash('You must sign the CLA (Contributor License '
+                        'Agreement to use nuancier', 'errors')
+            return flask.redirect(flask.url_for('index'))
+        elif len(flask.g.fas_user.groups) == 0:
+                flask.flash('You must be in one more group than the CLA',
+                            'errors')
+                return flask.redirect(flask.url_for('index'))
         elif not is_nuancier_admin(flask.g.fas_user):
             flask.flash('You are not an administrator of nuancier-lite',
                         'errors')
