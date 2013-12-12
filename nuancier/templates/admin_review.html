@@ -89,6 +89,7 @@ candidates or not.
     </tr>
     {% endfor %}
 </table>
+{{ form.csrf_token }}
 <button type="submit" name="action" value="Approved" class="btn btn-danger">
   Approve
 </button>

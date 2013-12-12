@@ -695,6 +695,7 @@ def admin_review(election_id):
     return flask.render_template(
         'admin_review.html',
         election=election,
+        form=forms.ConfirmationForm(),
         candidates=candidates,
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
@@ -726,7 +727,10 @@ def admin_process_review(election_id):
 
     candidates_selected = flask.request.form.getlist('candidates_id')
     motifs = flask.request.form.getlist('motifs')
-    action = flask.request.form.get('action').strip()
+    action = flask.request.form.get('action')
+
+    if action:
+        action = action.strip()
 
     if action not in ['Approved', 'Denied']:
         flask.flash(
