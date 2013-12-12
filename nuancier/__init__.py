@@ -662,6 +662,7 @@ def admin_new():
                         'folder already used?', 'error')
             return flask.render_template('admin_new.html', form=form)
 
+        flask.flash('Election created')
         if form.generate_cache.data:
             return admin_cache(election.id)
         return flask.redirect(flask.url_for('admin_index'))
@@ -691,6 +692,8 @@ def admin_review(election_id):
         return flask.redirect(flask.url_for('admin_index'))
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
+
+    flask.flash('Candidate(s) updated')
 
     return flask.render_template(
         'admin_review.html',
@@ -734,7 +737,7 @@ def admin_process_review(election_id):
 
     if action not in ['Approved', 'Denied']:
         flask.flash(
-            'Only the actions "Approve" or "Deny" are accepted',
+            'Only the actions "Approved" or "Denied" are accepted',
             'error')
         return flask.redirect(
             flask.url_for('admin_review', election_id=election_id))
