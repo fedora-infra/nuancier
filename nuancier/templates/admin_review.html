@@ -84,7 +84,7 @@ candidates or not.
             {% endif %}
         </td>
         <td>
-            <input type="text" name="motif" value="{{ candidate.motif }}" />
+            <input type="text" name="motifs" value="{% if candidate.approved_motif %}{{ candidate.approved_motif }}{% endif %}" />
         </td>
     </tr>
     {% endfor %}
