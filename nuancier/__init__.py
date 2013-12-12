@@ -693,8 +693,6 @@ def admin_review(election_id):
 
     candidates = nuancierlib.get_candidates(SESSION, election_id)
 
-    flask.flash('Candidate(s) updated')
-
     return flask.render_template(
         'admin_review.html',
         election=election,
@@ -727,7 +725,7 @@ def admin_process_review(election_id):
             'longer be changed', 'error')
         return flask.redirect(flask.url_for('results_list'))
 
-    if election.election_open:
+    if election.election_public:
         flask.flash(
             'The results of this election are already public, this election'
             ' can no longer be changed', 'error')
@@ -789,10 +787,12 @@ def admin_process_review(election_id):
 
     try:
         SESSION.commit()
-    except Exception as err:
+    except Exception as err:  # pragma: no cover
         SESSION.rollback()
         print >> sys.stderr, "Cannot approve/deny candidate: ", err
-        flask.flash(err.message, 'error')
+        flask.flash('Could not approve/deny candidate', 'error')
+
+    flask.flash('Candidate(s) updated')
 
     return flask.redirect(
         flask.url_for('admin_review', election_id=election_id))
