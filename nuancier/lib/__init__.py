@@ -19,6 +19,15 @@
 # of Red Hat, Inc.
 #
 
+'''
+Backend library for nuancier.
+'''
+
+## Apparently some of our methods have too many arguments
+# pylint: disable=R0913
+## import Image is not
+# pylint: disable=R0912
+
 import os
 import sys
 
@@ -262,9 +271,9 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
     infile = os.path.join(picture_folder, filename)
     outfile = os.path.join(cache_folder, filename)
     try:
-        im = Image.open(infile)
-        im.thumbnail(size, Image.ANTIALIAS)
-        im.save(outfile)
+        image = Image.open(infile)
+        image.thumbnail(size, Image.ANTIALIAS)
+        image.save(outfile)
     except IOError, err:  # pragma: no cover
         print >> sys.stderr, "Cannot create thumbnail", err
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
