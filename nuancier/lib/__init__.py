@@ -81,7 +81,8 @@ def get_candidates(session, election_id, approved=None):
         for approved or not-approved candidates. If left to default (None),
         no filtering of the approval is performed.
     """
-    return model.Candidates.by_election(session, election_id, approved)
+    return nuancier.lib.model.Candidates.by_election(
+        session, election_id, approved)
 
 
 def get_candidate(session, candidate_id):
@@ -89,32 +90,32 @@ def get_candidate(session, candidate_id):
 
     :arg candidate_id: the identifier of the candidate of interest.
     """
-    return model.Candidates.by_id(session, candidate_id)
+    return nuancier.lib.model.Candidates.by_id(session, candidate_id)
 
 
 def get_elections(session):
     """ Return all the elections in the database. """
-    return model.Elections.all(session)
+    return nuancier.lib.model.Elections.all(session)
 
 
 def get_election(session, election_id):
     """ Return the election corresponding to the provided identifier. """
-    return model.Elections.by_id(session, election_id)
+    return nuancier.lib.model.Elections.by_id(session, election_id)
 
 
 def get_elections_to_contribute(session):
     """ Return all the election that are open. """
-    return model.Elections.get_to_contribute(session)
+    return nuancier.lib.model.Elections.get_to_contribute(session)
 
 
 def get_elections_open(session):
     """ Return all the election that are open. """
-    return model.Elections.get_open(session)
+    return nuancier.lib.model.Elections.get_open(session)
 
 
 def get_elections_public(session):
     """ Return all the election that are public. """
-    return model.Elections.get_public(session)
+    return nuancier.lib.model.Elections.get_public(session)
 
 
 def get_votes_user(session, election_id, username):
@@ -124,12 +125,13 @@ def get_votes_user(session, election_id, username):
     :arg election_id:
     :arg username:
     """
-    return model.Votes.by_election_user(session, election_id, username)
+    return nuancier.lib.model.Votes.by_election_user(
+        session, election_id, username)
 
 
 def get_results(session, election_id):
     """ Return the results for the specified election. """
-    return model.Candidates.get_results(session, election_id)
+    return nuancier.lib.model.Candidates.get_results(session, election_id)
 
 
 def add_election(session, election_name, election_folder, election_year,
@@ -146,7 +148,7 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
-    election = model.Elections(
+    election = nuancier.lib.model.Elections(
         election_name=election_name,
         election_folder=election_folder,
         election_year=election_year,
@@ -219,21 +221,21 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg candidate_license:
     :arg election_id:
     """
-    candidate = model.Candidates.by_election_and_name(
+    candidate = nuancier.lib.model.Candidates.by_election_and_name(
         session, election_id, candidate_name)
     if candidate:
         raise NuancierException(
             'A candidate with the name "%s" has already been submitted' %
             candidate_name)
 
-    candidate = model.Candidates.by_election_and_file(
+    candidate = nuancier.lib.model.Candidates.by_election_and_file(
         session, election_id, candidate_file)
     if candidate:
         raise NuancierException(
             'A candidate with the file name "%s" has already been submitted' %
             candidate_file)
 
-    candidate = model.Candidates(
+    candidate = nuancier.lib.model.Candidates(
         candidate_file=candidate_file,
         candidate_name=candidate_name,
         candidate_author=candidate_author,
@@ -251,7 +253,7 @@ def add_vote(session, candidate_id, username):
     :arg candidate_id:
     :arg username:
     """
-    votes = model.Votes(
+    votes = nuancier.lib.model.Votes(
         user_name=username,
         candidate_id=candidate_id,
     )
@@ -332,7 +334,8 @@ def generate_cache(session, election, picture_folder, cache_folder,
     if not os.path.exists(cache_folder):
         os.makedirs(cache_folder)
 
-    candidates = model.Candidates.by_election(session, election.id)
+    candidates = nuancier.lib.model.Candidates.by_election(
+        session, election.id)
 
     for candidate in candidates:
         generate_thumbnail(
@@ -349,9 +352,9 @@ def get_stats(session, election_id):
     :arg session:
     :arg election_id:
     """
-    votes = model.Votes.cnt_votes(session, election_id)
-    voters = model.Votes.cnt_voters(session, election_id)
-    results = model.Votes.by_election(session, election_id)
+    votes = nuancier.lib.model.Votes.cnt_votes(session, election_id)
+    voters = nuancier.lib.model.Votes.cnt_voters(session, election_id)
+    results = nuancier.lib.model.Votes.by_election(session, election_id)
 
     # Count the number of votes for each participant
     user_votes = {}

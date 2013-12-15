@@ -295,7 +295,7 @@ def contribute(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
 
-    form = forms.AddCandidateForm()
+    form = nuancier.forms.AddCandidateForm()
     if form.validate_on_submit():
         candidate_file = flask.request.files['candidate_file']
 
@@ -363,7 +363,7 @@ def contribute(election_id):
         flask.flash('Thanks for your submission')
         return flask.redirect(flask.url_for('index'))
     else:
-        form = forms.AddCandidateForm(election=election)
+        form = nuancier.forms.AddCandidateForm(election=election)
 
     return flask.render_template(
         'contribute.html',
@@ -471,7 +471,7 @@ def vote(election_id):
     return flask.render_template(
         'vote.html',
         election=election,
-        form=forms.ConfirmationForm(),
+        form=nuancier.forms.ConfirmationForm(),
         candidates=candidates,
         n_votes_done=len(votes),
         picture_folder=os.path.join(
@@ -485,7 +485,7 @@ def vote(election_id):
 @fas_login_required
 def process_vote(election_id):
 
-    form = forms.ConfirmationForm()
+    form = nuancier.forms.ConfirmationForm()
     if not form.validate_on_submit():
         flask.flash('Wrong input submitted', 'error')
         return flask.render_template('msg.html')
@@ -537,7 +537,7 @@ def process_vote(election_id):
                     'error')
         return flask.render_template(
             'vote.html',
-            form=forms.ConfirmationForm(),
+            form=nuancier.forms.ConfirmationForm(),
             election=election,
             candidates=[nuancierlib.get_candidate(SESSION, candidate_id)
                         for candidate_id in entries],
@@ -630,7 +630,7 @@ def admin_edit(election_id):
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
 
-    form = forms.AddElectionForm()
+    form = nuancier.forms.AddElectionForm()
     if form.validate_on_submit():
         election = nuancierlib.edit_election(
             SESSION,
@@ -660,7 +660,7 @@ def admin_edit(election_id):
         flask.flash('Election updated')
         return flask.redirect(flask.url_for('admin_index'))
     else:
-        form = forms.AddElectionForm(election=election)
+        form = nuancier.forms.AddElectionForm(election=election)
     return flask.render_template(
         'admin_edit.html',
         election=election,
@@ -671,7 +671,7 @@ def admin_edit(election_id):
 @nuancier_admin_required
 def admin_new():
     ''' Create a new election. '''
-    form = forms.AddElectionForm()
+    form = nuancier.forms.AddElectionForm()
     if form.validate_on_submit():
 
         election = nuancierlib.add_election(
@@ -730,7 +730,7 @@ def admin_review(election_id):
     return flask.render_template(
         'admin_review.html',
         election=election,
-        form=forms.ConfirmationForm(),
+        form=nuancier.forms.ConfirmationForm(),
         candidates=candidates,
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
@@ -744,7 +744,7 @@ def admin_process_review(election_id):
     ''' Process the reviewing of a new election. '''
     election = nuancierlib.get_election(SESSION, election_id)
 
-    form = forms.ConfirmationForm()
+    form = nuancier.forms.ConfirmationForm()
     if not form.validate_on_submit():
         flask.flash('Wrong input submitted', 'error')
         return flask.render_template('msg.html')
