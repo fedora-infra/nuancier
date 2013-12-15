@@ -489,6 +489,9 @@ def vote(election_id):
 @APP.route('/election/<int:election_id>/voted/', methods=['POST'])
 @fas_login_required
 def process_vote(election_id):
+    ''' Actually register the vote, after checking if the user is actually
+    allowed to vote.
+    '''
 
     form = nuancier.forms.ConfirmationForm()
     if not form.validate_on_submit():
