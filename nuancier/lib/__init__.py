@@ -41,6 +41,8 @@ try:
     from PIL import Image
 except ImportError:  # pragma: no cover
     try:
+        ## Ignore warning about pylint not being able to import Image
+        # pylint: disable=F0401
         import Image
     except ImportError:
         print >> sys.stderr, 'Could not import PIL nor Pillow, one of ' \
