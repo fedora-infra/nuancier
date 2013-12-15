@@ -901,9 +901,9 @@ def stats(election_id):
         flask.flash('The results this election are not public yet', 'error')
         return flask.redirect(flask.url_for('results_list'))
 
-    stats = nuancierlib.get_stats(SESSION, election_id)
+    statsinfo = nuancierlib.get_stats(SESSION, election_id)
 
     return flask.render_template(
         'stats.html',
-        stats=stats,
+        stats=statsinfo,
         election=election)
