@@ -845,7 +845,7 @@ def admin_process_review(election_id):
 
     try:
         SESSION.commit()
-    except Exception as err:  # pragma: no cover
+    except SQLAlchemyError as err:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('User: "%s" could not approve/deny candidate(s) for '
                   'election "%s"', flask.g.fas_user.username,
