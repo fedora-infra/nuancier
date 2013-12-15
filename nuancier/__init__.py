@@ -53,6 +53,12 @@ import nuancier.notifications
 ## Some of the object we use here have inherited methods which apparently
 ## pylint does not detect.
 # pylint: disable=E1101
+## Apparently some of our methods have too many branches
+# pylint: disable=R0912
+## And/Or too many return statements
+# pylint: disable=R0911
+## And/Or too many statements
+# pylint: disable=R0915
 
 
 __version__ = '0.2.0'
@@ -656,7 +662,7 @@ def admin_edit(election_id):
         except SQLAlchemyError as err:
             SESSION.rollback()
             LOG.debug("User: %s could not edit election: %s ",
-                flask.g.fas_user.username, election_id)
+                      flask.g.fas_user.username, election_id)
             LOG.exception(err)
             flask.flash('Could not edit this election, is this name or '
                         'folder already used?', 'error')
