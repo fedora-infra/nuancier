@@ -315,7 +315,7 @@ def contribute(election_id):
         filename = secure_filename(candidate_file.filename)
 
         try:
-            candidate = nuancierlib.add_candidate(
+            nuancierlib.add_candidate(
                 SESSION,
                 candidate_file=filename,
                 candidate_name=form.candidate_name.data,
