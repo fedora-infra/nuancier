@@ -45,9 +45,9 @@ except ImportError:  # pragma: no cover
     # This is for the old versions not using pillow
     import Image
 
-import forms
-import lib as nuancierlib
-import notifications
+import nuancier.forms as forms
+import nuancier.lib as nuancierlib
+import nuancier.notifications as notifications
 
 
 __version__ = '0.2.0'

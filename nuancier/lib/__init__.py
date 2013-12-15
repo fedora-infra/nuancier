@@ -46,7 +46,7 @@ except ImportError:  # pragma: no cover
         print >> sys.stderr, 'Could not import PIL nor Pillow, one of ' \
             'them should be installed'
 
-import model
+import nuancier.lib.model as model
 
 
 class NuancierException(Exception):
