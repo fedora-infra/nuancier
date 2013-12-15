@@ -23,6 +23,12 @@
 fedmsg shim for nuancier-lite
 '''
 
+## Let's ignore the warning about a global variable being in lower case
+# pylint: disable=C0103
+## Let's ignore the fact that pylint cannot import fedmsg
+# pylint: disable=F0401
+
+
 fedmsg = None
 try:  # pragma: no cover
     import fedmsg
@@ -35,6 +41,7 @@ if fedmsg:
 
 
 def publish(topic, msg):  # pragma: no cover
+    ''' Send a message on the fedmsg bus. '''
     if not fedmsg:
         return
 
