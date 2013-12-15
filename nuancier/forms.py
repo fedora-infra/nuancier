@@ -37,7 +37,8 @@ from flask.ext import wtf as flask_wtf
 ## Couple of our forms do not have enough methods
 # pylint: disable=R0903
 
-
+## Yes we do nothing with the form argument but it's required...
+# pylint: disable=W0613
 def is_number(form, field):
     ''' Check if the data in the field is a number and raise an exception
     if it is not.
