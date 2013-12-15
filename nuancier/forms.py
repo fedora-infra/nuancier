@@ -25,10 +25,23 @@ WTF Forms of the nuancier Flask application.
 
 import flask
 import wtforms as wtf
+## pylint cannot import flask extension correctly
+# pylint: disable=E0611,F0401
 from flask.ext import wtf as flask_wtf
 
 
+## We apparently use old style super in our __init__
+# pylint: disable=E1002
+## One of our forms does not even have __init__
+# pylint: disable=W0232
+## Couple of our forms do not have enough methods
+# pylint: disable=R0903
+
+
 def is_number(form, field):
+    ''' Check if the data in the field is a number and raise an exception
+    if it is not.
+    '''
     try:
         float(field.data)
     except ValueError:
@@ -36,6 +49,7 @@ def is_number(form, field):
 
 
 class AddElectionForm(flask_wtf.Form):
+    ''' Form to add a new election. '''
     election_name = wtf.TextField('Election name',
                                   [wtf.validators.Required()])
     election_folder = wtf.TextField(
@@ -56,8 +70,8 @@ class AddElectionForm(flask_wtf.Form):
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):
-        """ Calls the default constructor and fill in additional information.
-        """
+        ''' Calls the default constructor and fill in additional information.
+        '''
         super(AddElectionForm, self).__init__(*args, **kwargs)
 
         if 'election' in kwargs:
@@ -72,6 +86,7 @@ class AddElectionForm(flask_wtf.Form):
 
 
 class AddCandidateForm(flask_wtf.Form):
+    ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
         'Name', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
@@ -82,8 +97,8 @@ class AddCandidateForm(flask_wtf.Form):
         'License', [wtf.validators.Required()])
 
     def __init__(self, *args, **kwargs):
-        """ Calls the default constructor and fill in default values.
-        """
+        ''' Calls the default constructor and fill in default values.
+        '''
         super(AddCandidateForm, self).__init__(*args, **kwargs)
 
         self.candidate_author.data = flask.g.fas_user.username
@@ -91,4 +106,5 @@ class AddCandidateForm(flask_wtf.Form):
 
 
 class ConfirmationForm(flask_wtf.Form):
+    ''' Simply, dummy form used for csrf validation. '''
     pass
