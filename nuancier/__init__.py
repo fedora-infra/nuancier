@@ -72,8 +72,8 @@ SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
 
 def is_nuancier_admin(user):
-    """ Is the user a nuancier admin.
-    """
+    ''' Is the user a nuancier admin.
+    '''
     if not user:
         return False
     if not user.cla_done or len(user.groups) < 1:
@@ -89,18 +89,18 @@ def is_nuancier_admin(user):
 
 
 def fas_login_required(function):
-    """ Flask decorator to ensure that the user is logged in against FAS.
+    ''' Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
     Without that function the redirect if the user is not logged in will not
     work.
 
     We'll always make sure the user is CLA+1 as it's what's needed to be
     allowed to vote.
-    """
+    '''
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        """ Wrapped function actually checking if the user is logged in.
-        """
+        ''' Wrapped function actually checking if the user is logged in.
+        '''
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             flask.flash('Login required', 'errors')
             return flask.redirect(flask.url_for('.login',
@@ -119,14 +119,14 @@ def fas_login_required(function):
 
 
 def nuancier_admin_required(function):
-    """ Decorator used to check if the loged in user is a nuancier admin
+    ''' Decorator used to check if the loged in user is a nuancier admin
     or not.
-    """
+    '''
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        """ Wrapped function actually checking if the user is an admin for
+        ''' Wrapped function actually checking if the user is an admin for
         nuancier.
-        """
+        '''
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
@@ -135,9 +135,9 @@ def nuancier_admin_required(function):
                         'Agreement to use nuancier', 'errors')
             return flask.redirect(flask.url_for('index'))
         elif len(flask.g.fas_user.groups) == 0:
-                flask.flash('You must be in one more group than the CLA',
-                            'errors')
-                return flask.redirect(flask.url_for('index'))
+            flask.flash(
+                'You must be in one more group than the CLA', 'errors')
+            return flask.redirect(flask.url_for('index'))
         elif not is_nuancier_admin(flask.g.fas_user):
             flask.flash('You are not an administrator of nuancier-lite',
                         'errors')
@@ -196,9 +196,9 @@ def validate_input_file(input_file):
 
 @APP.context_processor
 def inject_is_admin():
-    """ Inject whether the user is a nuancier admin or not in every page
+    ''' Inject whether the user is a nuancier admin or not in every page
     (every template).
-    """
+    '''
     user = None
     if hasattr(flask.g, 'fas_user'):
         user = flask.g.fas_user
@@ -209,21 +209,21 @@ def inject_is_admin():
 # pylint: disable=W0613
 @APP.teardown_request
 def shutdown_session(exception=None):
-    """ Remove the DB session at the end of each request. """
+    ''' Remove the DB session at the end of each request. '''
     SESSION.remove()
 
 
 @APP.route('/msg/')
 def msg():
-    """ Page used to display error messages
-    """
+    ''' Page used to display error messages
+    '''
     return flask.render_template('msg.html')
 
 
 @APP.route('/login/', methods=['GET', 'POST'])
 def login():  # pragma: no cover
-    """ Login mechanism for this application.
-    """
+    ''' Login mechanism for this application.
+    '''
     next_url = None
     if 'next' in flask.request.args:
         next_url = flask.request.args['next']
@@ -239,9 +239,9 @@ def login():  # pragma: no cover
 
 @APP.route('/logout/')
 def logout():  # pragma: no cover
-    """ Log out if the user is logged in other do nothing.
+    ''' Log out if the user is logged in other do nothing.
     Return to the index page at the end.
-    """
+    '''
     if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
         FAS.logout()
         flask.flash('You are no longer logged-in')
@@ -251,12 +251,18 @@ def logout():  # pragma: no cover
 @CACHE.cache_on_arguments(expiration_time=3600)
 @APP.route('/pictures/<path:filename>')
 def base_picture(filename):
+    ''' Returns a picture having the provided path relative to the
+    PICTURE_FOLDER set in the configuration.
+    '''
     return flask.send_from_directory(APP.config['PICTURE_FOLDER'], filename)
 
 
 @CACHE.cache_on_arguments(expiration_time=3600)
 @APP.route('/cache/<path:filename>')
 def base_cache(filename):
+    ''' Returns a picture having the provided path relative to the
+    CACHE_FOLDER set in the configuration.
+    '''
     return flask.send_from_directory(APP.config['CACHE_FOLDER'], filename)
 
 
