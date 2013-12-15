@@ -303,8 +303,8 @@ def contribute(election_id):
             validate_input_file(candidate_file)
         except nuancierlib.NuancierException as err:
             LOG.debug('ERROR: Uploaded file is invalid - user: "%s" '
-                      'election: "%s"' % (flask.g.fas_user.username,
-                                          election_id))
+                      'election: "%s"', flask.g.fas_user.username,
+                      election_id)
             LOG.exception(err)
             flask.flash(err.message)
             return flask.render_template(
@@ -336,8 +336,8 @@ def contribute(election_id):
         except SQLAlchemyError as err:  # pragma: no cover
             SESSION.rollback()
             LOG.debug('ERROR: cannot add candidate - user: "%s" '
-                      'election: "%s"' % (flask.g.fas_user.username,
-                                          election_id))
+                      'election: "%s"', flask.g.fas_user.username,
+                      election_id)
             LOG.exception(err)
             flask.flash(
                 'Someone has already upload a file with the same file name'
@@ -558,8 +558,8 @@ def process_vote(election_id):
     except SQLAlchemyError as err:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('ERROR: could not process the vote - user: "%s" '
-                  'election: "%s"' % (flask.g.fas_user.username,
-                                      election_id))
+                  'election: "%s"', flask.g.fas_user.username,
+                  election_id)
         LOG.exception(err)
         flask.flash('An error occured while processing your votes, please '
                     'report this to your lovely admin or see logs for '
@@ -647,8 +647,8 @@ def admin_edit(election_id):
             SESSION.commit()
         except SQLAlchemyError as err:
             SESSION.rollback()
-            LOG.debug("User: %s could not edit election: %s " % (
-                flask.g.fas_user.username, election_id))
+            LOG.debug("User: %s could not edit election: %s ",
+                flask.g.fas_user.username, election_id)
             LOG.exception(err)
             flask.flash('Could not edit this election, is this name or '
                         'folder already used?', 'error')
@@ -689,8 +689,8 @@ def admin_new():
             SESSION.commit()
         except SQLAlchemyError as err:
             SESSION.rollback()
-            LOG.debug("User: %s could not add an election" % (
-                flask.g.fas_user.username,))
+            LOG.debug("User: %s could not add an election",
+                      flask.g.fas_user.username)
             LOG.exception(err)
             flask.flash('Could not add this election, is this name or '
                         'folder already used?', 'error')
@@ -834,8 +834,8 @@ def admin_process_review(election_id):
     except Exception as err:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('User: "%s" could not approve/deny candidate(s) for '
-                  'election "%s"' % (flask.g.fas_user.username,
-                                     election_id))
+                  'election "%s"', flask.g.fas_user.username,
+                  election_id)
         LOG.exception(err)
         flask.flash('Could not approve/deny candidate', 'error')
 
@@ -866,8 +866,8 @@ def admin_cache(election_id):
                     election.election_name)
     except nuancierlib.NuancierException as err:
         SESSION.rollback()
-        LOG.debug('User: "%s" could not generate cache for "%s"' % (
-                  flask.g.fas_user.username, election_id))
+        LOG.debug('User: "%s" could not generate cache for "%s"',
+                  flask.g.fas_user.username, election_id)
         LOG.exception(err)
         flask.flash(err.message, 'error')
 
