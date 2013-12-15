@@ -23,6 +23,8 @@
 Mapping of python classes to Database Tables.
 '''
 
+## Ignore warning about pkg_resources, it does help us
+# pylint: disable=W0611
 __requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
 import pkg_resources
 
@@ -37,6 +39,15 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import relation
 
 BASE = declarative_base()
+
+
+## Some of our methods have too many arguments
+# pylint: disable=R0913
+## We use id for the identifier in our db but that's too short
+# pylint: disable=C0103
+## Some of the object we use here have inherited methods which apparently
+## pylint does not detect.
+# pylint: disable=E1101
 
 
 def create_tables(db_url, alembic_ini=None, debug=False):
@@ -60,6 +71,9 @@ def create_tables(db_url, alembic_ini=None, debug=False):
     if alembic_ini is not None:  # pragma: no cover
         # then, load the Alembic configuration and generate the
         # version table, "stamping" it with the most recent rev:
+
+        ## Ignore the warning missing alembic
+        # pylint: disable=F0401
         from alembic.config import Config
         from alembic import command
         alembic_cfg = Config(alembic_ini)
