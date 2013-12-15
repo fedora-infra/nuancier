@@ -50,6 +50,11 @@ import nuancier.lib as nuancierlib
 import nuancier.notifications
 
 
+## Some of the object we use here have inherited methods which apparently
+## pylint does not detect.
+# pylint: disable=E1101
+
+
 __version__ = '0.2.0'
 
 APP = flask.Flask(__name__)
