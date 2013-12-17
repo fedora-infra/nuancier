@@ -8,23 +8,23 @@ Anonymous:
 
 ::
 
-  git clone https://github.com/fedora-infra/nuancier-lite.git
+  git clone https://github.com/fedora-infra/nuancier.git
 
 Contributors:
 
 ::
 
-  git clone git@github.com:fedora-infra/nuancier-lite.git
+  git clone git@github.com:fedora-infra/nuancier.git
 
 
 Dependencies
 ------------
 
-The dependencies of nuancier-lite are listed in the file ``requirements.txt``
+The dependencies of nuancier are listed in the file ``requirements.txt``
 at the top level of the sources.
 
 
-Run nuancier-lite for development
+Run nuancier for development
 ---------------------------------
 Create the database scheme::
 
@@ -68,7 +68,7 @@ We are also inspecting the code using `pylint
 Send patch
 ----------
 
-The easiest way to work on nuancier-lite is to make your own branch in git,
+The easiest way to work on nuancier is to make your own branch in git,
 make your changes to this branch, commit whenever you want, rebase on master,
 whenever you need and when you are done, send the patch either by email or
 via the github pull-request mechanism.
@@ -97,7 +97,7 @@ trac.
 Unit-tests
 ----------
 
-Nuancier-lite has a number of unit-tests providing at the moment a full
+Nuancier has a number of unit-tests providing at the moment a full
 coverage of the backend library (nuancier.lib).
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# nuancier-lite documentation build configuration file, created by
+# nuancier documentation build configuration file, created by
 # sphinx-quickstart on Mon Nov 12 09:06:13 2012.
 #
 # This file is execfile()d with the current directory set to its containing
@@ -44,7 +44,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'nuancier-lite'
+project = u'nuancier'
 copyright = u'2013, Red Hat Inc. - Pierre-Yves Chibon <pingou@pingoured.fr>'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -240,7 +240,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', 'nuancier-lite.tex', u'Nuancier-lite Documentation',
+    ('index', 'nuancier.tex', u'Nuancier Documentation',
      u'Pierre-Yves Chibon \\textless{}pingou@pingoured.fr\\textgreater{}',
      'manual'),
 ]
@@ -271,7 +271,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'nuancier-lite', u'Nuancier-lite Documentation',
+    ('index', 'nuancier', u'Nuancier Documentation',
      [u'Pierre-Yves Chibon <pingou@pingoured.fr>'], 1)
 ]
 
@@ -285,8 +285,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'nuancier', u'Nuancier-lite Documentation',
-     u'Pierre-Yves Chibon <pingou@pingoured.fr>', 'nuancier-lite',
+    ('index', 'nuancier', u'Nuancier Documentation',
+     u'Pierre-Yves Chibon <pingou@pingoured.fr>', 'nuancier',
      'One line description of project.',
      'Miscellaneous'),
 ]

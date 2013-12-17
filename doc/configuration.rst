@@ -1,9 +1,9 @@
 Configuration
 =============
 
-There are the main configuration options to set to have nuancier-lite
+There are the main configuration options to set to have nuancier
 running.
-These options are all present and described in the nuancier-lite.cfg file.
+These options are all present and described in the nuancier.cfg file.
 
 The secret key
 ---------------
@@ -23,7 +23,7 @@ for example to generate a 50 characters long random key
 The database URL
 -----------------
 
-Nuancier-lite uses `SQLAlchemy <http://sqlalchemy.org>`_ has Object
+Nuancier uses `SQLAlchemy <http://sqlalchemy.org>`_ has Object
 Relationship Mapper and thus to connect to the database. You need to provide
 under the key ``DB_URL`` in the configuration file the required information
 to connect to the database.
@@ -43,15 +43,15 @@ Examples URLs are::
 The admin group
 ----------------
 
-Nuancier-lite relies on a group of administrator to create new elections,
+Nuancier relies on a group of administrator to create new elections,
 open or close them for voting and open or close the publication of the
 results and (re)generate the cache.
 The ``ADMIN_GROUP`` field in the configuration file refers to the
 `FAS <https://admin.fedoraproject.org/accounts>`_ group that manages this
-nuancier-lite instance.
+nuancier instance.
 
 See :doc:`usage` for details explanations on the different administration
-layer of nuancier-lite.
+layer of nuancier.
 
 .. note:: Several groups of administrators can be set using either () or [].
 
@@ -78,7 +78,7 @@ The thumb size
 ---------------
 
 In order to decrease the weight of the pages displaying all the pictures
-candidate to an election, nuancier-lite creates thumbnails of these pictures.
+candidate to an election, nuancier creates thumbnails of these pictures.
 These thumbnails are generated with anti-aliases to maintain a certain quality.
 
 The ``THUMB_SIZE`` is a set of length, width coordinate providing indication

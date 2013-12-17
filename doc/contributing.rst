@@ -1,7 +1,7 @@
 Contributing
 ============
 
-If you're submitting patches to nuancier-lite, please observe the following:
+If you're submitting patches to nuancier, please observe the following:
 
 - Check that your python code is `PEP8-compliant
   <http://www.python.org/dev/peps/pep-0008/>`_.  There is a `pep8 tool
@@ -26,5 +26,5 @@ If you're submitting patches to nuancier-lite, please observe the following:
    you?
 
    Come to see us on IRC: ``#fedora-apps`` on irc.freenode.net or via its
-   `github tracker <https://github.com/fedora-infra/nuancier-lite/issues>`_.
+   `github tracker <https://github.com/fedora-infra/nuancier/issues>`_.
 

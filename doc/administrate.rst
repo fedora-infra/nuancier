@@ -4,7 +4,7 @@ Administrate
 Users
 -----
 
-Nuancier-lite has basically two levels for the users:
+Nuancier has basically two levels for the users:
 
  - administrators
  - users
@@ -40,27 +40,6 @@ When preparing an election, the election wrangler needs to gather all the
 candidate wallpapers into a folder, with a unique name and place this folder
 in the directory specified under ``PICTURE_FOLDER`` in :doc:`configuration`.
 
-Nuancier-lite will be able to find the pictures there.
-
-However, to give a name to the candidate, nuancier-lite expects to find in
-each folder a file: ``infos.txt`` containing, tab delimited, for each picture
-its file name, author and name.
-
-An example of infos.txt would be:
-
-::
-
-    filename1    author name1     image name 1
-    filename2    author name2     image name 2
-    filename3    author name3     image name 3
-    ...
-
-
-The character delimiting ``filename1`` from ``author name1`` and ``author name1``
-from ``image name 1`` must be a **tabulation** (\t, <tab>).
-
-.. note:: nuancier-lite will only consider the candidate present in the
-   ``infos.txt`` file.
 
 
 .. administration_panel:
@@ -128,7 +107,7 @@ Open/Close election for votes
 ------------------------------
 
 Once an election is opened for vote or has ended, the administrator can
-simply log in nuancier-lite, go to the administration panel, find the
+simply log in nuancier, go to the administration panel, find the
 correct election and on the `Open` column click on the ``toggle`` link.
 
 If fedmsg is installed on the server, fedmsg messages are published for these
@@ -141,7 +120,7 @@ Publish results of an election
 -------------------------------
 
 Once an election has ended, to publish its results, the administrator can
-simply log in nuancier-lite, go to the administration panel, find the
+simply log in nuancier, go to the administration panel, find the
 correct election and on the `Published` column click on the ``toggle`` link.
 
 If fedmsg is installed on the server, fedmsg messages are published for these
@@ -154,14 +133,9 @@ Generate cache
 --------------
 
 To decrease the weight of the page where all the candidates of an election
-are shown, nuancier-lite generates thumbnails.
+are shown, nuancier generates thumbnails.
 
 To generate the cache of an election, the administrator needs to log in
-nuancier-lite, go to the administration panel, find the correct election
+nuancier, go to the administration panel, find the correct election
 and click on the ``(Re-)generate cache``.
 
-
-.. note:: Nuancier-lite relies on the ``infos.txt`` (see
-   :doc:`upload_candidates` for more information) to import the files as
-   candidate in the database and will only generate the thumbnails of these
-   files.

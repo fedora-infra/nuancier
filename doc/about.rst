@@ -1,7 +1,7 @@
-About nuancier-lite
-===================
+About nuancier
+==============
 
-Nuancier-lite is a light weight voting application for the supplementary
+Nuancier is a web-based voting application for the supplementary
 wallpapers of Fedora.
 
 Here are some more information about the technology, layout and artwork used
@@ -11,7 +11,7 @@ in this application.
 Templates
 ~~~~~~~~~
 
-Nuancier-lite re-used the layout of `Koji <https://fedorahosted.org/koji/>`_
+Nuancier re-used the layout of `Koji <https://fedorahosted.org/koji/>`_
 adjusted as desired.
 
 (License: LGPLv2)
@@ -19,7 +19,7 @@ adjusted as desired.
 Lightbox2
 ~~~~~~~~~
 
-Nuancier-lite uses `lightbox2 <http://lokeshdhakar.com/projects/lightbox2/>`_
+Nuancier uses `lightbox2 <http://lokeshdhakar.com/projects/lightbox2/>`_
 as javascript library to pop-up the pictures and present a larger version.
 
 (License: CC-BY)
@@ -35,8 +35,11 @@ The icons used are coming from the `echo icon theme <https://fedorahosted.org/ec
 Contributors
 ~~~~~~~~~~~~
 
-Nuancier-lite is the results of a team effort started by Jenn and Gnookii
+Nuancier is the results of a team effort started by Jenn and Gnookii
 and followed by a number of contributors.
+
+It was first named ``nuancier-lite`` and renamed to ``nuancier`` when support
+for uploads and moderation was added.
 
 
 On September 23 2013, the list looks as follow:

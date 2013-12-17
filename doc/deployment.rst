@@ -6,12 +6,12 @@ From sources
 
 Clone the source::
 
- git clone https://github.com/fedora-infra/nuancier-lite.git
+ git clone https://github.com/fedora-infra/nuancier.git
 
 
 Copy the configuration files::
 
-  cp nuancier-lite.cfg.sample nuancier-lite.cfg
+  cp nuancier.cfg.sample nuancier.cfg
 
 Adjust the configuration files (secret key, database URL, admin group...).
 See :doc:`configuration` for detailed information about the configuration.
@@ -19,7 +19,7 @@ See :doc:`configuration` for detailed information about the configuration.
 
 Create the database scheme::
 
-   NUANCIER_CONFIG=/path/to/nuancier-lite.cfg python createdb.py
+   NUANCIER_CONFIG=/path/to/nuancier.cfg python createdb.py
 
 
 Set up the WSGI as described below.
@@ -28,16 +28,16 @@ Set up the WSGI as described below.
 From system-wide packages
 -------------------------
 
-Start by install nuancier-lite::
+Start by install nuancier::
 
-  yum install nuancier-lite
+  yum install nuancier
 
-Adjust the configuration files: ``/etc/nuancier/nuancier-lite.cfg``.
+Adjust the configuration files: ``/etc/nuancier/nuancier.cfg``.
 See :doc:`configuration` for detailed information about the configuration.
 
 Create the database scheme::
 
-   NUANCIER_CONFIG=/etc/nuancier/nuancier-lite.cfg python /usr/share/nuancier/nuancier-lite_createdb.py
+   NUANCIER_CONFIG=/etc/nuancier/nuancier.cfg python /usr/share/nuancier/nuancier_createdb.py
 
 Set up the WSGI as described below.
 
@@ -52,12 +52,12 @@ Start by installing ``mod_wsgi``::
 
 Then configure apache::
 
- sudo vim /etc/httd/conf.d/nuancier-lite.conf
+ sudo vim /etc/httd/conf.d/nuancier.conf
 
 uncomment the content of the file and adjust as desired.
 
 
-Then edit the file ``/usr/share/nuancier/nuancier-lite.wsgi`` and
+Then edit the file ``/usr/share/nuancier/nuancier.wsgi`` and
 adjust as needed.
 
 
@@ -73,5 +73,5 @@ http://localhost/nuancier
 For testing
 -----------
 
-See :doc:`development` if you want to run nuancier-lite just to test it.
+See :doc:`development` if you want to run nuancier just to test it.
 
