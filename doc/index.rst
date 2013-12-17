@@ -1,5 +1,5 @@
-nuancier-
-=============
+nuancier
+========
 
 Nuancier is a web-based voting application for the supplementary
 wallpapers of Fedora.
