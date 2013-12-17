@@ -67,7 +67,7 @@ You should be able to access the server at http://localhost:5000
 
 .. note:: To tweak the configuration, you may either change
    ``default_config.py`` in the nuancier module, or copy the file
-   ``nuancier-lite.cfg.sample`` into ``nuancier.cfg`` and run the
+   ``utility/nuancier.cfg.sample`` into ``nuancier.cfg`` and run the
    application using::
 
      NUANCIER_CONFIG=nuancier.cfg python runserver.py

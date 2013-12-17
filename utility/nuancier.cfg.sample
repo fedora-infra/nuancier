@@ -10,7 +10,7 @@ SECRET_KEY='<The web application secret key>'
 #DB_URL=postgresql://user:pass@host/db_name
 DB_URL='sqlite:////var/tmp/nuancier_lite.sqlite'
 
-### The FAS groups in which the admin of nuancier-lite are
+### The FAS groups in which the admin of nuancier are
 ### This can either be a single group or multiple, defined between
 ### parenthesis.
 ADMIN_GROUP=('sysadmin-nuancier', 'sysadmin-main')
