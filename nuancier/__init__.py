@@ -20,7 +20,7 @@
 #
 
 '''
-Top level of the nuancier-lite Flask application.
+Top level of the nuancier Flask application.
 '''
 
 import hashlib
@@ -150,7 +150,7 @@ def nuancier_admin_required(function):
                 'You must be in one more group than the CLA', 'errors')
             return flask.redirect(flask.url_for('index'))
         elif not is_nuancier_admin(flask.g.fas_user):
-            flask.flash('You are not an administrator of nuancier-lite',
+            flask.flash('You are not an administrator of nuancier',
                         'errors')
             return flask.redirect(flask.url_for('msg'))
         else:

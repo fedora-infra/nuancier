@@ -20,7 +20,7 @@
 #
 
 '''
-fedmsg shim for nuancier-lite
+fedmsg shim for nuancier
 '''
 
 ## Let's ignore the warning about a global variable being in lower case

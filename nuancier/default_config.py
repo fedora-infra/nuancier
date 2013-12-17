@@ -20,7 +20,7 @@
 #
 
 '''
-nuancier-lite default configuration.
+nuancier default configuration.
 '''
 
 import os

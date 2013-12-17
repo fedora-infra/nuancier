@@ -1,5 +1,5 @@
 """ This is just an example fedmsg config file to be used
-during development of nuancier-lite.
+during development of nuancier.
 """
 
 import socket
