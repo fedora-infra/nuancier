@@ -1,13 +1,13 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
-Name:           nuancier-lite
+Name:           nuancier
 Version:        0.1.2
 Release:        1%{?dist}
-Summary:        A light weight voting app for wallpapers
+Summary:        A web-based voting application for wallpapers
 
 License:        GPLv2+
-URL:            https://github.com/fedora-infra/nuancier-lite
+URL:            https://github.com/fedora-infra/nuancier
 Source0:        https://fedorahosted.org/releases/n/u/nuancier/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -42,7 +42,7 @@ Requires:  fedmsg
 Requires:  mod_wsgi
 
 %description
-Nuancier-lite is a light weight web application for voting for the supplementary
+Nuancier is a web application for voting for the supplementary
 wallpapers that are included in Fedora at each release.
 
 %prep
@@ -57,28 +57,32 @@ rm -rf $RPM_BUILD_ROOT
 
 # Install apache configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/
-install -m 644 nuancier-lite.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/nuancier-lite.conf
+install -m 644 nuancier.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/nuancier.conf
 
 # Install nuancier configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier
-install -m 644 nuancier-lite.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier-lite.cfg
+install -m 644 nuancier.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier.cfg
 
 # Install nuancier wsgi file
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
-install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite.wsgi
-install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier-lite_createdb.py
+install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
+install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier_createdb.py
 
 %files
 %doc README.rst COPYING doc/
 %dir %{_sysconfdir}/nuancier/
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/nuancier-lite.conf
-%config(noreplace) %{_sysconfdir}/nuancier/nuancier-lite.cfg
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/nuancier.conf
+%config(noreplace) %{_sysconfdir}/nuancier/nuancier.cfg
 %{_datadir}/nuancier/
 %{python_sitelib}/nuancier/
 %{python_sitelib}/nuancier*.egg-info
 
 
 %changelog
+*  Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.0-1
+- Rename from nuancier-lite to nuancier
+- Adjust all the configuration file name accordingly
+
 * Mon Oct 14 2013 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.2-1
 - Update to 0.1.2
 - Make the result stat page public
