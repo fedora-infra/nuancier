@@ -128,7 +128,7 @@ class Nuanciertests(Modeltests):
 
         output = self.app.get('/logout/', follow_redirects=True)
         self.assertEqual(output.status_code, 200)
-        self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
+        self.assertTrue('<h1>Nuancier</h1>' in output.data)
 
         user = FakeFasUser()
         with user_set(nuancier.APP, user):
@@ -137,7 +137,7 @@ class Nuanciertests(Modeltests):
             self.assertTrue(
                 '<li class="message">You are no longer logged-in</li>'
                 in output.data)
-            self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
 
     def test_base_picture(self):
         """ Test the base_picture function. """
@@ -157,8 +157,8 @@ class Nuanciertests(Modeltests):
 
         output = self.app.get('/')
         self.assertEqual(output.status_code, 200)
-        self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
-        self.assertTrue('Nuancier-lite is a simple voting application'
+        self.assertTrue('<h1>Nuancier</h1>' in output.data)
+        self.assertTrue('Nuancier is a simple voting application'
                         in output.data)
         self.assertTrue('<p>No elections are currently open for voting.'
                         '</p>' in output.data)
@@ -169,8 +169,8 @@ class Nuanciertests(Modeltests):
 
         output = self.app.get('/')
         self.assertEqual(output.status_code, 200)
-        self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
-        self.assertTrue('Nuancier-lite is a simple voting application'
+        self.assertTrue('<h1>Nuancier</h1>' in output.data)
+        self.assertTrue('Nuancier is a simple voting application'
                         in output.data)
         self.assertTrue('href="/election/2/"' in output.data)
         self.assertTrue('Wallpaper F20 - 2013' in output.data)
@@ -337,9 +337,9 @@ class Nuanciertests(Modeltests):
                     '<li class="message">Thanks for your submission</li>'
                     in output.data
                 )
-                self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
+                self.assertTrue('<h1>Nuancier</h1>' in output.data)
                 self.assertTrue(
-                    'Nuancier-lite is a simple voting application'
+                    'Nuancier is a simple voting application'
                     in output.data)
 
             self.assertTrue(os.path.exists(upload_path))
@@ -791,7 +791,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         # Fails - did not sign the CLA
         user.cla_done = False
@@ -804,8 +804,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="errors">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
-            self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
-            self.assertTrue('Nuancier-lite is a simple voting application'
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
                             in output.data)
 
         # Fails - is not CLA + 1
@@ -819,8 +819,8 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You must be in one more '
                             'group than the CLA</li>' in output.data)
-            self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
-            self.assertTrue('Nuancier-lite is a simple voting application'
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
                             in output.data)
 
         # Success
@@ -828,13 +828,13 @@ class Nuanciertests(Modeltests):
         with user_set(nuancier.APP, user):
             output = self.app.get('/admin/')
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
 
             create_elections(self.session)
             output = self.app.get('/admin/')
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
@@ -863,7 +863,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/1/edit/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
         with user_set(nuancier.APP, user):
@@ -878,7 +878,7 @@ class Nuanciertests(Modeltests):
             # Check the admin page before the edit
             output = self.app.get('/admin/')
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertFalse('election1' in output.data)
             self.assertTrue('Wallpaper F19' in output.data)
@@ -909,7 +909,7 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the edit
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertFalse('Wallpaper F19' in output.data)
             self.assertTrue('election1' in output.data)
@@ -977,7 +977,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/new/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
         create_elections(self.session)
@@ -986,7 +986,7 @@ class Nuanciertests(Modeltests):
             # Check the admin page before the edit
             output = self.app.get('/admin/')
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertFalse('election1' in output.data)
             self.assertFalse('election2' in output.data)
@@ -1040,7 +1040,7 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertTrue('<li class="error">The folder said to contain '
                             'the pictures of this election'
@@ -1070,7 +1070,7 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
-            self.assertTrue('<h1>Nuancier-lite Admin -- Version'
+            self.assertTrue('<h1>Nuancier Admin -- Version'
                             in output.data)
             self.assertTrue('<li class="message">Election created</li>'
                             in output.data)
@@ -1143,7 +1143,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/review/1/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
 
@@ -1198,7 +1198,7 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
         create_elections(self.session)
@@ -1387,7 +1387,7 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/cache/2', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="errors">You are not an administrator'
-                            ' of nuancier-lite</li>' in output.data)
+                            ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
 

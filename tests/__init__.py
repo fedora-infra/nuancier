@@ -20,7 +20,7 @@
 #
 
 '''
-nuancier-lite tests.
+nuancier tests.
 '''
 
 __requires__ = ['SQLAlchemy >= 0.7']
