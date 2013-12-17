@@ -160,7 +160,7 @@ class Nuanciertests(Modeltests):
         self.assertTrue('<h1>Nuancier-lite</h1>' in output.data)
         self.assertTrue('Nuancier-lite is a simple voting application'
                         in output.data)
-        self.assertTrue('<p>No elections are opened to vote for the moment.'
+        self.assertTrue('<p>No elections are currently open for voting.'
                         '</p>' in output.data)
         self.assertTrue('<p>No elections are opened for contributions for '
                         'the moment.</p>' in output.data)
@@ -398,7 +398,7 @@ class Nuanciertests(Modeltests):
         output = self.app.get('/elections/')
         self.assertEqual(output.status_code, 200)
         self.assertTrue('<h1>Elections</h1>' in output.data)
-        self.assertTrue('Listed here are all the elections that are taking'
+        self.assertTrue('Listed here are all current and past elections.'
                         in output.data)
 
         create_elections(self.session)
@@ -406,7 +406,7 @@ class Nuanciertests(Modeltests):
         output = self.app.get('/elections/')
         self.assertEqual(output.status_code, 200)
         self.assertTrue('<h1>Elections</h1>' in output.data)
-        self.assertTrue('Listed here are all the elections that are taking'
+        self.assertTrue('Listed here are all current and past elections.'
                         in output.data)
         self.assertTrue('Wallpaper F21' in output.data)
         self.assertTrue('Wallpaper F19' in output.data)
@@ -431,9 +431,9 @@ class Nuanciertests(Modeltests):
         self.assertEqual(output.status_code, 200)
         self.assertTrue('h1>Election: Wallpaper F19 - 2013</h1>'
                         in output.data)
-        self.assertTrue('Below are presented all the candidates of this'
+        self.assertTrue('Below is a list of candidates for this election.'
                         in output.data)
-        self.assertTrue('<p> No candidate have been registered for this '
+        self.assertTrue('<p> No candidates have been registered for this '
                         'election (yet). </p>'
                         in output.data)
 
@@ -442,11 +442,10 @@ class Nuanciertests(Modeltests):
 
         # Election exists and there are candidates
         output = self.app.get('/election/1/')
-        print output.data
         self.assertEqual(output.status_code, 200)
         self.assertTrue('h1>Election: Wallpaper F19 - 2013</h1>'
                         in output.data)
-        self.assertTrue('Below are presented all the candidates of this'
+        self.assertTrue('Below is a list of candidates for this election.'
                         in output.data)
         self.assertTrue('Click on the picture to get a larger version'
                         in output.data)
@@ -500,7 +499,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('h1>Election: Wallpaper F20 - 2013</h1>'
                             in output.data)
-            self.assertTrue('Below are presented all the candidates of this'
+            self.assertTrue('Below is a list of candidates for this election.'
                             in output.data)
             self.assertTrue('Click on the picture to get a larger version'
                             in output.data)
@@ -725,8 +724,8 @@ class Nuanciertests(Modeltests):
         output = self.app.get('/results/')
         self.assertEqual(output.status_code, 200)
         self.assertTrue('<h1>Election results</h1>' in output.data)
-        self.assertTrue('<p class="error">No elections have their result '
-                        'public (yet).</p>' in output.data)
+        self.assertTrue('<p class="error">No election results have been '
+                        'made public (yet).</p>' in output.data)
 
         create_elections(self.session)
         create_candidates(self.session)
@@ -758,7 +757,7 @@ class Nuanciertests(Modeltests):
         self.assertEqual(output.status_code, 200)
         self.assertTrue('<h1>Election results: Wallpaper F19 - 2013</h1>'
                         in output.data)
-        self.assertTrue('Here below are presented the results of the elect'
+        self.assertTrue('Below are the results of the election Wallpaper F19'
                         in output.data)
 
         output = self.app.get('/results/2/', follow_redirects=True)
