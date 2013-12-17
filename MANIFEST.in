@@ -1,6 +1,6 @@
 include COPYING README.rst *.sample  requirements.txt
-include nuancier.spec nuancier.wsgi nuancier-lite.conf
 include runtests.sh createdb.py
 recursive-include nuancier *
+include utility/*
 include doc/*
 
