@@ -23,9 +23,9 @@ from nuancier import __version__
 
 
 setup(
-    name='nuancier-lite',
-    description='A light weight voting application for the supplementary '
-                'wallpapers of Fedora',
+    name='nuancier',
+    description='A voting application for the supplementary wallpapers of '
+                'Fedora',
     version=__version__,
     author='Pierre-Yves Chibon',
     author_email='pingou@pingoured.fr',
@@ -33,9 +33,9 @@ setup(
     maintainer_email='pingou@pingoured.fr',
     license='GPLv3+',
     download_url='https://fedorahosted.org/releases/n/u/nuancier/',
-    url='https://github.com/fedora-infra/nuancier-lite/',
+    url='https://github.com/fedora-infra/nuancier/',
     packages=['nuancier'],
     include_package_data=True,
     install_requires=['Flask', 'SQLAlchemy>=0.6', 'wtforms', 'flask-wtf',
                       'python-fedora', 'Pillow', 'dogpile.cache'],
-    )
+)

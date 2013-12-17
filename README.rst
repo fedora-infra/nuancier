@@ -1,18 +1,18 @@
-nuancier-lite
-=============
+nuancier
+========
 
 :Author: Pierre-Yves Chibon <pingou@pingoured.fr>
 
 
-Nuancier-lite is a light weight voting application for the supplementary
+Nuancier is a web-based voting application for the supplementary
 wallpapers of Fedora.
 
 
 Get this project:
 -----------------
-On github: https://github.com/fedora-infra/nuancier-lite
+On github: https://github.com/fedora-infra/nuancier
 
-Documentation: http://nuancier-lite.rtfd.org
+Documentation: http://nuancier.rtfd.org
 
 
 Dependencies:
@@ -26,6 +26,7 @@ Dependencies:
 .. _python-sqlalchemy: http://www.sqlalchemy.org/
 .. _Pillow: https://pypi.python.org/pypi/Pillow
 .. _python-pillow: https://pypi.python.org/pypi/Pillow
+.. _dogpile.cache: https://pypi.python.org/pypi/dogpile.cache
 
 This project is a `Flask`_ application. The calendars and meetings are
 stored into a relational database using `SQLAlchemy`_ as Object Relational
@@ -42,6 +43,7 @@ The dependency list is therefore:
 - `python-wtforms`_
 - `python-sqlalchemy`_
 - `python-pillow`_
+- `dogpile.cache`_
 
 
 Running a development instance:
@@ -49,7 +51,7 @@ Running a development instance:
 
 Clone the source::
 
- git clone https://github.com/fedora-infra/nuancier-lite.git
+ git clone https://github.com/fedora-infra/nuancier.git
 
 
 Create the database scheme::
@@ -65,10 +67,10 @@ You should be able to access the server at http://localhost:5000
 
 .. note:: To tweak the configuration, you may either change
    ``default_config.py`` in the nuancier module, or copy the file
-   ``nuancier-lite.cfg.sample`` into ``nuancier-lite.cfg`` and run the
+   ``nuancier-lite.cfg.sample`` into ``nuancier.cfg`` and run the
    application using::
 
-     NUANCIER_CONFIG=nuancier-lite.cfg python runserver.py
+     NUANCIER_CONFIG=nuancier.cfg python runserver.py
 
 Testing:
 --------
