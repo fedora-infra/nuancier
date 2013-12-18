@@ -372,8 +372,6 @@ def contribute(election_id):
 
         flask.flash('Thanks for your submission')
         return flask.redirect(flask.url_for('index'))
-    else:
-        form = nuancier.forms.AddCandidateForm(election=election)
 
     return flask.render_template(
         'contribute.html',
@@ -672,8 +670,6 @@ def admin_edit(election_id):
 
         flask.flash('Election updated')
         return flask.redirect(flask.url_for('admin_index'))
-    else:
-        form = nuancier.forms.AddElectionForm(election=election)
     return flask.render_template(
         'admin_edit.html',
         election=election,
