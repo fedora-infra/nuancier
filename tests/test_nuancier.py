@@ -347,7 +347,7 @@ class Nuanciertests(Modeltests):
 
             self.assertFalse(os.path.exists(upload_path))
 
-            # Conflicting name
+            # Conflicting name/title for the same filename
             with open(FILE_OK) as stream:
                 data = {
                     'candidate_name': 'name',
@@ -356,34 +356,13 @@ class Nuanciertests(Modeltests):
                     'candidate_license': 'CC-BY-SA',
                     'csrf_token': csrf_token,
                 }
-
                 output = self.app.post('/contribute/1', data=data,
                                        follow_redirects=True)
+                print output.data
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="error">A candidate with the name '
-                    '"name" has already been submitted</li>'
-                    in output.data)
-                self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
-                                in output.data)
-
-            self.assertFalse(os.path.exists(upload_path))
-
-            # Conflicting file name
-            with open(FILE_OK) as stream:
-                data = {
-                    'candidate_name': 'name2',
-                    'candidate_author': 'pingou',
-                    'candidate_file': stream,
-                    'candidate_license': 'CC-BY-SA',
-                    'csrf_token': csrf_token,
-                }
-
-                output = self.app.post('/contribute/1', data=data,
-                                       follow_redirects=True)
-                self.assertEqual(output.status_code, 200)
-                self.assertTrue(
-                    '<li class="error">A candidate with the file name '
+                    '<li class="error">A candidate with the title "name" '
+                    'and filename "pingou-'
                     in output.data)
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
