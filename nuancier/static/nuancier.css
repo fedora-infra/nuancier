@@ -22,7 +22,7 @@
     border-radius: 10px;
 }
 
-#content {
+h1, h2, h3 {
     font-family: 'Comfortaa', cursive;
 }
 
