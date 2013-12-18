@@ -25,13 +25,16 @@ Top level of the nuancier Flask application.
 
 import logging
 import os
+import re
 import sys
 
 import flask
 import dogpile.cache
+from bunch import Bunch
 from functools import wraps
 ## pylint cannot import flask extension correctly
 # pylint: disable=E0611,F0401
+from flask.ext.openid import OpenID
 from flask.ext.fas_openid import FAS
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -62,6 +65,8 @@ APP.config.from_object('nuancier.default_config')
 if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('NUANCIER_CONFIG')
 
+# Set up OpenID in stateless mode
+OID = OpenID(APP, store_factory=lambda: None)
 # Set up FAS extension
 FAS = FAS(APP)
 
@@ -91,6 +96,20 @@ def is_nuancier_admin(user):
     return len(set(user.groups).intersection(admins)) > 0
 
 
+def login_required(function):
+    ''' Flask decorator to ensure that the user is logged. '''
+    @wraps(function)
+    def decorated_function(*args, **kwargs):
+        ''' Wrapped function actually checking if the user is logged in.
+        '''
+        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
+                and not flask.g.auth.logged_in:
+            return flask.redirect(flask.url_for('.login',
+                                                next=flask.request.url))
+        return function(*args, **kwargs)
+    return decorated_function
+
+
 def fas_login_required(function):
     ''' Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
@@ -104,9 +123,14 @@ def fas_login_required(function):
     def decorated_function(*args, **kwargs):
         ''' Wrapped function actually checking if the user is logged in.
         '''
-        if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
-            return flask.redirect(flask.url_for('.login',
-                                                next=flask.request.url))
+        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
+                and not flask.g.auth.logged_in:
+            return flask.redirect(
+                flask.url_for('.login', next=flask.request.url))
+        elif flask.g.auth.logged_in:
+            flask.flash(
+                'You have not authentified with a Fedora account', 'error')
+            return flask.redirect(flask.url_for('index'))
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
@@ -128,9 +152,13 @@ def nuancier_admin_required(function):
         ''' Wrapped function actually checking if the user is an admin for
         nuancier.
         '''
-        if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
-            return flask.redirect(flask.url_for('.login',
-                                                next=flask.request.url))
+        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
+                and not flask.g.auth.logged_in:
+            return flask.redirect(
+                flask.url_for('.login', next=flask.request.url))
+        elif flask.g.auth.logged_in:
+            flask.flash('You are not an administrator of nuancier', 'error')
+            return flask.redirect(flask.url_for('index'))
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
@@ -193,7 +221,53 @@ def validate_input_file(input_file):
             ' than the minimum %s pixels required' % (height, min_height))
 
 
+
+def extract_openid_identifier(openid_url):
+    openid = openid_url.split('://')[1]
+    if openid.endswith('/'):
+        openid = openid[:-1]
+    if 'id?id=' in openid:
+        openid = openid.split('id?id=')[1]
+    if 'me.yahoo.com/a/' in openid:
+        openid = openid.split('me.yahoo.com/a/')[1]
+    openid = openid.replace('/', '_')
+    return openid
+
+
+@OID.after_login
+def after_openid_login(resp):
+    default = flask.url_for('index')
+    if resp.identity_url:
+        openid_url = resp.identity_url
+        flask.session['openid'] = openid_url
+        flask.session['fullname'] = resp.fullname
+        flask.session['nickname'] = resp.nickname or resp.fullname
+        flask.session['email'] = resp.email
+        next_url = flask.request.args.get('next', default)
+        return flask.redirect(next_url)
+    else:
+        return flask.redirect(default)
+
+
 ## Generic APP functions
+
+
+@APP.before_request
+def check_auth():
+    flask.g.auth = Bunch(
+        logged_in=False,
+        method=None,
+        id=None,
+    )
+    if 'openid' in flask.session:
+        openid = extract_openid_identifier(flask.session.get('openid'))
+        flask.g.auth.logged_in = True
+        flask.g.auth.method = u'openid'
+        flask.g.auth.openid = openid
+        flask.g.auth.openid_url = flask.session.get('openid')
+        flask.g.auth.nickname = flask.session.get('nickname', None)
+        flask.g.auth.fullname = flask.session.get('fullname', None)
+        flask.g.auth.email = flask.session.get('email', None)
 
 
 @APP.context_processor
@@ -240,33 +314,64 @@ def msg():
     return flask.render_template('msg.html')
 
 
-@APP.route('/login/', methods=['GET', 'POST'])
-def login():  # pragma: no cover
-    ''' Login mechanism for this application.
-    '''
-    next_url = None
-    if 'next' in flask.request.args:
-        next_url = flask.request.args['next']
-
-    if not next_url or next_url == flask.url_for('.login'):
-        next_url = flask.url_for('.index')
-
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
+@APP.route('/login/', methods=('GET', 'POST'))
+@APP.route('/login', methods=('GET', 'POST'))
+@OID.loginhandler
+def login():
+    default = flask.url_for('index')
+    next_url = flask.request.args.get('next', default)
+    if flask.g.auth.logged_in:
         return flask.redirect(next_url)
-    else:
-        return FAS.login(return_url=next_url)
+
+    openid_server = flask.request.form.get('openid', None)
+    pat = re.compile('http(s)?:\/\/(.*\.)?id\.fedoraproject\.org(/)?')
+    if openid_server:
+        if pat.match(openid_server):
+            return FAS.login(return_url=next_url)
+        else:
+            return OID.try_login(
+                openid_server, ask_for=['email', 'fullname', 'nickname'])
+
+    return flask.render_template(
+        'login.html', next=OID.get_next_url(), error=OID.fetch_error())
+
+
+@APP.route('/login/fedora/')
+@APP.route('/login/fedora')
+@OID.loginhandler
+def fedora_login():
+    default = flask.url_for('index')
+    next_url = flask.request.args.get('next', default)
+    return FAS.login(return_url=next_url)
+
+@APP.route('/login/google/')
+@APP.route('/login/google')
+@OID.loginhandler
+def google_login():
+    default = flask.url_for('index')
+    next_url = flask.request.args.get('next', default)
+    return OID.try_login(
+        "https://www.google.com/accounts/o8/id",
+        ask_for=['email', 'fullname'])
+
+@APP.route('/login/yahoo/')
+@APP.route('/login/yahoo')
+@OID.loginhandler
+def yahoo_login():
+    default = flask.url_for('index')
+    next_url = flask.request.args.get('next', default)
+    return OID.try_login(
+        "https://me.yahoo.com/",
+        ask_for=['email', 'fullname'])
 
 
 @APP.route('/logout/')
-def logout():  # pragma: no cover
-    ''' Log out if the user is logged in other do nothing.
-    Return to the index page at the end.
-    '''
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
-        FAS.logout()
-        flask.flash('You are no longer logged-in')
-    return flask.redirect(flask.url_for('.index'))
-
+@APP.route('/logout')
+def logout():
+    FAS.logout()
+    if 'openid' in flask.session:
+        flask.session.pop('openid')
+    return flask.redirect(flask.url_for('index'))
 
 # Finalize the import of other controllers
 import nuancier.admin
