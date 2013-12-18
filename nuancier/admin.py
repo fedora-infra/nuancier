@@ -35,7 +35,6 @@ import nuancier.lib as nuancierlib
 from nuancier import APP, SESSION, LOG, nuancier_admin_required
 
 
-
 @APP.route('/admin/')
 @nuancier_admin_required
 def admin_index():
