@@ -188,6 +188,7 @@ a:visited.large_button {
     margin-bottom: 1em;
     -moz-border-radius: 15px;
     border-radius: 15px;
+    display:inline-block;
 }
 
 .cell a {
