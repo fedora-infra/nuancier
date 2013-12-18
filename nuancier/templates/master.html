@@ -48,7 +48,12 @@
             {{ g.fas_user.username or g.auth.nickname or g.auth.fullname }} |
             <a href="{{ url_for('.logout') }}">log out</a>
           {% else %}
-            <a href="{{ url_for('.login') }}">login</a>
+            login:
+            <a href="{{ url_for('.fedora_login') }}">Fedora</a> |
+            <a href="{{ url_for('.google_login') }}">Google</a> |
+            <a href="{{ url_for('.yahoo_login') }}">Yahoo</a> |
+            <a href="{{ url_for('.login') }}">OpenID</a>
+            </ul>
           {% endif %}
         </span>
 
