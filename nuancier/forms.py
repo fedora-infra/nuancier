@@ -98,8 +98,16 @@ class AddCandidateForm(flask_wtf.Form):
         'Author', [wtf.validators.Required()])
     candidate_file = wtf.FileField(
         'File', [wtf.validators.Required()])
-    candidate_license = wtf.TextField(
-        'License', [wtf.validators.Required()])
+    candidate_license = wtf.SelectField(
+        'License', [wtf.validators.Required()],
+        choices=[
+            (None, ''),
+            ('CC0', 'CC0'),
+            ('CC-BY', 'CC-BY'),
+            ('CC-BY-SA', 'CC-BY-SA'),
+            ('DSL', 'DSL'),
+            ('Free Art', 'Free Art'),
+        ])
 
     def __init__(self, *args, **kwargs):
         ''' Calls the default constructor and fill in default values.
@@ -107,7 +115,6 @@ class AddCandidateForm(flask_wtf.Form):
         super(AddCandidateForm, self).__init__(*args, **kwargs)
 
         self.candidate_author.data = flask.g.fas_user.username
-        self.candidate_license.data = 'CC-BY-SA'
 
 
 class ConfirmationForm(flask_wtf.Form):
