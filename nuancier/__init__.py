@@ -642,6 +642,9 @@ def admin_edit(election_id):
         return flask.render_template('msg.html')
 
     form = nuancier.forms.AddElectionForm()
+    if flask.request.method == 'GET':
+        form = nuancier.forms.AddElectionForm(election=election)
+
     if form.validate_on_submit():
         election = nuancierlib.edit_election(
             SESSION,
