@@ -322,7 +322,8 @@ def contribute(election_id):
                 election=election,
                 form=form)
 
-        filename = secure_filename(candidate_file.filename)
+        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
+                                   candidate_file.filename))
 
         try:
             nuancierlib.add_candidate(
@@ -363,7 +364,8 @@ def contribute(election_id):
             election.election_folder)
         if not os.path.exists(upload_folder):  # pragma: no cover
             os.mkdir(upload_folder)
-        filename = secure_filename(candidate_file.filename)
+        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
+                                   candidate_file.filename))
         # The PIL module has already read the stream so we need to back up
         candidate_file.seek(0)
 
