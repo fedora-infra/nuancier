@@ -863,6 +863,14 @@ def admin_cache(election_id):
     ''' Regenerate the cache for this election. '''
     election = nuancierlib.get_election(SESSION, election_id)
 
+    next_url = None
+    if 'next' in flask.request.args:
+        next_url = flask.request.args['next']
+
+    if not next_url or next_url == flask.url_for(
+            '.admin_cache', election_id=election_id):
+        next_url = flask.url_for('.admin_index')
+
     if not election:
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
@@ -883,7 +891,7 @@ def admin_cache(election_id):
         LOG.exception(err)
         flask.flash(err.message, 'error')
 
-    return flask.redirect(flask.url_for('.admin_index'))
+    return flask.redirect(next_url)
 
 
 @APP.route('/stats/<int:election_id>/')
