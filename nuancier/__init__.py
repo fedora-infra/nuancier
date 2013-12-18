@@ -117,12 +117,12 @@ def fas_login_required(function):
                                                 next=flask.request.url))
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
-                        'Agreement to use nuancier', 'errors')
+                        'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
         else:
             if len(flask.g.fas_user.groups) == 0:
                 flask.flash('You must be in one more group than the CLA',
-                            'errors')
+                            'error')
                 return flask.redirect(flask.url_for('index'))
         return function(*args, **kwargs)
     return decorated_function
@@ -142,15 +142,15 @@ def nuancier_admin_required(function):
                                                 next=flask.request.url))
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
-                        'Agreement to use nuancier', 'errors')
+                        'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
         elif len(flask.g.fas_user.groups) == 0:
             flask.flash(
-                'You must be in one more group than the CLA', 'errors')
+                'You must be in one more group than the CLA', 'error')
             return flask.redirect(flask.url_for('index'))
         elif not is_nuancier_admin(flask.g.fas_user):
             flask.flash('You are not an administrator of nuancier',
-                        'errors')
+                        'error')
             return flask.redirect(flask.url_for('msg'))
         else:
             return function(*args, **kwargs)
@@ -316,7 +316,7 @@ def contribute(election_id):
                       'election: "%s"', flask.g.fas_user.username,
                       election_id)
             LOG.exception(err)
-            flask.flash(err.message)
+            flask.flash(err.message, 'error')
             return flask.render_template(
                 'contribute.html',
                 election=election,
