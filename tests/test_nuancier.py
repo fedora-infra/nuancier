@@ -246,7 +246,7 @@ class Nuanciertests(Modeltests):
                 output = self.app.post('/contribute/1', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="message">The submitted candidate has a '
+                    '<li class="error">The submitted candidate has a '
                     'width of 1280 pixels which is lower than the minimum '
                     '1600 pixels required</li>' in output.data
                 )
@@ -268,7 +268,7 @@ class Nuanciertests(Modeltests):
                 output = self.app.post('/contribute/1', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="message">The submitted candidate has a '
+                    '<li class="error">The submitted candidate has a '
                     'height of 1166 pixels which is lower than the minimum '
                     '1200 pixels required</li>' in output.data
                 )
@@ -290,7 +290,7 @@ class Nuanciertests(Modeltests):
                 output = self.app.post('/contribute/1', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="message">The submitted candidate could not '
+                    '<li class="error">The submitted candidate could not '
                     'be opened as an Image</li>' in output.data
                 )
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
@@ -311,7 +311,7 @@ class Nuanciertests(Modeltests):
                 output = self.app.post('/contribute/1', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="message">The submitted candidate has the '
+                    '<li class="error">The submitted candidate has the '
                     'file extension "txt" which is not an allowed format'
                     in output.data
                 )
