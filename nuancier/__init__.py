@@ -52,7 +52,7 @@ import nuancier.notifications
 
 ## Some of the object we use here have inherited methods which apparently
 ## pylint does not detect.
-# pylint: disable=E1101
+# pylint: disable=E1101, E1103
 ## Apparently some of our methods have too many branches
 # pylint: disable=R0912
 ## And/Or too many return statements
