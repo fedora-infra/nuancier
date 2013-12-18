@@ -113,7 +113,6 @@ def fas_login_required(function):
         ''' Wrapped function actually checking if the user is logged in.
         '''
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
-            flask.flash('Login required', 'errors')
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
         elif not flask.g.fas_user.cla_done:
