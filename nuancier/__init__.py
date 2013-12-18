@@ -656,6 +656,7 @@ def admin_edit(election_id):
         )
         try:
             SESSION.commit()
+            flask.flash('Election updated')
         except SQLAlchemyError as err:
             SESSION.rollback()
             LOG.debug("User: %s could not edit election: %s ",
@@ -668,7 +669,6 @@ def admin_edit(election_id):
                 election=election,
                 form=form)
 
-        flask.flash('Election updated')
         return flask.redirect(flask.url_for('admin_index'))
     return flask.render_template(
         'admin_edit.html',
