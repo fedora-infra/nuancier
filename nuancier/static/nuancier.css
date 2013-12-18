@@ -155,25 +155,6 @@ body#admin table {
     text-decoration: underline;
 }
 
-/*#fix_info {
-    position: fixed;
-    top: 130px;
-    right: 5px;
-}
-
-#fix_submit {
-    position: fixed;
-    bottom: 40px;
-    right: 5px;
-    width: 5em;
-}
-
-#fix_cancel {
-    position: fixed;
-    bottom: 10px;
-    right: 5px;
-    width: 5em;
-}*/
 
 a.large_button,
 a:hover.large_button,
