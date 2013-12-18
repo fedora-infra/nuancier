@@ -2,11 +2,11 @@
     color: green;
 }
 
-.errors {
+.error {
     color: red;
 }
 
-.warnings {
+.warning {
     color: orange;
 }
 
