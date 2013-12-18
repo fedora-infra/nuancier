@@ -51,23 +51,27 @@ def is_number(form, field):
 
 class AddElectionForm(flask_wtf.Form):
     ''' Form to add a new election. '''
-    election_name = wtf.TextField('Election name',
-                                  [wtf.validators.Required()])
+    election_name = wtf.TextField(
+        'Election name',
+        [wtf.validators.Required()])
     election_folder = wtf.TextField(
         'Name of the folder containing the pictures',
         [wtf.validators.Required()])
-    election_year = wtf.TextField('Year',
-                                  [wtf.validators.Required()])
-    election_date_start = wtf.DateField('Start date (in utc)',
-                                        [wtf.validators.Required()])
-    election_date_end = wtf.DateField('End date (in utc)',
-                                      [wtf.validators.Required()])
-    election_badge_link = wtf.TextField('URL to claim a badge for voting',
-                                        [wtf.validators.URL(),
-                                         wtf.validators.Optional()])
-    election_n_choice = wtf.TextField('Number of votes a user can make',
-                                      [wtf.validators.Required(),
-                                       is_number])
+    election_year = wtf.TextField(
+        'Year',
+        [wtf.validators.Required()])
+    election_date_start = wtf.DateField(
+        'Start date (in utc)',
+        [wtf.validators.Required()])
+    election_date_end = wtf.DateField(
+        'End date (in utc)',
+        [wtf.validators.Required()])
+    election_badge_link = wtf.TextField(
+        'URL to claim a badge for voting',
+        [wtf.validators.URL(), wtf.validators.Optional()])
+    election_n_choice = wtf.TextField(
+        'Number of votes a user can make',
+        [wtf.validators.Required(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):
