@@ -88,6 +88,7 @@ class Nuanciertests(Modeltests):
         nuancier.APP.config['TESTING'] = True
         nuancier.SESSION = self.session
         nuancier.admin.SESSION = self.session
+        nuancier.ui.SESSION = self.session
         nuancier.APP.config['PICTURE_FOLDER'] = PICTURE_FOLDER
         nuancier.APP.config['CACHE_FOLDER'] = CACHE_FOLDER
         self.app = nuancier.APP.test_client()
