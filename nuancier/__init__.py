@@ -281,9 +281,16 @@ def index():
     ''' Display the index page. '''
     elections = nuancierlib.get_elections_open(SESSION)
     contributions = nuancierlib.get_elections_to_contribute(SESSION)
+    published = nuancierlib.get_elections_public(SESSION)
+    election = election_results = None
+    if published:
+        election = published[0]
+        election_results = nuancierlib.get_results(SESSION, election.id)
     return flask.render_template(
         'index.html',
         elections=elections,
+        election=election ,
+        results=election_results,
         contributions=contributions)
 
 

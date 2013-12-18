@@ -4,6 +4,11 @@
 
 {%block tag %}index{% endblock %}
 
+{%block head %}
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='s3Slider.css') }}"/>
+{% endblock %}
+
 {% block content %}
 
 <h1>Nuancier</h1>
@@ -12,6 +17,27 @@
 Nuancier is a simple voting application for the supplementary
 wallpapers included in Fedora.
 
+
+{% if results %}
+    <h3>Last winners</h3>
+    <div id="s3slider">
+        <ul id="s3sliderContent">
+            {% for candidate, votes in results %}
+            <li class="s3sliderImage">
+                <img src="{{ url_for('base_cache', filename='%s/%s' % (
+                                     election.election_folder,
+                                     candidate.candidate_file)
+                                )
+                          }}">
+                <span class="top" style="display: inline;">
+                    {{ candidate.candidate_name }}
+                </span>
+            </li>
+            {% endfor %}
+            <div class="clear s3sliderImage"></div>
+        </ul>
+    </div>
+{% endif %}
 
 <h3>Vote</h3>
 
@@ -49,4 +75,19 @@ Before you contribute to an election make sure to <a href="{{ url_for('contribut
 <p>No elections are opened for contributions for the moment.</p>
 {% endif %}
 
+{% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+<script language="javascript" type="text/javascript"
+        src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script language="javascript" type="text/javascript"
+        src="{{ url_for('static', filename='s3Slider.js') }}"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+    $('#s3slider').s3Slider({
+        timeOut: 5000
+    });
+});
+</script>
 {% endblock %}
