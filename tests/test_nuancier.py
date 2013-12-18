@@ -521,7 +521,7 @@ class Nuanciertests(Modeltests):
         with user_set(nuancier.APP, user):
             output = self.app.get('/election/1/vote/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must be in one more '
+            self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
 
         # Fails; CLA not signed
@@ -530,7 +530,7 @@ class Nuanciertests(Modeltests):
         with user_set(nuancier.APP, user):
             output = self.app.get('/election/1/vote/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must sign the CLA '
+            self.assertTrue('<li class="error">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
 
@@ -591,7 +591,7 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/election/1/voted/',
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must be in one more '
+            self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
 
         # Fails; CLA not signed
@@ -601,7 +601,7 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/election/1/voted/',
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must sign the CLA '
+            self.assertTrue('<li class="error">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
 
@@ -790,7 +790,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         # Fails - did not sign the CLA
@@ -801,7 +801,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must sign the CLA '
+            self.assertTrue('<li class="error">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
             self.assertTrue('<h1>Nuancier</h1>' in output.data)
@@ -817,7 +817,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You must be in one more '
+            self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
             self.assertTrue('<h1>Nuancier</h1>' in output.data)
             self.assertTrue('Nuancier is a simple voting application'
@@ -862,7 +862,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/1/edit/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
@@ -976,7 +976,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/new/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
@@ -1021,7 +1021,8 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>New election</h1>' in output.data)
-            self.assertTrue('<td class="errors">Field must contain a '
+            print output.data
+            self.assertTrue('<td class="error">Field must contain a '
                             'number</td>' in output.data)
 
             data = {
@@ -1142,7 +1143,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/review/1/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
@@ -1197,7 +1198,7 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/admin/review/1/process',
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
@@ -1386,7 +1387,7 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/cache/2', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="errors">You are not an administrator'
+            self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
