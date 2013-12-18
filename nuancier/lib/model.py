@@ -311,7 +311,8 @@ class Candidates(BASE):
         return query.all()
 
     @classmethod
-    def by_election_and_name(cls, session, election_id, name):
+    def by_election_file_and_name(
+            cls, session, election_id, filename, name):
         """ Return the candidate associated to the given election
         identifier and having the specified name.
 
@@ -322,20 +323,6 @@ class Candidates(BASE):
             Candidates.election_id == election_id
         ).filter(
             Candidates.candidate_name == name
-        )
-
-        return query.first()
-
-    @classmethod
-    def by_election_and_file(cls, session, election_id, filename):
-        """ Return the candidate associated to the given election
-        identifier and having the specified filename.
-
-        """
-        query = session.query(
-            cls
-        ).filter(
-            Candidates.election_id == election_id
         ).filter(
             Candidates.candidate_file == filename
         )
