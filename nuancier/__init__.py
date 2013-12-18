@@ -608,12 +608,12 @@ def results(election_id):
         flask.flash('The results this election are not public yet', 'error')
         return flask.redirect(flask.url_for('results_list'))
 
-    results = nuancierlib.get_results(SESSION, election_id)
+    election_results = nuancierlib.get_results(SESSION, election_id)
 
     return flask.render_template(
         'results.html',
         election=election,
-        results=results,
+        results=election_results,
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
         cache_folder=os.path.join(
