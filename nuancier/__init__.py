@@ -229,7 +229,7 @@ def validate_input_file(input_file):
 
 
 @OID.after_login
-def after_openid_login(resp):
+def after_openid_login(resp):  # pragma: no cover
     default = flask.url_for('index')
     if resp.identity_url:
         openid_url = resp.identity_url
@@ -253,7 +253,7 @@ def check_auth():
         method=None,
         id=None,
     )
-    if 'openid' in flask.session:
+    if 'openid' in flask.session:  # pragma: no cover
         flask.g.auth.logged_in = True
         flask.g.auth.method = u'openid'
         flask.g.auth.openid_url = flask.session.get('openid')
