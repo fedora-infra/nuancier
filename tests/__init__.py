@@ -83,6 +83,25 @@ def user_set(APP, user):
         yield
 
 
+@contextmanager
+def openiduser_set(APP):
+    """ Set the provided user as fas_user in the provided application."""
+
+    # Hack used to remove the before_request function set by
+    # flask.ext.fas_openid.FAS which otherwise kills our effort to set a
+    # flask.g.fas_user.
+    APP.before_request_funcs[None] = []
+
+    def handler(sender, **kwargs):
+        g.auth = bunch.Bunch()
+        g.auth.email = 'test@test.com'
+        g.auth.nickname = 'test user'
+        g.auth.logged_in = True
+
+    with appcontext_pushed.connected_to(handler, APP):
+        yield
+
+
 class FakeFasUser(object):
     """ Fake FAS user used for the tests. """
     id = 100
