@@ -362,7 +362,7 @@ def yahoo_login():  # pragma: no cover
 @APP.route('/logout')
 def logout():
     FAS.logout()
-    if 'openid' in flask.session:
+    if 'openid' in flask.session:  # pragma: no cover
         flask.session.pop('openid')
     flask.flash('You are no longer logged-in')
     return flask.redirect(flask.url_for('index'))
