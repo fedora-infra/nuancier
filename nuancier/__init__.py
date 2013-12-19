@@ -337,6 +337,7 @@ def fedora_login():  # pragma: no cover
     next_url = flask.request.args.get('next', default)
     return FAS.login(return_url=next_url)
 
+
 @APP.route('/login/google/')
 @APP.route('/login/google')
 @OID.loginhandler
@@ -346,6 +347,7 @@ def google_login():  # pragma: no cover
     return OID.try_login(
         "https://www.google.com/accounts/o8/id",
         ask_for=['email', 'fullname'])
+
 
 @APP.route('/login/yahoo/')
 @APP.route('/login/yahoo')

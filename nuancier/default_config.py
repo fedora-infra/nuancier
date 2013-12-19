@@ -71,10 +71,6 @@ NUANCIER_EMAIL_FROM = 'nobody@fedoraproject.org'
 # The smtp server to use to send the notifications
 NUANCIER_EMAIL_SMTP_SERVER = 'localhost'
 
-NUANCIER_FEDORA_OPENID = 'https://id.fedoraproject.org'
-
-
-
 NUANCIER_ALLOW_FAS_OPENID = True
 NUANCIER_ALLOW_GOOGLE_OPENID = True
 NUANCIER_ALLOW_YAHOO_OPENID = True

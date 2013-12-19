@@ -116,7 +116,7 @@ def contribute(election_id):
                 form=form)
 
         filename = secure_filename(
-            '%s-%s' % (author,candidate_file.filename))
+            '%s-%s' % (author, candidate_file.filename))
 
         try:
             nuancierlib.add_candidate(

@@ -404,7 +404,6 @@ class Nuanciertests(Modeltests):
 
             self.assertFalse(os.path.exists(upload_path))
 
-
         # Change user
         with openiduser_set(nuancier.APP):
             with open(FILE_OK) as stream:
