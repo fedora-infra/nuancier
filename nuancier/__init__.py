@@ -230,6 +230,9 @@ def validate_input_file(input_file):
 
 @OID.after_login
 def after_openid_login(resp):  # pragma: no cover
+    ''' Handles the response sent by the OpenID server and store at the
+    session level the information we can make use of later on.
+    '''
     default = flask.url_for('index')
     if resp.identity_url:
         openid_url = resp.identity_url
@@ -248,6 +251,9 @@ def after_openid_login(resp):  # pragma: no cover
 
 @APP.before_request
 def check_auth():
+    ''' Retrieve the information from the session to set information at the
+    request level.
+    '''
     flask.g.auth = Bunch(
         logged_in=False,
         method=None,
@@ -310,6 +316,7 @@ def msg():
 @APP.route('/login', methods=('GET', 'POST'))
 @OID.loginhandler
 def login():
+    ''' Displays a form where the user can enter his/her openid server. '''
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     if (hasattr(flask.g, 'fas_user') and flask.g.fas_user) or (
@@ -333,6 +340,7 @@ def login():
 @APP.route('/login/fedora')
 @OID.loginhandler
 def fedora_login():  # pragma: no cover
+    ''' Log the user in using the FAS-OpenID server. '''
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return FAS.login(return_url=next_url)
@@ -342,6 +350,7 @@ def fedora_login():  # pragma: no cover
 @APP.route('/login/google')
 @OID.loginhandler
 def google_login():  # pragma: no cover
+    ''' Log the user in using google. '''
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return OID.try_login(
@@ -353,6 +362,7 @@ def google_login():  # pragma: no cover
 @APP.route('/login/yahoo')
 @OID.loginhandler
 def yahoo_login():  # pragma: no cover
+    ''' Log the user in using yahoo. '''
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return OID.try_login(
