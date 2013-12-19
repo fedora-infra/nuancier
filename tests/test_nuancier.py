@@ -539,6 +539,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
 
         # Fails; CLA not signed
         user.groups = ['packager', 'cla_done']
@@ -549,6 +552,19 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="error">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
+        # Fails: FAS login required
+        with openiduser_set(nuancier.APP):
+            output = self.app.get('/election/1/vote/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You have not authentified '
+                            'with a Fedora account</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
 
         # Works
         user.cla_done = True
@@ -835,6 +851,16 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
+        # Fails: FAS login required
+        with openiduser_set(nuancier.APP):
+            output = self.app.get('/admin/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You have not authentified '
+                            'with a Fedora account</li>' in output.data)
             self.assertTrue('<h1>Nuancier</h1>' in output.data)
             self.assertTrue('Nuancier is a simple voting application'
                             in output.data)
