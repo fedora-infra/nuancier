@@ -324,7 +324,7 @@ def login():
         return flask.redirect(next_url)
 
     openid_server = flask.request.form.get('openid', None)
-    pat = re.compile('http(s)?:\/\/(.*\.)?id\.fedoraproject\.org(/)?')
+    pat = re.compile(r'http(s)?:\/\/(.*\.)?id\.fedoraproject\.org(/)?')
     if openid_server:  # pragma: no cover
         if pat.match(openid_server):
             return FAS.login(return_url=next_url)
