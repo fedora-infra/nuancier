@@ -31,6 +31,8 @@ import shutil
 import sys
 import os
 
+import bunch
+
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -74,6 +76,8 @@ def user_set(APP, user):
 
     def handler(sender, **kwargs):
         g.fas_user = user
+        g.auth = bunch.Bunch()
+        g.auth.logged_in = False
 
     with appcontext_pushed.connected_to(handler, APP):
         yield
