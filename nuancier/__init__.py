@@ -163,7 +163,8 @@ def nuancier_admin_required(function):
             return flask.redirect(
                 flask.url_for('.login', next=flask.request.url))
         elif flask.g.auth.logged_in:
-            flask.flash('You are not an administrator of nuancier', 'error')
+            flask.flash(
+                'You have not authentified with a Fedora account', 'error')
             return flask.redirect(flask.url_for('index'))
         elif not flask.g.fas_user.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
