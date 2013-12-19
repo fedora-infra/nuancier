@@ -269,6 +269,7 @@ def logout():  # pragma: no cover
     return flask.redirect(flask.url_for('.index'))
 
 
+
 # Finalize the import of other controllers
-import admin
-import ui
+import nuancier.admin
+import nuancier.ui
