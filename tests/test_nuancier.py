@@ -118,12 +118,15 @@ class Nuanciertests(Modeltests):
     def test_login(self):
         """ Test the login function. """
         output = self.app.get('/login')
-        self.assertEqual(output.status_code, 301)
+        self.assertEqual(output.status_code, 200)
+        self.assertTrue('<h3>OpenId Login</h3>' in output.data)
+        self.assertTrue('placeholder="https://id.openid.server">'
+                        in output.data)
 
     def test_logout(self):
         """ Test the logout function. """
         output = self.app.get('/logout')
-        self.assertEqual(output.status_code, 301)
+        self.assertEqual(output.status_code, 302)
 
         output = self.app.get('/logout/')
         self.assertEqual(output.status_code, 302)
