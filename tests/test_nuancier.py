@@ -123,6 +123,33 @@ class Nuanciertests(Modeltests):
         self.assertTrue('placeholder="https://id.openid.server">'
                         in output.data)
 
+        user = FakeFasUser()
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/login')
+            self.assertEqual(output.status_code, 302)
+
+            output = self.app.get('/login', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertFalse('<h3>OpenId Login</h3>' in output.data)
+            self.assertFalse('placeholder="https://id.openid.server">'
+                             in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
+        with openiduser_set(nuancier.APP):
+            output = self.app.get('/login')
+            self.assertEqual(output.status_code, 302)
+
+            output = self.app.get('/login', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertFalse('<h3>OpenId Login</h3>' in output.data)
+            self.assertFalse('placeholder="https://id.openid.server">'
+                             in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
     def test_logout(self):
         """ Test the logout function. """
         output = self.app.get('/logout')
