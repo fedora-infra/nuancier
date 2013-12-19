@@ -43,7 +43,7 @@ import nuancier.lib as nuancierlib
 from nuancier.lib import model
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, FakeFasUser, user_set, approve_candidate,
-                   CACHE_FOLDER, PICTURE_FOLDER, TODAY)
+                   openiduser_set, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
 
 
 FILE_OK = os.path.join(
@@ -374,6 +374,35 @@ class Nuanciertests(Modeltests):
                     in output.data)
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
+
+            self.assertFalse(os.path.exists(upload_path))
+
+
+        # Change user
+        with openiduser_set(nuancier.APP):
+            with open(FILE_OK) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribute/1', data=data,
+                                       follow_redirects=True)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    '<li class="message">Thanks for your submission</li>'
+                    in output.data
+                )
+                self.assertTrue('<h1>Nuancier</h1>' in output.data)
+                self.assertTrue(
+                    'Nuancier is a simple voting application'
+                    in output.data)
+
+            self.assertTrue(os.path.exists(upload_path))
+            shutil.rmtree(upload_path)
 
             self.assertFalse(os.path.exists(upload_path))
 
@@ -1405,7 +1434,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
 
-            output = self.app.get('/admin/cache/2?next=/', follow_redirects=True)
+            output = self.app.get('/admin/cache/2?next=/',
+                                  follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
