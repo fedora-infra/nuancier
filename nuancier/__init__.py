@@ -373,6 +373,7 @@ def yahoo_login():  # pragma: no cover
 @APP.route('/logout/')
 @APP.route('/logout')
 def logout():
+    ''' Log out the user. '''
     FAS.logout()
     if 'openid' in flask.session:  # pragma: no cover
         flask.session.pop('openid')
