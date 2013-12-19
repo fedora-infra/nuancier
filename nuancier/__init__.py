@@ -341,8 +341,6 @@ def login():
 @OID.loginhandler
 def fedora_login():  # pragma: no cover
     ''' Log the user in using the FAS-OpenID server. '''
-    default = flask.url_for('index')
-    next_url = flask.request.args.get('next', default)
     return FAS.login(return_url=next_url)
 
 
@@ -351,8 +349,6 @@ def fedora_login():  # pragma: no cover
 @OID.loginhandler
 def google_login():  # pragma: no cover
     ''' Log the user in using google. '''
-    default = flask.url_for('index')
-    next_url = flask.request.args.get('next', default)
     return OID.try_login(
         "https://www.google.com/accounts/o8/id",
         ask_for=['email', 'fullname'])
@@ -363,8 +359,6 @@ def google_login():  # pragma: no cover
 @OID.loginhandler
 def yahoo_login():  # pragma: no cover
     ''' Log the user in using yahoo. '''
-    default = flask.url_for('index')
-    next_url = flask.request.args.get('next', default)
     return OID.try_login(
         "https://me.yahoo.com/",
         ask_for=['email', 'fullname'])
