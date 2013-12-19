@@ -245,7 +245,6 @@ class Candidates(BASE):
     election = relation('Elections')
     __table_args__ = (
         sa.UniqueConstraint('election_id', 'candidate_file'),
-        sa.UniqueConstraint('election_id', 'candidate_name'),
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
