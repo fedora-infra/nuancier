@@ -310,18 +310,16 @@ class Candidates(BASE):
         return query.all()
 
     @classmethod
-    def by_election_file_and_name(
-            cls, session, election_id, filename, name):
+    def by_election_file(
+            cls, session, election_id, filename,):
         """ Return the candidate associated to the given election
-        identifier and having the specified name.
+        identifier and having the specified filename.
 
         """
         query = session.query(
             cls
         ).filter(
             Candidates.election_id == election_id
-        ).filter(
-            Candidates.candidate_name == name
         ).filter(
             Candidates.candidate_file == filename
         )
