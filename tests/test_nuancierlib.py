@@ -53,8 +53,8 @@ class NuancierLibtests(Modeltests):
 
         candidates = nuancierlib.get_candidates(self.session, 1, False)
         self.assertEqual(2, len(candidates))
-        self.assertEqual('Image ok', candidates[0].candidate_name)
-        self.assertEqual('Image too narrow', candidates[1].candidate_name)
+        self.assertEqual('Image too narrow', candidates[0].candidate_name)
+        self.assertEqual('Image ok', candidates[1].candidate_name)
 
         candidates = nuancierlib.get_candidates(self.session, 1, True)
         self.assertEqual(0, len(candidates))
