@@ -30,6 +30,8 @@ import random
 import flask
 
 from sqlalchemy.exc import SQLAlchemyError
+## pylint cannot import flask dependency correctly
+# pylint: disable=E0611
 from werkzeug import secure_filename
 
 import nuancier
@@ -38,6 +40,12 @@ import nuancier.lib as nuancierlib
 from nuancier import (
     APP, SESSION, LOG, fas_login_required, validate_input_file
 )
+
+## Some of the object we use here have inherited methods which apparently
+## pylint does not detect.
+# pylint: disable=E1101, E1103
+## Ignore too many return statements
+# pylint: disable=R0911
 
 
 @APP.route('/')
