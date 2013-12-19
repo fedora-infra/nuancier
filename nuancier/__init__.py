@@ -228,19 +228,6 @@ def validate_input_file(input_file):
             ' than the minimum %s pixels required' % (height, min_height))
 
 
-
-def extract_openid_identifier(openid_url):
-    openid = openid_url.split('://')[1]
-    if openid.endswith('/'):
-        openid = openid[:-1]
-    if 'id?id=' in openid:
-        openid = openid.split('id?id=')[1]
-    if 'me.yahoo.com/a/' in openid:
-        openid = openid.split('me.yahoo.com/a/')[1]
-    openid = openid.replace('/', '_')
-    return openid
-
-
 @OID.after_login
 def after_openid_login(resp):
     default = flask.url_for('index')
@@ -267,10 +254,8 @@ def check_auth():
         id=None,
     )
     if 'openid' in flask.session:
-        openid = extract_openid_identifier(flask.session.get('openid'))
         flask.g.auth.logged_in = True
         flask.g.auth.method = u'openid'
-        flask.g.auth.openid = openid
         flask.g.auth.openid_url = flask.session.get('openid')
         flask.g.auth.nickname = flask.session.get('nickname', None)
         flask.g.auth.fullname = flask.session.get('fullname', None)
