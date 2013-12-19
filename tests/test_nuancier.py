@@ -357,11 +357,9 @@ class Nuanciertests(Modeltests):
                 }
                 output = self.app.post('/contribute/1', data=data,
                                        follow_redirects=True)
-                print output.data
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="error">A candidate with the title "name" '
-                    'and filename "pingou-'
+                    '<li class="error">A candidate with the filename "pingou-'
                     in output.data)
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
@@ -999,7 +997,6 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>New election</h1>' in output.data)
-            print output.data
             self.assertTrue('<td class="error">Field must contain a '
                             'number</td>' in output.data)
 
