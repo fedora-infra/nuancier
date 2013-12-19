@@ -103,7 +103,9 @@ def login_required(function):
         ''' Wrapped function actually checking if the user is logged in.
         '''
         if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and not flask.g.auth.logged_in:
+                and (
+                    not hasattr(flask.g, 'auth')
+                    or not flask.g.auth.logged_in):
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
         return function(*args, **kwargs)
@@ -124,7 +126,9 @@ def fas_login_required(function):
         ''' Wrapped function actually checking if the user is logged in.
         '''
         if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and not flask.g.auth.logged_in:
+                and (
+                    not hasattr(flask.g, 'auth')
+                    or not flask.g.auth.logged_in):
             return flask.redirect(
                 flask.url_for('.login', next=flask.request.url))
         elif flask.g.auth.logged_in:
@@ -153,7 +157,9 @@ def nuancier_admin_required(function):
         nuancier.
         '''
         if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and not flask.g.auth.logged_in:
+                and (
+                    not hasattr(flask.g, 'auth')
+                    or not flask.g.auth.logged_in):
             return flask.redirect(
                 flask.url_for('.login', next=flask.request.url))
         elif flask.g.auth.logged_in:
@@ -320,7 +326,7 @@ def msg():
 def login():
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
-    if flask.g.auth.logged_in:
+    if hasattr(flask.g, 'auth') and flask.g.auth.logged_in:
         return flask.redirect(next_url)
 
     openid_server = flask.request.form.get('openid', None)
@@ -371,6 +377,7 @@ def logout():
     FAS.logout()
     if 'openid' in flask.session:
         flask.session.pop('openid')
+    flask.flash('You are no longer logged-in')
     return flask.redirect(flask.url_for('index'))
 
 # Finalize the import of other controllers
