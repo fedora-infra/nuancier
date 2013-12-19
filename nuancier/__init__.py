@@ -332,7 +332,7 @@ def login():
 @APP.route('/login/fedora/')
 @APP.route('/login/fedora')
 @OID.loginhandler
-def fedora_login():
+def fedora_login():  # pragma: no cover
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return FAS.login(return_url=next_url)
@@ -340,7 +340,7 @@ def fedora_login():
 @APP.route('/login/google/')
 @APP.route('/login/google')
 @OID.loginhandler
-def google_login():
+def google_login():  # pragma: no cover
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return OID.try_login(
@@ -350,7 +350,7 @@ def google_login():
 @APP.route('/login/yahoo/')
 @APP.route('/login/yahoo')
 @OID.loginhandler
-def yahoo_login():
+def yahoo_login():  # pragma: no cover
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     return OID.try_login(
