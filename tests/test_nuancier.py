@@ -510,6 +510,13 @@ class Nuanciertests(Modeltests):
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
 
+        # Fails: FAS login required
+        with openiduser_set(nuancier.APP):
+            output = self.app.get('/election/1/vote/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You have not authentified '
+                            'with a Fedora account</li>' in output.data)
+
         # Works
         user.cla_done = True
         with user_set(nuancier.APP, user):
