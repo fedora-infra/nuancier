@@ -50,10 +50,18 @@
             <a href="{{ url_for('.logout') }}">log out</a>
           {% else %}
             login:
+            {% if config['NUANCIER_ALLOW_FAS_OPENID'] %}
             <a href="{{ url_for('.fedora_login') }}">Fedora</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_GOOGLE_OPENID'] %}
             <a href="{{ url_for('.google_login') }}">Google</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_YAHOO_OPENID'] %}
             <a href="{{ url_for('.yahoo_login') }}">Yahoo</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_GENERIC_OPENID'] %}
             <a href="{{ url_for('.login') }}">OpenID</a>
+            {% endif %}
             </ul>
           {% endif %}
         </span>
