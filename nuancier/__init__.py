@@ -34,8 +34,9 @@ from bunch import Bunch
 from functools import wraps
 ## pylint cannot import flask extension correctly
 # pylint: disable=E0611,F0401
+from openid_cla import cla
+from openid_teams import teams
 from flask.ext.openid import OpenID
-from flask.ext.fas_openid import FAS
 
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug import secure_filename
@@ -55,7 +56,6 @@ import nuancier.notifications
 ## pylint does not detect.
 # pylint: disable=E1101, E1103
 
-
 __version__ = '0.2.0'
 
 APP = flask.Flask(__name__)
@@ -66,9 +66,8 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('NUANCIER_CONFIG')
 
 # Set up OpenID in stateless mode
-OID = OpenID(APP, store_factory=lambda: None)
-# Set up FAS extension
-FAS = FAS(APP)
+OID = OpenID(APP, store_factory=lambda: None,
+             extension_responses=[cla.CLAResponse, teams.TeamsResponse])
 
 # Initialize the cache.
 CACHE = dogpile.cache.make_region().configure(
@@ -78,13 +77,13 @@ CACHE = dogpile.cache.make_region().configure(
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
+PATTERN = re.compile(r'http(s)?:\/\/(.*\.)?id\.fedoraproject\.org(/)?')
 
-def is_nuancier_admin(user):
+
+def is_nuancier_admin(groups):
     ''' Is the user a nuancier admin.
     '''
-    if not user:
-        return False
-    if not user.cla_done or len(user.groups) < 1:
+    if not groups:
         return False
 
     admins = APP.config['ADMIN_GROUP']
@@ -93,7 +92,7 @@ def is_nuancier_admin(user):
     else:
         admins = set(admins)
 
-    return len(set(user.groups).intersection(admins)) > 0
+    return len(set(groups).intersection(admins)) > 0
 
 
 def login_required(function):
@@ -102,10 +101,7 @@ def login_required(function):
     def decorated_function(*args, **kwargs):
         ''' Wrapped function actually checking if the user is logged in.
         '''
-        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and (
-                    not hasattr(flask.g, 'auth')
-                    or not flask.g.auth.logged_in):
+        if not hasattr(flask.g, 'auth') or not flask.g.auth.logged_in:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
         return function(*args, **kwargs)
@@ -125,24 +121,21 @@ def fas_login_required(function):
     def decorated_function(*args, **kwargs):
         ''' Wrapped function actually checking if the user is logged in.
         '''
-        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and (
-                    not hasattr(flask.g, 'auth')
-                    or not flask.g.auth.logged_in):
+        if not hasattr(flask.g, 'auth') or not flask.g.auth.logged_in:
             return flask.redirect(
                 flask.url_for('.login', next=flask.request.url))
-        elif flask.g.auth.logged_in:
+        elif not PATTERN.match(flask.g.auth.openid):
             flask.flash(
                 'You have not authentified with a Fedora account', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif not flask.g.fas_user.cla_done:
+        elif not flask.g.auth.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
-                        'Agreement to use nuancier', 'error')
+                        'Agreement) to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif len(flask.g.fas_user.groups) == 0:
-            flask.flash('You must be in one more group than the CLA',
-                        'error')
-            return flask.redirect(flask.url_for('index'))
+        elif not flask.g.auth.groups:
+                flask.flash('You must be in one more group than the CLA',
+                            'error')
+                return flask.redirect(flask.url_for('index'))
         return function(*args, **kwargs)
     return decorated_function
 
@@ -156,28 +149,25 @@ def nuancier_admin_required(function):
         ''' Wrapped function actually checking if the user is an admin for
         nuancier.
         '''
-        if (not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None) \
-                and (
-                    not hasattr(flask.g, 'auth')
-                    or not flask.g.auth.logged_in):
+        if not hasattr(flask.g, 'auth') or not flask.g.auth.logged_in:
             return flask.redirect(
                 flask.url_for('.login', next=flask.request.url))
-        elif flask.g.auth.logged_in:
+        elif not PATTERN.match(flask.g.auth.openid):
             flask.flash(
                 'You have not authentified with a Fedora account', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif not flask.g.fas_user.cla_done:
+        elif not flask.g.auth.cla_done:
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif len(flask.g.fas_user.groups) == 0:
+        elif len(flask.g.auth.groups) == 0:
             flask.flash(
                 'You must be in one more group than the CLA', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif not is_nuancier_admin(flask.g.fas_user):
+        elif not is_nuancier_admin(flask.g.auth.groups):
             flask.flash('You are not an administrator of nuancier',
                         'error')
-            return flask.redirect(flask.url_for('msg'))
+            return flask.redirect(flask.url_for('index'))
         else:
             return function(*args, **kwargs)
     return decorated_function
@@ -235,11 +225,20 @@ def after_openid_login(resp):  # pragma: no cover
     '''
     default = flask.url_for('index')
     if resp.identity_url:
-        openid_url = resp.identity_url
-        flask.session['openid'] = openid_url
+        flask.session['openid'] = resp.identity_url
         flask.session['fullname'] = resp.fullname
         flask.session['nickname'] = resp.nickname or resp.fullname
         flask.session['email'] = resp.email
+
+        # Handle OpenID extensions
+        flask.session['cla'] = False
+        if 'CLAResponse' in resp.extensions and resp.extensions['CLAResponse']:
+            flask.session['cla'] = \
+                cla.CLA_URI_FEDORA_DONE in resp.extensions['CLAResponse'].clas
+        flask.session['groups'] = []
+        if 'TeamsResponse' in resp.extensions and resp.extensions['TeamsResponse']:
+            flask.session['groups'] = resp.extensions['TeamsResponse'].teams
+
         next_url = flask.request.args.get('next', default)
         return flask.redirect(next_url)
     else:
@@ -258,14 +257,19 @@ def check_auth():
         logged_in=False,
         method=None,
         id=None,
+        groups=[],
+        cla_done=False,
+        openid=None,
     )
     if 'openid' in flask.session:  # pragma: no cover
         flask.g.auth.logged_in = True
         flask.g.auth.method = u'openid'
-        flask.g.auth.openid_url = flask.session.get('openid')
+        flask.g.auth.openid = flask.session.get('openid')
         flask.g.auth.nickname = flask.session.get('nickname', None)
         flask.g.auth.fullname = flask.session.get('fullname', None)
         flask.g.auth.email = flask.session.get('email', None)
+        flask.g.auth.cla_done = flask.session.get('cla', False)
+        flask.g.auth.groups = flask.session.get('groups', [])
 
 
 @APP.context_processor
@@ -273,10 +277,10 @@ def inject_is_admin():
     ''' Inject whether the user is a nuancier admin or not in every page
     (every template).
     '''
-    user = None
-    if hasattr(flask.g, 'fas_user'):
-        user = flask.g.fas_user
-    return dict(is_admin=is_nuancier_admin(user),
+    groups = None
+    if hasattr(flask.g, 'auth'):
+        groups = flask.g.auth.groups
+    return dict(is_admin=is_nuancier_admin(groups),
                 version=__version__)
 
 
@@ -317,6 +321,9 @@ def msg():
 @OID.loginhandler
 def login():
     ''' Displays a form where the user can enter his/her openid server. '''
+    if not APP.config['NUANCIER_ALLOW_GENERIC_OPENID']:
+        flask.abort(403)
+
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
     if (hasattr(flask.g, 'fas_user') and flask.g.fas_user) or (
@@ -324,41 +331,66 @@ def login():
         return flask.redirect(next_url)
 
     openid_server = flask.request.form.get('openid', None)
-    pat = re.compile(r'http(s)?:\/\/(.*\.)?id\.fedoraproject\.org(/)?')
     if openid_server:  # pragma: no cover
-        if pat.match(openid_server):
-            return FAS.login(return_url=next_url)
+        if PATTERN.match(openid_server):
+            return OID.try_login(
+                "https://id.fedoraproject.org",
+                ask_for=['email', 'fullname', 'nickname'],
+                extension_args=[
+                    ('http://ns.launchpad.net/2007/openid-teams',
+                     'query_membership', '_FAS_ALL_GROUPS_'),
+                    ('http://fedoraproject.org/specs/open_id/cla',
+                     'query_cla', 'http://admin.fedoraproject.org/accounts/cla/done')
+                ])
         else:
             return OID.try_login(
-                openid_server, ask_for=['email', 'fullname', 'nickname'])
+                openid_server,
+                ask_for=['email', 'fullname', 'nickname'])
 
     return flask.render_template(
         'login.html', next=OID.get_next_url(), error=OID.fetch_error())
 
 
-@APP.route('/login/fedora/')
-@APP.route('/login/fedora')
+@APP.route('/login/fedora/', methods=('GET', 'POST'))
+@APP.route('/login/fedora', methods=('GET', 'POST'))
 @OID.loginhandler
 def fedora_login():  # pragma: no cover
     ''' Log the user in using the FAS-OpenID server. '''
-    return FAS.login(return_url=next_url)
+    if not APP.config['NUANCIER_ALLOW_FAS_OPENID']:
+        flask.abort(403)
+
+    return OID.try_login(
+        "https://id.fedoraproject.org",
+        ask_for=['email', 'fullname', 'nickname'],
+        extension_args=[
+            ('http://ns.launchpad.net/2007/openid-teams',
+             'query_membership', '_FAS_ALL_GROUPS_'),
+            ('http://fedoraproject.org/specs/open_id/cla',
+             'query_cla', 'http://admin.fedoraproject.org/accounts/cla/done')
+        ])
 
 
-@APP.route('/login/google/')
-@APP.route('/login/google')
+@APP.route('/login/google/', methods=('GET', 'POST'))
+@APP.route('/login/google', methods=('GET', 'POST'))
 @OID.loginhandler
 def google_login():  # pragma: no cover
     ''' Log the user in using google. '''
+    if not APP.config['NUANCIER_ALLOW_GOOGLE_OPENID']:
+        flask.abort(403)
+
     return OID.try_login(
         "https://www.google.com/accounts/o8/id",
         ask_for=['email', 'fullname'])
 
 
-@APP.route('/login/yahoo/')
-@APP.route('/login/yahoo')
+@APP.route('/login/yahoo/', methods=('GET', 'POST'))
+@APP.route('/login/yahoo', methods=('GET', 'POST'))
 @OID.loginhandler
 def yahoo_login():  # pragma: no cover
     ''' Log the user in using yahoo. '''
+    if not APP.config['NUANCIER_ALLOW_YAHOO_OPENID']:
+        flask.abort(403)
+
     return OID.try_login(
         "https://me.yahoo.com/",
         ask_for=['email', 'fullname'])
@@ -368,10 +400,11 @@ def yahoo_login():  # pragma: no cover
 @APP.route('/logout')
 def logout():
     ''' Log out the user. '''
-    FAS.logout()
     if 'openid' in flask.session:  # pragma: no cover
         flask.session.pop('openid')
-    flask.flash('You are no longer logged-in')
+        flask.session.pop('groups')
+        flask.session.pop('cla')
+        flask.flash('You are no longer logged-in')
     return flask.redirect(flask.url_for('index'))
 
 # Finalize the import of other controllers
