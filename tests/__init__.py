@@ -77,7 +77,10 @@ def user_set(APP, user):
     def handler(sender, **kwargs):
         g.fas_user = user
         g.auth = bunch.Bunch()
-        g.auth.logged_in = False
+        g.auth.logged_in = True
+        g.auth.openid = 'https://test.id.fedoraproject.org'
+        g.auth.groups = []
+        g.auth.cla_done = False
 
     with appcontext_pushed.connected_to(handler, APP):
         yield
@@ -97,6 +100,9 @@ def openiduser_set(APP):
         g.auth.email = 'test@test.com'
         g.auth.nickname = 'test user'
         g.auth.logged_in = True
+        g.auth.openid = 'https://test.id.fedoraproject.org'
+        g.auth.groups = []
+        g.auth.cla_done = False
 
     with appcontext_pushed.connected_to(handler, APP):
         yield
