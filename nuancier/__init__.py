@@ -402,9 +402,11 @@ def logout():
     ''' Log out the user. '''
     if 'openid' in flask.session:  # pragma: no cover
         flask.session.pop('openid')
-        flask.session.pop('groups')
-        flask.session.pop('cla')
         flask.flash('You are no longer logged-in')
+    if 'groups' in flask.session:
+        flask.session.pop('groups')
+    if 'cla' in flask.session:
+        flask.session.pop('cla')
     return flask.redirect(flask.url_for('index'))
 
 # Finalize the import of other controllers
