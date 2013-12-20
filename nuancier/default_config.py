@@ -62,3 +62,11 @@ PICTURE_MIN_HEIGHT = 1200
 # Flask configuration option
 # Set the maximum size of an upload someone may do, defaults here to 16MB
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+
+# A boolean specifying wether to send email notifications are not when a
+# submission is rejected.
+NUANCIER_EMAIL_NOTIFICATIONS = False
+# The email address that the notifications are sent from
+NUANCIER_EMAIL_FROM = 'nobody@fedoraproject.org'
+# The smtp server to use to send the notifications
+NUANCIER_EMAIL_SMTP_SERVER = 'localhost'

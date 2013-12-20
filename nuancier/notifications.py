@@ -20,8 +20,15 @@
 #
 
 '''
-fedmsg shim for nuancier
+notification shim for nuancier
 '''
+
+import smtplib
+
+from email.mime.text import MIMEText
+
+import nuancier
+
 
 ## Let's ignore the warning about a global variable being in lower case
 # pylint: disable=C0103
@@ -46,3 +53,43 @@ def publish(topic, msg):  # pragma: no cover
         return
 
     fedmsg.publish(topic=topic, msg=msg)
+
+
+def email_publish(to_email, img_title, motif):  # pragma: no cover
+    ''' Send notification by email. '''
+
+    if not package:
+        return
+
+    message = """
+Dear Madam/Sir,
+
+First of all we would like to thank you for contributing in making Fedora
+better by submitting a supplementary wallpaper in Nuancier.
+
+However, we regrets to inform you that your contribution has been rejected
+by the administrator for the following reason:
+
+  {0}
+
+This should not discourage you to submit other candidate for this election
+or the next one.
+
+Best regards,
+The Nuancier administrators team
+""".format(motif)
+
+    msg = MIMEText(message)
+    msg['Subject'] = '[Nuancier] {0} has been rejected {1}'.format(img_title)
+    from_email = pkgdb2.APP.config.get(
+        'NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org')
+    msg['From'] = from_email
+    msg['To'] = to_email
+
+    # Send the message via our own SMTP server, but don't include the
+    # envelope header.
+    print msg_as_string()
+    smtp = smtplib.SMTP(pkgdb2.APP.config.get(
+        'NUANCIER_EMAIL_SMTP_SERVER', 'localhost'))
+    #smtp.sendmail(from_email, [to_email], msg.as_string())
+    smtp.quit()
