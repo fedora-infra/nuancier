@@ -177,8 +177,6 @@ class Nuanciertests(Modeltests):
         self.assertTrue('href="/election/2/"' in output.data)
         self.assertTrue('Wallpaper F20 - 2013' in output.data)
 
-        self.assertTrue('href="/election/3/"' in output.data)
-        self.assertTrue('Wallpaper F21 - 2014' in output.data)
 
     def test_contribute_index(self):
         """ Test the contribute_index function. """
