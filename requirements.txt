@@ -3,7 +3,7 @@
 wtforms
 flask-wtf
 flask
-python-fedora
+python-fedora >= 0.3.33
 Pillow
 SQLAlchemy>=0.6
 dogpile.cache

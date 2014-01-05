@@ -16,8 +16,8 @@ BuildRequires:  python2-devel
 BuildRequires:  python-flask
 BuildRequires:  python-wtforms
 BuildRequires:  python-flask-wtf
-BuildRequires:  python-fedora >= 0.3.32.3-3
-BuildRequires:  python-fedora-flask
+BuildRequires:  python-fedora >= 0.3.33
+BuildRequires:  python-fedora-flask >= 0.3.33
 
 # EPEL6
 %if ( 0%{?rhel} && 0%{?rhel} == 6 )
