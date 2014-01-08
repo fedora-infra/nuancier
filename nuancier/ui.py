@@ -83,6 +83,9 @@ def contribute(election_id):
     if not election:
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
+    elif not election.election_public:
+        flask.flash('This election is open for vote', 'error')
+        return flask.redirect(flask.url_for('elections_list'))
 
     form = nuancier.forms.AddCandidateForm()
     if form.validate_on_submit():
