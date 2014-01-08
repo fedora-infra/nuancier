@@ -250,16 +250,16 @@ def vote(election_id):
         flask.flash('This election is not open', 'error')
         return flask.redirect(flask.url_for('index'))
 
-    if flask.g.fas_user:
+    if flask.g.auth.email:
         random.seed(
             int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+                hashlib.sha1(flask.g.auth.email).hexdigest(), 16
             ) % 100000)
     random.shuffle(candidates)
 
     # How many votes the user made:
     votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                       flask.g.fas_user.username)
+                                       flask.g.auth.email)
 
     if len(votes) >= election.election_n_choice:
         flask.flash('You have cast the maximal number of votes '
@@ -327,7 +327,7 @@ def process_vote(election_id):
 
     # How many votes the user made:
     votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                       flask.g.fas_user.username)
+                                       flask.g.auth.email)
 
     # Too many votes -> redirect
     if len(votes) >= election.election_n_choice:
@@ -359,7 +359,7 @@ def process_vote(election_id):
     # Allowed to vote, selection sufficient, choice confirmed: process
     for selection in entries:
         nuancierlib.add_vote(SESSION, selection,
-                             flask.g.fas_user.username)
+                             flask.g.auth.email)
 
     try:
         SESSION.commit()

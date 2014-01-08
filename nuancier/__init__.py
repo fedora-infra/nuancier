@@ -326,8 +326,7 @@ def login():
 
     default = flask.url_for('index')
     next_url = flask.request.args.get('next', default)
-    if (hasattr(flask.g, 'fas_user') and flask.g.fas_user) or (
-            hasattr(flask.g, 'auth') and flask.g.auth.logged_in):
+    if hasattr(flask.g, 'auth') and flask.g.auth.logged_in:
         return flask.redirect(next_url)
 
     openid_server = flask.request.form.get('openid', None)
