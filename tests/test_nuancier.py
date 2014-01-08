@@ -823,9 +823,9 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
             self.assertEqual(
-                output.data.count('src="/static/Denied.png"'), 4)
+                output.data.count('src="/static/Denied.png"'), 6)
             self.assertEqual(
-                output.data.count('src="/static/Approved.png"'), 2)
+                output.data.count('src="/static/Approved.png"'), 3)
 
         user.groups = ['packager', 'cla_done']
 
