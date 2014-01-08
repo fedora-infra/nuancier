@@ -97,13 +97,13 @@ class AddElectionForm(flask_wtf.Form):
 class AddCandidateForm(flask_wtf.Form):
     ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
-        'Title *', [wtf.validators.Required()])
+        'Title <span class="error">*</span>', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
-        'Author *', [wtf.validators.Required()])
+        'Author <span class="error">*</span>', [wtf.validators.Required()])
     candidate_file = wtf.FileField(
-        'File *', [wtf.validators.Required()])
+        'File <span class="error">*</span>', [wtf.validators.Required()])
     candidate_license = wtf.SelectField(
-        'License *', [wtf.validators.Required()],
+        'License <span class="error">*</span>', [wtf.validators.Required()],
         choices=[
             (None, ''),
             ('CC0', 'CC0'),
