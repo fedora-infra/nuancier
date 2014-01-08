@@ -22,6 +22,7 @@
 <input type="submit" class="submit positive button" value="Edit">
 <input type="button" value="Cancel" class="button" onclick="history.back();">
 {{ form.csrf_token }}
+<p class="smaller error">Mandatory fields are marked with '*'</p>
 </form>
 
 {% endblock %}
