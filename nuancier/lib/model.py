@@ -130,17 +130,28 @@ class Elections(BASE):
         self.submission_date_start = submission_date_start
 
     @property
+    def submission_open(self):
+        ''' Returns if this election is opened for contribution or not. '''
+        today = datetime.datetime.utcnow().date()
+        return (self.submission_date_start <= today
+                and self.election_date_start > today
+                and self.election_date_end >= today)
+
+    @property
     def election_open(self):
         ''' Return if this election is opened or not. '''
         today = datetime.datetime.utcnow().date()
-        return (self.election_date_start <= today
+        return (self.submission_date_start <= today
+                and self.election_date_start <= today
                 and self.election_date_end >= today)
 
     @property
     def election_public(self):
         ''' Return if this election is opened or not. '''
         today = datetime.datetime.utcnow().date()
-        return self.election_date_end <= today
+        return (self.submission_date_start <= today
+                and self.election_date_start <= today
+                and self.election_date_end <= today)
 
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
