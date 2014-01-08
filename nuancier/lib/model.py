@@ -206,7 +206,7 @@ class Elections(BASE):
         return session.query(
             cls
         ).filter(
-            Elections.election_date_start >= today
+            Elections.election_date_start > today
         ).order_by(
             Elections.election_year.desc()
         ).all()
