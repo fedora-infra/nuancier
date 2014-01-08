@@ -406,6 +406,7 @@ def logout():
         flask.session.pop('groups')
     if 'cla' in flask.session:
         flask.session.pop('cla')
+    flask.flash('You are no longer logged-in')
     return flask.redirect(flask.url_for('index'))
 
 # Finalize the import of other controllers
