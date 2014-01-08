@@ -52,25 +52,25 @@ def is_number(form, field):
 class AddElectionForm(flask_wtf.Form):
     ''' Form to add a new election. '''
     election_name = wtf.TextField(
-        'Election name',
+        'Election name <span class="error">*</span>',
         [wtf.validators.Required()])
     election_folder = wtf.TextField(
-        'Name of the folder containing the pictures',
+        'Name of the folder containing the pictures <span class="error">*</span>',
         [wtf.validators.Required()])
     election_year = wtf.TextField(
-        'Year',
+        'Year <span class="error">*</span>',
         [wtf.validators.Required()])
     election_date_start = wtf.DateField(
-        'Start date (in utc)',
+        'Start date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
     election_date_end = wtf.DateField(
-        'End date (in utc)',
+        'End date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
     election_badge_link = wtf.TextField(
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
     election_n_choice = wtf.TextField(
-        'Number of votes a user can make',
+        'Number of votes a user can make <span class="error">*</span>',
         [wtf.validators.Required(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
@@ -93,13 +93,13 @@ class AddElectionForm(flask_wtf.Form):
 class AddCandidateForm(flask_wtf.Form):
     ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
-        'Title', [wtf.validators.Required()])
+        'Title *', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
-        'Author', [wtf.validators.Required()])
+        'Author *', [wtf.validators.Required()])
     candidate_file = wtf.FileField(
-        'File', [wtf.validators.Required()])
+        'File *', [wtf.validators.Required()])
     candidate_license = wtf.SelectField(
-        'License', [wtf.validators.Required()],
+        'License *', [wtf.validators.Required()],
         choices=[
             (None, ''),
             ('CC0', 'CC0'),
