@@ -98,6 +98,7 @@ class Elections(BASE):
     election_badge_link = sa.Column(sa.String(255), default=None)
     election_date_start = sa.Column(sa.Date, nullable=False)
     election_date_end = sa.Column(sa.Date, nullable=False)
+    submission_date_start = sa.Column(sa.Date, nullable=False)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -107,7 +108,8 @@ class Elections(BASE):
 
     def __init__(self, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
-                 election_n_choice=16, election_badge_link=None):
+                 submission_date_start, election_n_choice=16,
+                 election_badge_link=None):
         """ Constructor.
 
         :arg election_name:
@@ -125,6 +127,7 @@ class Elections(BASE):
         self.election_date_end = election_date_end
         self.election_n_choice = election_n_choice
         self.election_badge_link = election_badge_link
+        self.submission_date_start = submission_date_start
 
     @property
     def election_open(self):
@@ -172,11 +175,13 @@ class Elections(BASE):
 
     @classmethod
     def get_open(cls, session):
-        """ Return all the election open.
+        """ Return all the election open to votes.
         """
         today = datetime.datetime.utcnow().date()
         return session.query(
             cls
+        ).filter(
+            Elections.submission_date_start < today
         ).filter(
             Elections.election_date_start <= today
         ).filter(
@@ -205,6 +210,8 @@ class Elections(BASE):
         today = datetime.datetime.utcnow().date()
         return session.query(
             cls
+        ).filter(
+            Elections.submission_date_start <= today
         ).filter(
             Elections.election_date_start > today
         ).order_by(

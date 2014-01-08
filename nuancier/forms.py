@@ -60,6 +60,9 @@ class AddElectionForm(flask_wtf.Form):
     election_year = wtf.TextField(
         'Year <span class="error">*</span>',
         [wtf.validators.Required()])
+    submission_date_start = wtf.DateField(
+        'Submission start date (in utc) <span class="error">*</span>',
+        [wtf.validators.Required()])
     election_date_start = wtf.DateField(
         'Start date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
@@ -88,6 +91,7 @@ class AddElectionForm(flask_wtf.Form):
             self.election_date_end.data = election.election_date_end
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
+            self.submission_date_start.data = election.submission_date_start
 
 
 class AddCandidateForm(flask_wtf.Form):

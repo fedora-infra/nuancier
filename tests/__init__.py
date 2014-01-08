@@ -51,7 +51,7 @@ DB_PATH = 'sqlite:///:memory:'
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
 TODAY = datetime.utcnow().date()
-FAITOUT_URL = 'http://209.132.184.152/faitout/'
+FAITOUT_URL = 'http://209.132.184.152/faitout/a'
 
 try:
     import requests
@@ -133,6 +133,7 @@ def create_elections(session):
         election_n_choice=2,
         election_date_start=TODAY - timedelta(days=10),
         election_date_end=TODAY - timedelta(days=8),
+        submission_date_start=TODAY - timedelta(days=15),
     )
     session.add(election)
 
@@ -141,6 +142,7 @@ def create_elections(session):
         election_folder='F20',
         election_year='2013',
         election_n_choice=2,
+        submission_date_start=TODAY - timedelta(days=6),
         election_date_start=TODAY - timedelta(days=2),
         election_date_end=TODAY + timedelta(days=3),
         election_badge_link="http://badges.fp.org",
@@ -152,6 +154,7 @@ def create_elections(session):
         election_folder='F21',
         election_year='2014',
         election_n_choice=2,
+        submission_date_start=TODAY - timedelta(days=2),
         election_date_start=TODAY + timedelta(days=1),
         election_date_end=TODAY + timedelta(days=6),
     )

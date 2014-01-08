@@ -77,6 +77,7 @@ def admin_edit(election_id):
             election_year=form.election_year.data,
             election_date_start=form.election_date_start.data,
             election_date_end=form.election_date_end.data,
+            submission_date_start=form.submission_date_start.data,
             election_n_choice=form.election_n_choice.data,
             election_badge_link=form.election_badge_link.data,
         )
@@ -116,6 +117,7 @@ def admin_new():
             election_year=form.election_year.data,
             election_date_start=form.election_date_start.data,
             election_date_end=form.election_date_end.data,
+            submission_date_start=form.submission_date_start.data,
             election_n_choice=form.election_n_choice.data,
             election_badge_link=form.election_badge_link.data,
         )

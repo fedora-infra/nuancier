@@ -137,7 +137,8 @@ def get_results(session, election_id):
 
 
 def add_election(session, election_name, election_folder, election_year,
-                 election_date_start, election_date_end, election_n_choice,
+                 election_date_start, election_date_end,
+                 submission_date_start, election_n_choice,
                  election_badge_link=None):
     """ Add a new election to the database.
 
@@ -147,6 +148,7 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_year:
     :arg election_date_start:
     :arg election_date_end:
+    :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
@@ -156,6 +158,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_year=election_year,
         election_date_start=election_date_start,
         election_date_end=election_date_end,
+        submission_date_start=submission_date_start,
         election_n_choice=election_n_choice,
         election_badge_link=election_badge_link,
     )
@@ -165,7 +168,8 @@ def add_election(session, election_name, election_folder, election_year,
 
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
-                  election_n_choice, election_badge_link=None):
+                  submission_date_start, election_n_choice,
+                  election_badge_link=None):
     """ Edit an election of the database.
 
     :arg session:
@@ -175,6 +179,7 @@ def edit_election(session, election, election_name, election_folder,
     :arg election_year:
     :arg election_date_start:
     :arg election_date_end:
+    :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
@@ -198,6 +203,10 @@ def edit_election(session, election, election_name, election_folder,
     if election.election_date_end != election_date_end:
         election.election_date_end = election_date_end
         edited.append('election end date')
+
+    if election.submission_date_start != submission_date_start:
+        election.submission_date_start = submission_date_start
+        edited.append('submission start date')
 
     if election.election_n_choice != election_n_choice:
         election.election_n_choice = election_n_choice
