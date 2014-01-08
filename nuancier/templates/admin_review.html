@@ -46,6 +46,7 @@ candidates or not.
         <th>Name</th>
         <th>Image</th>
         <th>Author</th>
+        <th>Original artwork</th>
         <th>License</th>
         <th>Submitter</th>
         <th>Approved</th>
@@ -78,6 +79,14 @@ candidates or not.
             </a>
         </td>
         <td> {{ candidate.candidate_author }} </td>
+        <td>
+            {% if candidate.candidate_original_url %}
+            <a href="{{ candidate.candidate_original_url }}">
+            {{ candidate.candidate_original_url }}</a>
+            {% else %}
+            -
+            {% endif %}
+        </td>
         <td> {{ candidate.candidate_license }} </td>
         <td> {{ candidate.candidate_submitter }} </td>
         <td>
