@@ -43,10 +43,9 @@
         </div><!-- end mainNav -->
 
         <span id="loginInfo">
-          {% if (g.fas_user or (g.auth and g.auth.logged_in)) %}
+          {% if (g.auth and g.auth.logged_in) %}
             <span class="text">logged in as </span>
-            {% if g.fas_user %} {{ g.fas_user.username}} {%
-                else %}{{ g.auth.nickname or g.auth.fullname }}{% endif %} |
+            {{ g.auth.nickname or g.auth.fullname }} |
             <a href="{{ url_for('.logout') }}">log out</a>
           {% else %}
             login:

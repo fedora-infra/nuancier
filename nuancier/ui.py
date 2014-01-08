@@ -91,12 +91,14 @@ def contribute(election_id):
     form = nuancier.forms.AddCandidateForm()
     if flask.request.method == 'GET':
         author = ''
-        if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
-            author = flask.g.fas_user.username
+        if hasattr(flask.g, 'auth') and (flask.g.auth.nickname or
+                flask.g.auth.auth.fullname):
+            author = flask.g.auth.nickname or flask.g.auth.fullname
         form = nuancier.forms.AddCandidateForm(author=author)
     else:
-        if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
-            author = flask.g.fas_user.username
+        if hasattr(flask.g, 'auth') and (flask.g.auth.nickname or
+                flask.g.auth.auth.fullname):
+            author = flask.g.auth.nickname or flask.g.auth.fullname
         else:
             author = flask.g.auth.email
 
@@ -198,9 +200,9 @@ def election(election_id):
     # How many votes the user made:
     votes = []
     can_vote = True
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
+    if hasattr(flask.g, 'auth') and flask.g.auth.email:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                           flask.g.fas_user.username)
+                                           flask.g.auth.email)
 
     if election.election_open and len(votes) < election.election_n_choice:
         if len(votes) > 0:
@@ -216,10 +218,10 @@ def election(election_id):
     candidates = nuancierlib.get_candidates(
         SESSION, election_id, approved=True)
 
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
+    if hasattr(flask.g, 'auth') and flask.g.auth.email:
         random.seed(
             int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+                hashlib.sha1(flask.g.auth.email).hexdigest(), 16
             ) % 100000)
     random.shuffle(candidates)
 
@@ -366,7 +368,7 @@ def process_vote(election_id):
     except SQLAlchemyError as err:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('ERROR: could not process the vote - user: "%s" '
-                  'election: "%s"', flask.g.fas_user.username,
+                  'election: "%s"', flask.g.auth.nickname,
                   election_id)
         LOG.exception(err)
         flask.flash('An error occured while processing your votes, please '
