@@ -83,6 +83,9 @@ def contribute(election_id):
     if not election:
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
+    elif election.submission_open:
+        flask.flash('This election is not open for submission', 'error')
+        return flask.redirect(flask.url_for('elections_list'))
     elif election.election_public:
         flask.flash('This election is open for vote', 'error')
         return flask.redirect(flask.url_for('elections_list'))
