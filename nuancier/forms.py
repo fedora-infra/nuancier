@@ -100,6 +100,8 @@ class AddCandidateForm(flask_wtf.Form):
         'Title <span class="error">*</span>', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
         'Author <span class="error">*</span>', [wtf.validators.Required()])
+    candidate_original_url = wtf.TextField(
+        'URL to the original artwork')
     candidate_file = wtf.FileField(
         'File <span class="error">*</span>', [wtf.validators.Required()])
     candidate_license = wtf.SelectField(

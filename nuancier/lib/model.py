@@ -241,6 +241,7 @@ class Candidates(BASE):
     candidate_file = sa.Column(sa.String(255), nullable=False)
     candidate_name = sa.Column(sa.String(255), nullable=False)
     candidate_author = sa.Column(sa.String(255), nullable=False)
+    candidate_original_url = sa.Column(sa.String(255), nullable=True)
     candidate_license = sa.Column(sa.String(255), nullable=False)
     candidate_submitter = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
@@ -266,8 +267,8 @@ class Candidates(BASE):
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
-                 candidate_license, candidate_submitter,
-                 election_id, approved=False):
+                 candidate_license, candidate_submitter, election_id,
+                 candidate_original_url=None, approved=False):
         """ Constructor
 
         :arg candidate_file: the file name of the candidate
@@ -275,12 +276,15 @@ class Candidates(BASE):
         :arg candidate_author: the name of the author of this candidate
         :arg election_id: the identifier of the election this candidate is
             candidate for.
+        :kwarg candidate_original_url: if the artwork originates from
+            someone else, this should be a link to the original artwork.
         :kwarg approved: a boolean specifying if this candidate is approved
             or not for this election.
         """
         self.candidate_file = candidate_file
         self.candidate_name = candidate_name
         self.candidate_author = candidate_author
+        self.candidate_original_url = candidate_original_url
         self.election_id = election_id
         self.candidate_license = candidate_license
         self.candidate_submitter = candidate_submitter

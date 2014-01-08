@@ -222,13 +222,15 @@ def edit_election(session, election, election_name, election_folder,
 
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
-                  candidate_license, candidate_submitter, election_id):
+                  candidate_original_url, candidate_license,
+                  candidate_submitter, election_id):
     """ Add a new candidate to the database.
 
     :arg session:
     :arg candidate_file:
     :arg candidate_name:
     :arg candidate_author:
+    :arg candidate_original_url:
     :arg candidate_license:
     :arg election_id:
     """
@@ -244,6 +246,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
         candidate_file=candidate_file,
         candidate_name=candidate_name,
         candidate_author=candidate_author,
+        candidate_original_url=candidate_original_url,
         candidate_license=candidate_license,
         candidate_submitter=candidate_submitter,
         election_id=election_id,

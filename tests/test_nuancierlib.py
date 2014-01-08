@@ -184,6 +184,7 @@ class NuancierLibtests(Modeltests):
             candidate_author='pingou',
             candidate_license='CC-BY-SA',
             candidate_submitter='pingou',
+            candidate_original_url=None,
             election_id=2,
         )
         self.session.commit()
@@ -205,6 +206,7 @@ class NuancierLibtests(Modeltests):
             candidate_author='pingou',
             candidate_license='CC-BY-SA',
             candidate_submitter='pingou',
+            candidate_original_url='http://example.org',
             election_id=2,
         )
 
