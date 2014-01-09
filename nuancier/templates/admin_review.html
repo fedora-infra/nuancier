@@ -94,8 +94,13 @@ candidates or not.
             <img src="{{ url_for('static', filename='Approved.png') }}"
                 alt="Candidate approved"/>
             {% else %}
+            {% if candidate.approved_motif %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Candidate denied"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='New.png') }}"
+                alt="Candidate denied"/>
+            {% endif %}
             {% endif %}
         </td>
         <td>
