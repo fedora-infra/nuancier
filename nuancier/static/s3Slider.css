@@ -25,8 +25,8 @@
 }
 
 .s3sliderImage img {
-    max-width: 256px;
-    max-height: 143px;
+    width: 256px;
+    height: 143px;
 }
 
 .s3sliderImage span {
