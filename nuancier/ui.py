@@ -200,7 +200,9 @@ def election(election_id):
     # How many votes the user made:
     votes = []
     can_vote = True
-    if hasattr(flask.g, 'auth') and flask.g.auth.email:
+    if hasattr(flask.g, 'auth') \
+            and flask.g.auth.logged_in \
+            and flask.g.auth.email:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
                                            flask.g.auth.email)
 
@@ -218,7 +220,9 @@ def election(election_id):
     candidates = nuancierlib.get_candidates(
         SESSION, election_id, approved=True)
 
-    if hasattr(flask.g, 'auth') and flask.g.auth.email:
+    if hasattr(flask.g, 'auth') \
+            and flask.g.auth.logged_in \
+            and flask.g.auth.email:
         random.seed(
             int(
                 hashlib.sha1(flask.g.auth.email).hexdigest(), 16
