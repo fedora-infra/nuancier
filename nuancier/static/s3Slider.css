@@ -1,8 +1,9 @@
 #s3slider {
-    width: 256px; /* important to be same as image width */
-    height: 256px; /* important to be same as image height */
+    width: 278px; /* important to be same as image width */
+    height: 208px; /* important to be same as image height */
     position: relative; /* important */
     overflow: hidden; /* important */
+    margin: auto;
 }
 
 #s3slider ul {
@@ -12,8 +13,9 @@
 #s3sliderContent {
     width: 256px; /* important to be same as image width or wider */
     position: absolute; /* important */
-    top: 0; /* important */
-    margin-left: 0; /* important */
+    top: -2px; /* important */
+    left: -29px;
+    margin-left: 0px; /* important */
 }
 
 .s3sliderImage {
@@ -22,17 +24,22 @@
     display: none; /* important */
 }
 
+.s3sliderImage img {
+    max-width: 256px;
+    max-height: 143px;
+}
+
 .s3sliderImage span {
     position: absolute; /* important */
     left: 0;
     font: 10px/15px Arial, Helvetica, sans-serif;
     padding: 10px 13px;
-    width: 374px;
+    width: 230px;
     background-color: #000;
-    filter: alpha(opacity=70); /* here you can set the opacity of box with text */
-    -moz-opacity: 0.7; /* here you can set the opacity of box with text */
-    -khtml-opacity: 0.7; /* here you can set the opacity of box with text */
-    opacity: 0.7; /* here you can set the opacity of box with text */
+    filter: alpha(opacity=0); /* here you can set the opacity of box with text */
+    -moz-opacity: 0; /* here you can set the opacity of box with text */
+    -khtml-opacity: 0; /* here you can set the opacity of box with text */
+    opacity: 0; /* here you can set the opacity of box with text */
     color: #fff;
     display: none; /* important */
     top: 0; /*
