@@ -332,15 +332,14 @@ def login():
     openid_server = flask.request.form.get('openid', None)
     if openid_server:  # pragma: no cover
         if PATTERN.match(openid_server):
+            cla_req = cla.CLARequest(
+                ['http://admin.fedoraproject.org/accounts/cla/done'])
+            teams_req = teams.TeamsRequest(
+                ['_FAS_ALL_GROUPS_'])
             return OID.try_login(
                 "https://id.fedoraproject.org",
                 ask_for=['email', 'fullname', 'nickname'],
-                extension_args=[
-                    ('http://ns.launchpad.net/2007/openid-teams',
-                     'query_membership', '_FAS_ALL_GROUPS_'),
-                    ('http://fedoraproject.org/specs/open_id/cla',
-                     'query_cla', 'http://admin.fedoraproject.org/accounts/cla/done')
-                ])
+                extensions=[cla_req, teams_req])
         else:
             return OID.try_login(
                 openid_server,
@@ -358,15 +357,15 @@ def fedora_login():  # pragma: no cover
     if not APP.config['NUANCIER_ALLOW_FAS_OPENID']:
         flask.abort(403)
 
+    cla_req = cla.CLARequest(
+        ['http://admin.fedoraproject.org/accounts/cla/done'])
+    teams_req = teams.TeamsRequest(
+        ['_FAS_ALL_GROUPS_'])
+
     return OID.try_login(
         "https://id.fedoraproject.org",
         ask_for=['email', 'fullname', 'nickname'],
-        extension_args=[
-            ('http://ns.launchpad.net/2007/openid-teams',
-             'query_membership', '_FAS_ALL_GROUPS_'),
-            ('http://fedoraproject.org/specs/open_id/cla',
-             'query_cla', 'http://admin.fedoraproject.org/accounts/cla/done')
-        ])
+        extensions=[cla_req, teams_req])
 
 
 @APP.route('/login/google/', methods=('GET', 'POST'))
