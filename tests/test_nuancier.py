@@ -1225,8 +1225,10 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+
+            self.assertEqual(output.data.count('="/static/New.png"'), 2)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Fails: results public
             output = self.app.post('/admin/review/1/process', data=data,
@@ -1286,8 +1288,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 2)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Valid submission
             data = {
@@ -1308,8 +1311,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
+            self.assertEqual(output.data.count('="/static/New.png"'), 1)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 1)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Fails: no motif to reject candidate
             data = {
@@ -1357,8 +1361,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 1)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
 
     def test_admin_cache(self):
         """ Test the admin_cache function. """
