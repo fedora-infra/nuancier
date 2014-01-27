@@ -51,7 +51,7 @@ DB_PATH = 'sqlite:///:memory:'
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
 TODAY = datetime.utcnow().date()
-FAITOUT_URL = 'http://209.132.184.152/faitout/a'
+FAITOUT_URL = 'http://209.132.184.152/faitout/'
 
 try:
     import requests
