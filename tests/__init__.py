@@ -126,6 +126,7 @@ class Modeltests(unittest.TestCase):
 
 def create_elections(session):
     """ Create some basic elections for testing. """
+    # Election in the past, closed and results opened
     election = model.Elections(
         election_name='Wallpaper F19',
         election_folder='F19',
@@ -137,6 +138,7 @@ def create_elections(session):
     )
     session.add(election)
 
+    # Election currently opened for voting
     election = model.Elections(
         election_name='Wallpaper F20',
         election_folder='F20',
@@ -149,6 +151,7 @@ def create_elections(session):
     )
     session.add(election)
 
+    # Future election, open for submission
     election = model.Elections(
         election_name='Wallpaper F21',
         election_folder='F21',
