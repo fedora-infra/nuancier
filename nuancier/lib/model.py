@@ -98,6 +98,7 @@ class Elections(BASE):
     election_badge_link = sa.Column(sa.String(255), default=None)
     election_date_start = sa.Column(sa.Date, nullable=False)
     election_date_end = sa.Column(sa.Date, nullable=False)
+    submission_date_start = sa.Column(sa.Date, nullable=False)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -107,7 +108,8 @@ class Elections(BASE):
 
     def __init__(self, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
-                 election_n_choice=16, election_badge_link=None):
+                 submission_date_start, election_n_choice=16,
+                 election_badge_link=None):
         """ Constructor.
 
         :arg election_name:
@@ -125,19 +127,33 @@ class Elections(BASE):
         self.election_date_end = election_date_end
         self.election_n_choice = election_n_choice
         self.election_badge_link = election_badge_link
+        self.submission_date_start = submission_date_start
+
+    @property
+    def submission_open(self):
+        ''' Returns if this election is opened for contribution or not. '''
+        today = datetime.datetime.utcnow().date()
+        return (self.submission_date_start <= today
+                and self.election_date_start > today
+                and self.election_date_end >= today)
 
     @property
     def election_open(self):
         ''' Return if this election is opened or not. '''
         today = datetime.datetime.utcnow().date()
-        return (self.election_date_start <= today
+        return (self.submission_date_start <= today
+                and self.election_date_start <= today
                 and self.election_date_end >= today)
 
     @property
     def election_public(self):
-        ''' Return if this election is opened or not. '''
+        ''' Return if this election is public or not.
+        Public here means that the results are accessible to anyone.
+        '''
         today = datetime.datetime.utcnow().date()
-        return self.election_date_end <= today
+        return (self.submission_date_start <= today
+                and self.election_date_start <= today
+                and self.election_date_end <= today)
 
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
@@ -172,11 +188,13 @@ class Elections(BASE):
 
     @classmethod
     def get_open(cls, session):
-        """ Return all the election open.
+        """ Return all the election open to votes.
         """
         today = datetime.datetime.utcnow().date()
         return session.query(
             cls
+        ).filter(
+            Elections.submission_date_start < today
         ).filter(
             Elections.election_date_start <= today
         ).filter(
@@ -206,7 +224,9 @@ class Elections(BASE):
         return session.query(
             cls
         ).filter(
-            Elections.election_date_start >= today
+            Elections.submission_date_start <= today
+        ).filter(
+            Elections.election_date_start > today
         ).order_by(
             Elections.election_year.desc()
         ).all()
@@ -223,6 +243,7 @@ class Candidates(BASE):
     candidate_file = sa.Column(sa.String(255), nullable=False)
     candidate_name = sa.Column(sa.String(255), nullable=False)
     candidate_author = sa.Column(sa.String(255), nullable=False)
+    candidate_original_url = sa.Column(sa.String(255), nullable=True)
     candidate_license = sa.Column(sa.String(255), nullable=False)
     candidate_submitter = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
@@ -245,12 +266,11 @@ class Candidates(BASE):
     election = relation('Elections')
     __table_args__ = (
         sa.UniqueConstraint('election_id', 'candidate_file'),
-        sa.UniqueConstraint('election_id', 'candidate_name'),
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
-                 candidate_license, candidate_submitter,
-                 election_id, approved=False):
+                 candidate_license, candidate_submitter, election_id,
+                 candidate_original_url=None, approved=False):
         """ Constructor
 
         :arg candidate_file: the file name of the candidate
@@ -258,12 +278,15 @@ class Candidates(BASE):
         :arg candidate_author: the name of the author of this candidate
         :arg election_id: the identifier of the election this candidate is
             candidate for.
+        :kwarg candidate_original_url: if the artwork originates from
+            someone else, this should be a link to the original artwork.
         :kwarg approved: a boolean specifying if this candidate is approved
             or not for this election.
         """
         self.candidate_file = candidate_file
         self.candidate_name = candidate_name
         self.candidate_author = candidate_author
+        self.candidate_original_url = candidate_original_url
         self.election_id = election_id
         self.candidate_license = candidate_license
         self.candidate_submitter = candidate_submitter
@@ -311,18 +334,16 @@ class Candidates(BASE):
         return query.all()
 
     @classmethod
-    def by_election_file_and_name(
-            cls, session, election_id, filename, name):
+    def by_election_file(
+            cls, session, election_id, filename,):
         """ Return the candidate associated to the given election
-        identifier and having the specified name.
+        identifier and having the specified filename.
 
         """
         query = session.query(
             cls
         ).filter(
             Candidates.election_id == election_id
-        ).filter(
-            Candidates.candidate_name == name
         ).filter(
             Candidates.candidate_file == filename
         )

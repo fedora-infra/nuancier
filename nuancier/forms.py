@@ -52,25 +52,28 @@ def is_number(form, field):
 class AddElectionForm(flask_wtf.Form):
     ''' Form to add a new election. '''
     election_name = wtf.TextField(
-        'Election name',
+        'Election name <span class="error">*</span>',
         [wtf.validators.Required()])
     election_folder = wtf.TextField(
-        'Name of the folder containing the pictures',
+        'Name of the folder containing the pictures <span class="error">*</span>',
         [wtf.validators.Required()])
     election_year = wtf.TextField(
-        'Year',
+        'Year <span class="error">*</span>',
+        [wtf.validators.Required()])
+    submission_date_start = wtf.DateField(
+        'Submission start date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
     election_date_start = wtf.DateField(
-        'Start date (in utc)',
+        'Start date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
     election_date_end = wtf.DateField(
-        'End date (in utc)',
+        'End date (in utc) <span class="error">*</span>',
         [wtf.validators.Required()])
     election_badge_link = wtf.TextField(
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
     election_n_choice = wtf.TextField(
-        'Number of votes a user can make',
+        'Number of votes a user can make <span class="error">*</span>',
         [wtf.validators.Required(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
@@ -88,18 +91,21 @@ class AddElectionForm(flask_wtf.Form):
             self.election_date_end.data = election.election_date_end
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
+            self.submission_date_start.data = election.submission_date_start
 
 
 class AddCandidateForm(flask_wtf.Form):
     ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
-        'Title', [wtf.validators.Required()])
+        'Title <span class="error">*</span>', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
-        'Author', [wtf.validators.Required()])
+        'Author <span class="error">*</span>', [wtf.validators.Required()])
+    candidate_original_url = wtf.TextField(
+        'URL to the original artwork')
     candidate_file = wtf.FileField(
-        'File', [wtf.validators.Required()])
+        'File <span class="error">*</span>', [wtf.validators.Required()])
     candidate_license = wtf.SelectField(
-        'License', [wtf.validators.Required()],
+        'License <span class="error">*</span>', [wtf.validators.Required()],
         choices=[
             (None, ''),
             ('CC0', 'CC0'),
@@ -113,8 +119,6 @@ class AddCandidateForm(flask_wtf.Form):
         ''' Calls the default constructor and fill in default values.
         '''
         super(AddCandidateForm, self).__init__(*args, **kwargs)
-
-        self.candidate_author.data = flask.g.fas_user.username
 
 
 class ConfirmationForm(flask_wtf.Form):

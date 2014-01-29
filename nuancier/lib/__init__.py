@@ -137,7 +137,8 @@ def get_results(session, election_id):
 
 
 def add_election(session, election_name, election_folder, election_year,
-                 election_date_start, election_date_end, election_n_choice,
+                 election_date_start, election_date_end,
+                 submission_date_start, election_n_choice,
                  election_badge_link=None):
     """ Add a new election to the database.
 
@@ -147,6 +148,7 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_year:
     :arg election_date_start:
     :arg election_date_end:
+    :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
@@ -156,6 +158,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_year=election_year,
         election_date_start=election_date_start,
         election_date_end=election_date_end,
+        submission_date_start=submission_date_start,
         election_n_choice=election_n_choice,
         election_badge_link=election_badge_link,
     )
@@ -165,7 +168,8 @@ def add_election(session, election_name, election_folder, election_year,
 
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
-                  election_n_choice, election_badge_link=None):
+                  submission_date_start, election_n_choice,
+                  election_badge_link=None):
     """ Edit an election of the database.
 
     :arg session:
@@ -175,6 +179,7 @@ def edit_election(session, election, election_name, election_folder,
     :arg election_year:
     :arg election_date_start:
     :arg election_date_end:
+    :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
     """
@@ -199,6 +204,10 @@ def edit_election(session, election, election_name, election_folder,
         election.election_date_end = election_date_end
         edited.append('election end date')
 
+    if election.submission_date_start != submission_date_start:
+        election.submission_date_start = submission_date_start
+        edited.append('submission start date')
+
     if election.election_n_choice != election_n_choice:
         election.election_n_choice = election_n_choice
         edited.append('election name')
@@ -213,28 +222,31 @@ def edit_election(session, election, election_name, election_folder,
 
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
-                  candidate_license, candidate_submitter, election_id):
+                  candidate_original_url, candidate_license,
+                  candidate_submitter, election_id):
     """ Add a new candidate to the database.
 
     :arg session:
     :arg candidate_file:
     :arg candidate_name:
     :arg candidate_author:
+    :arg candidate_original_url:
     :arg candidate_license:
     :arg election_id:
     """
-    candidate = nuancier.lib.model.Candidates.by_election_file_and_name(
-        session, election_id, candidate_file, candidate_name)
+    candidate = nuancier.lib.model.Candidates.by_election_file(
+        session, election_id, candidate_file)
     if candidate:
         raise NuancierException(
-            'A candidate with the title "%s" and filename "%s" has already '
-            'been submitted' % (candidate_name, candidate_file)
+            'A candidate with the filename "%s" has already been submitted'
+            % (candidate_file)
         )
 
     candidate = nuancier.lib.model.Candidates(
         candidate_file=candidate_file,
         candidate_name=candidate_name,
         candidate_author=candidate_author,
+        candidate_original_url=candidate_original_url,
         candidate_license=candidate_license,
         candidate_submitter=candidate_submitter,
         election_id=election_id,

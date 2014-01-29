@@ -366,3 +366,8 @@ body#elections
 {
     margin-right:170px;
 }
+
+#s3slider
+{
+    background-image:url(screen.png)!important;
+}

@@ -53,8 +53,8 @@ class NuancierLibtests(Modeltests):
 
         candidates = nuancierlib.get_candidates(self.session, 1, False)
         self.assertEqual(2, len(candidates))
-        self.assertEqual('Image ok', candidates[0].candidate_name)
-        self.assertEqual('Image too narrow', candidates[1].candidate_name)
+        self.assertEqual('Image too narrow', candidates[0].candidate_name)
+        self.assertEqual('Image ok', candidates[1].candidate_name)
 
         candidates = nuancierlib.get_candidates(self.session, 1, True)
         self.assertEqual(0, len(candidates))
@@ -150,6 +150,7 @@ class NuancierLibtests(Modeltests):
             election_name='Test',
             election_folder='test',
             election_year='2013',
+            submission_date_start=TODAY - timedelta(days=1),
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
@@ -166,6 +167,8 @@ class NuancierLibtests(Modeltests):
             TODAY + timedelta(days=3), elections[0].election_date_start)
         self.assertEqual(
             TODAY + timedelta(days=7), elections[0].election_date_end)
+        self.assertEqual(
+            TODAY - timedelta(days=1), elections[0].submission_date_start)
         self.assertEqual(False, elections[0].election_public)
         self.assertEqual(2, elections[0].election_n_choice)
         self.assertEqual('http://...', elections[0].election_badge_link)
@@ -181,6 +184,7 @@ class NuancierLibtests(Modeltests):
             candidate_author='pingou',
             candidate_license='CC-BY-SA',
             candidate_submitter='pingou',
+            candidate_original_url=None,
             election_id=2,
         )
         self.session.commit()
@@ -202,6 +206,7 @@ class NuancierLibtests(Modeltests):
             candidate_author='pingou',
             candidate_license='CC-BY-SA',
             candidate_submitter='pingou',
+            candidate_original_url='http://example.org',
             election_id=2,
         )
 
@@ -235,6 +240,7 @@ class NuancierLibtests(Modeltests):
             election_year=2048,
             election_date_start=TODAY,
             election_date_end=TODAY + timedelta(days=2),
+            submission_date_start=TODAY - timedelta(days=2),
             election_n_choice=42,
             election_badge_link='http://badges.fp.o/1234',
         )
@@ -245,6 +251,8 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(new_election.election_date_start, TODAY)
         self.assertEqual(
             new_election.election_date_end, TODAY + timedelta(days=2))
+        self.assertEqual(
+            new_election.submission_date_start, TODAY - timedelta(days=2))
         self.assertEqual(new_election.election_n_choice, 42)
         self.assertEqual(
             new_election.election_badge_link, 'http://badges.fp.o/1234')

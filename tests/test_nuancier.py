@@ -205,16 +205,24 @@ class Nuanciertests(Modeltests):
                             in output.data)
 
         create_elections(self.session)
-        upload_path = os.path.join(PICTURE_FOLDER, 'F19')
+        upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
         with user_set(nuancier.APP, user):
-            output = self.app.get('/contribute/1')
+            output = self.app.get('/contribute/2', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                'class="error">This election is not open for submission</'
+                in output.data)
+            self.assertTrue('<h1>Elections</h1>' in output.data)
+
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contribute/3')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                             in output.data)
             self.assertTrue('You are going to submit a new supplemental'
                             in output.data)
-            self.assertTrue('Election : Wallpaper F19 -- 2013'
+            self.assertTrue('Election : Wallpaper F21 -- 2014'
                             in output.data)
             self.assertTrue(
                 '<input id="csrf_token" name="csrf_token"' in output.data)
@@ -242,7 +250,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has a '
@@ -264,7 +272,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has a '
@@ -286,7 +294,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate could not '
@@ -307,7 +315,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has the '
@@ -329,7 +337,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data,
+                output = self.app.post('/contribute/3', data=data,
                                        follow_redirects=True)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
@@ -355,13 +363,11 @@ class Nuanciertests(Modeltests):
                     'candidate_license': 'CC-BY-SA',
                     'csrf_token': csrf_token,
                 }
-                output = self.app.post('/contribute/1', data=data,
+                output = self.app.post('/contribute/3', data=data,
                                        follow_redirects=True)
-                print output.data
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
-                    '<li class="error">A candidate with the title "name" '
-                    'and filename "pingou-'
+                    '<li class="error">A candidate with the filename "pingou-'
                     in output.data)
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
@@ -818,9 +824,9 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
             self.assertEqual(
-                output.data.count('src="/static/Denied.png"'), 4)
+                output.data.count('src="/static/Denied.png"'), 6)
             self.assertEqual(
-                output.data.count('src="/static/Approved.png"'), 2)
+                output.data.count('src="/static/Approved.png"'), 3)
 
         user.groups = ['packager', 'cla_done']
 
@@ -876,6 +882,7 @@ class Nuanciertests(Modeltests):
                 'election_name': 'election1',
                 'election_folder': 'pingou',
                 'election_year': '2014',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -893,13 +900,14 @@ class Nuanciertests(Modeltests):
             self.assertTrue('election1' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 2)
+            self.assertEqual(output.data.count('2014'), 12)
 
             # Edit failed: Name exists
             data = {
                 'election_name': 'Wallpaper F20',
                 'election_folder': 'pingou',
                 'election_year': '2013',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -920,6 +928,7 @@ class Nuanciertests(Modeltests):
                 'election_name': 'election1',
                 'election_folder': 'F20',
                 'election_year': '2013',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -971,8 +980,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 1)
-            self.assertEqual(output.data.count('2013'), 9)
+            self.assertEqual(output.data.count('2014'), 11)
+            self.assertEqual(output.data.count('2013'), 3)
 
             # Add the new election
             output = self.app.get('/admin/new/')
@@ -987,6 +996,7 @@ class Nuanciertests(Modeltests):
                 'election_name': 'election1',
                 'election_folder': 'pingou',
                 'election_year': '2014',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -999,7 +1009,6 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>New election</h1>' in output.data)
-            print output.data
             self.assertTrue('<td class="error">Field must contain a '
                             'number</td>' in output.data)
 
@@ -1007,6 +1016,7 @@ class Nuanciertests(Modeltests):
                 'election_name': 'election1',
                 'election_folder': 'pingou',
                 'election_year': '2014',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -1031,13 +1041,14 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 2)
-            self.assertEqual(output.data.count('2013'), 11)
+            self.assertEqual(output.data.count('2014'), 15)
+            self.assertEqual(output.data.count('2013'), 3)
 
             data = {
                 'election_name': 'election2',
                 'election_folder': 'pingou2',
                 'election_year': '2014',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -1061,14 +1072,15 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 3)
-            self.assertEqual(output.data.count('2013'), 13)
+            self.assertEqual(output.data.count('2014'), 19)
+            self.assertEqual(output.data.count('2013'), 3)
 
             # Edit failed: Name exists
             data = {
                 'election_name': 'Wallpaper F20',
                 'election_folder': 'pingou',
                 'election_year': '2013',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -1088,6 +1100,7 @@ class Nuanciertests(Modeltests):
                 'election_name': 'election1',
                 'election_folder': 'F20',
                 'election_year': '2013',
+                'submission_date_start': TODAY - timedelta(days=15),
                 'election_date_start': TODAY - timedelta(days=10),
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
@@ -1213,8 +1226,10 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+
+            self.assertEqual(output.data.count('="/static/New.png"'), 2)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Fails: results public
             output = self.app.post('/admin/review/1/process', data=data,
@@ -1274,8 +1289,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 2)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Valid submission
             data = {
@@ -1296,8 +1312,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
+            self.assertEqual(output.data.count('="/static/New.png"'), 1)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 1)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Fails: no motif to reject candidate
             data = {
@@ -1345,8 +1362,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/Denied.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 1)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
 
     def test_admin_cache(self):
         """ Test the admin_cache function. """
@@ -1383,6 +1401,14 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
+
+            output = self.app.get('/admin/cache/2?next=/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="message">Cache regenerated for '
+                            'election Wallpaper F20</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('<h3>Vote</h3>' in output.data)
+            self.assertTrue('<h3>Contribute</h3>' in output.data)
 
             output = self.app.get('/admin/cache/1', follow_redirects=True)
             self.assertEqual(output.status_code, 200)

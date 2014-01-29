@@ -126,6 +126,7 @@ class Modeltests(unittest.TestCase):
 
 def create_elections(session):
     """ Create some basic elections for testing. """
+    # Election in the past, closed and results opened
     election = model.Elections(
         election_name='Wallpaper F19',
         election_folder='F19',
@@ -133,25 +134,30 @@ def create_elections(session):
         election_n_choice=2,
         election_date_start=TODAY - timedelta(days=10),
         election_date_end=TODAY - timedelta(days=8),
+        submission_date_start=TODAY - timedelta(days=15),
     )
     session.add(election)
 
+    # Election currently opened for voting
     election = model.Elections(
         election_name='Wallpaper F20',
         election_folder='F20',
         election_year='2013',
         election_n_choice=2,
+        submission_date_start=TODAY - timedelta(days=6),
         election_date_start=TODAY - timedelta(days=2),
         election_date_end=TODAY + timedelta(days=3),
         election_badge_link="http://badges.fp.org",
     )
     session.add(election)
 
+    # Future election, open for submission
     election = model.Elections(
         election_name='Wallpaper F21',
         election_folder='F21',
         election_year='2014',
         election_n_choice=2,
+        submission_date_start=TODAY - timedelta(days=2),
         election_date_start=TODAY + timedelta(days=1),
         election_date_end=TODAY + timedelta(days=6),
     )

@@ -83,6 +83,9 @@ def contribute(election_id):
     if not election:
         flask.flash('No election found', 'error')
         return flask.render_template('msg.html')
+    elif not election.submission_open:
+        flask.flash('This election is not open for submission', 'error')
+        return flask.redirect(flask.url_for('elections_list'))
 
     form = nuancier.forms.AddCandidateForm()
     if form.validate_on_submit():
@@ -110,8 +113,10 @@ def contribute(election_id):
                 candidate_file=filename,
                 candidate_name=form.candidate_name.data,
                 candidate_author=form.candidate_author.data,
+                candidate_original_url=form.candidate_original_url.data,
                 candidate_license=form.candidate_license.data,
-                candidate_submitter=flask.g.fas_user.username,
+                candidate_submitter='%s -- %s' % (
+                    flask.g.fas_user.username, flask.g.fas_user.email),
                 election_id=election.id
             )
         except nuancierlib.NuancierException as err:
@@ -153,6 +158,8 @@ def contribute(election_id):
 
         flask.flash('Thanks for your submission')
         return flask.redirect(flask.url_for('index'))
+    elif flask.request.method == 'GET':
+        form.candidate_author.data = flask.g.fas_user.username
 
     return flask.render_template(
         'contribute.html',
