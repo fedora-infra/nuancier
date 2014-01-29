@@ -160,6 +160,8 @@ def contribute(election_id):
 
         flask.flash('Thanks for your submission')
         return flask.redirect(flask.url_for('index'))
+    elif flask.request.method == 'GET':
+        form.candidate_author.data = flask.g.fas_user.username
 
     return flask.render_template(
         'contribute.html',

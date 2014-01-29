@@ -120,8 +120,6 @@ class AddCandidateForm(flask_wtf.Form):
         '''
         super(AddCandidateForm, self).__init__(*args, **kwargs)
 
-        self.candidate_author.data = flask.g.fas_user.username
-
 
 class ConfirmationForm(flask_wtf.Form):
     ''' Simply, dummy form used for csrf validation. '''
