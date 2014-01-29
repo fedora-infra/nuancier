@@ -208,6 +208,14 @@ class Nuanciertests(Modeltests):
         upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
         with user_set(nuancier.APP, user):
+            output = self.app.get('/contribute/2', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                'class="error">This election is not open for submission</'
+                in output.data)
+            self.assertTrue('<h1>Elections</h1>' in output.data)
+
+        with user_set(nuancier.APP, user):
             output = self.app.get('/contribute/3')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
