@@ -58,9 +58,6 @@ def publish(topic, msg):  # pragma: no cover
 def email_publish(to_email, img_title, motif):  # pragma: no cover
     ''' Send notification by email. '''
 
-    if not package:
-        return
-
     message = """
 Dear Madam/Sir,
 
@@ -81,15 +78,14 @@ The Nuancier administrators team
 
     msg = MIMEText(message)
     msg['Subject'] = '[Nuancier] {0} has been rejected {1}'.format(img_title)
-    from_email = pkgdb2.APP.config.get(
+    from_email = nuancier.APP.config.get(
         'NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org')
     msg['From'] = from_email
     msg['To'] = to_email
 
     # Send the message via our own SMTP server, but don't include the
     # envelope header.
-    print msg_as_string()
-    smtp = smtplib.SMTP(pkgdb2.APP.config.get(
+    smtp = smtplib.SMTP(nuancier.APP.config.get(
         'NUANCIER_EMAIL_SMTP_SERVER', 'localhost'))
     #smtp.sendmail(from_email, [to_email], msg.as_string())
     smtp.quit()
