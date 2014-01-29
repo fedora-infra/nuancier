@@ -125,7 +125,7 @@ class NuancierLibtests(Modeltests):
         create_candidates(self.session)
         create_votes(self.session)
 
-        votes = nuancierlib.get_votes_user(self.session, 1, 'pingou')
+        votes = nuancierlib.get_votes_user(self.session, 1, 'pingou@fp.o')
         self.assertEqual(2, len(votes))
         self.assertEqual(1, votes[0].candidate_id)
         self.assertEqual(2, votes[1].candidate_id)

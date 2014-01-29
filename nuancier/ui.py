@@ -38,7 +38,8 @@ import nuancier
 import nuancier.lib as nuancierlib
 
 from nuancier import (
-    APP, SESSION, LOG, fas_login_required, validate_input_file
+    APP, SESSION, LOG, fas_login_required, validate_input_file,
+    login_required
 )
 
 ## Some of the object we use here have inherited methods which apparently
@@ -76,7 +77,7 @@ def contribute_index():
 
 
 @APP.route('/contribute/<election_id>', methods=['GET', 'POST'])
-@fas_login_required
+@login_required
 def contribute(election_id):
     ''' Display the index page for interested contributor. '''
     election = nuancierlib.get_election(SESSION, election_id)
@@ -88,6 +89,19 @@ def contribute(election_id):
         return flask.redirect(flask.url_for('elections_list'))
 
     form = nuancier.forms.AddCandidateForm()
+    if flask.request.method == 'GET':
+        author = ''
+        if hasattr(flask.g, 'auth') and (flask.g.auth.nickname or
+                flask.g.auth.auth.fullname):
+            author = flask.g.auth.nickname or flask.g.auth.fullname
+        form = nuancier.forms.AddCandidateForm(author=author)
+    else:
+        if hasattr(flask.g, 'auth') and (flask.g.auth.nickname or
+                flask.g.auth.auth.fullname):
+            author = flask.g.auth.nickname or flask.g.auth.fullname
+        else:
+            author = flask.g.auth.email
+
     if form.validate_on_submit():
         candidate_file = flask.request.files['candidate_file']
 
@@ -95,8 +109,7 @@ def contribute(election_id):
             validate_input_file(candidate_file)
         except nuancierlib.NuancierException as err:
             LOG.debug('ERROR: Uploaded file is invalid - user: "%s" '
-                      'election: "%s"', flask.g.fas_user.username,
-                      election_id)
+                      'election: "%s"', author, election_id)
             LOG.exception(err)
             flask.flash(err.message, 'error')
             return flask.render_template(
@@ -104,8 +117,8 @@ def contribute(election_id):
                 election=election,
                 form=form)
 
-        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
-                                   candidate_file.filename))
+        filename = secure_filename(
+            '%s-%s' % (author, candidate_file.filename))
 
         try:
             nuancierlib.add_candidate(
@@ -115,8 +128,7 @@ def contribute(election_id):
                 candidate_author=form.candidate_author.data,
                 candidate_original_url=form.candidate_original_url.data,
                 candidate_license=form.candidate_license.data,
-                candidate_submitter='%s -- %s' % (
-                    flask.g.fas_user.username, flask.g.fas_user.email),
+                candidate_submitter=author,
                 election_id=election.id
             )
         except nuancierlib.NuancierException as err:
@@ -131,8 +143,7 @@ def contribute(election_id):
         except SQLAlchemyError as err:  # pragma: no cover
             SESSION.rollback()
             LOG.debug('ERROR: cannot add candidate - user: "%s" '
-                      'election: "%s"', flask.g.fas_user.username,
-                      election_id)
+                      'election: "%s"', author, election_id)
             LOG.exception(err)
             flask.flash(
                 'Someone has already upload a file with the same file name'
@@ -148,8 +159,8 @@ def contribute(election_id):
             election.election_folder)
         if not os.path.exists(upload_folder):  # pragma: no cover
             os.mkdir(upload_folder)
-        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
-                                   candidate_file.filename))
+        filename = secure_filename(
+            '%s-%s' % (author, candidate_file.filename))
         # The PIL module has already read the stream so we need to back up
         candidate_file.seek(0)
 
@@ -189,9 +200,11 @@ def election(election_id):
     # How many votes the user made:
     votes = []
     can_vote = True
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
+    if hasattr(flask.g, 'auth') \
+            and flask.g.auth.logged_in \
+            and flask.g.auth.email:
         votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                           flask.g.fas_user.username)
+                                           flask.g.auth.email)
 
     if election.election_open and len(votes) < election.election_n_choice:
         if len(votes) > 0:
@@ -207,10 +220,12 @@ def election(election_id):
     candidates = nuancierlib.get_candidates(
         SESSION, election_id, approved=True)
 
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
+    if hasattr(flask.g, 'auth') \
+            and flask.g.auth.logged_in \
+            and flask.g.auth.email:
         random.seed(
             int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+                hashlib.sha1(flask.g.auth.email).hexdigest(), 16
             ) % 100000)
     random.shuffle(candidates)
 
@@ -241,16 +256,16 @@ def vote(election_id):
         flask.flash('This election is not open', 'error')
         return flask.redirect(flask.url_for('index'))
 
-    if flask.g.fas_user:
+    if flask.g.auth.email:
         random.seed(
             int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
+                hashlib.sha1(flask.g.auth.email).hexdigest(), 16
             ) % 100000)
     random.shuffle(candidates)
 
     # How many votes the user made:
     votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                       flask.g.fas_user.username)
+                                       flask.g.auth.email)
 
     if len(votes) >= election.election_n_choice:
         flask.flash('You have cast the maximal number of votes '
@@ -318,7 +333,7 @@ def process_vote(election_id):
 
     # How many votes the user made:
     votes = nuancierlib.get_votes_user(SESSION, election_id,
-                                       flask.g.fas_user.username)
+                                       flask.g.auth.email)
 
     # Too many votes -> redirect
     if len(votes) >= election.election_n_choice:
@@ -350,14 +365,14 @@ def process_vote(election_id):
     # Allowed to vote, selection sufficient, choice confirmed: process
     for selection in entries:
         nuancierlib.add_vote(SESSION, selection,
-                             flask.g.fas_user.username)
+                             flask.g.auth.email)
 
     try:
         SESSION.commit()
     except SQLAlchemyError as err:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('ERROR: could not process the vote - user: "%s" '
-                  'election: "%s"', flask.g.fas_user.username,
+                  'election: "%s"', flask.g.auth.nickname,
                   election_id)
         LOG.exception(err)
         flask.flash('An error occured while processing your votes, please '

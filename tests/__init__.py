@@ -31,6 +31,8 @@ import shutil
 import sys
 import os
 
+import bunch
+
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -73,7 +75,13 @@ def user_set(APP, user):
     APP.before_request_funcs[None] = []
 
     def handler(sender, **kwargs):
-        g.fas_user = user
+        g.auth = bunch.Bunch()
+        g.auth.logged_in = True
+        g.auth.openid = user.openid
+        g.auth.groups = user.groups
+        g.auth.cla_done = user.cla_done
+        g.auth.nickname = user.username
+        g.auth.email = '%s@fp.o' % user.username
 
     with appcontext_pushed.connected_to(handler, APP):
         yield
@@ -85,6 +93,7 @@ class FakeFasUser(object):
     username = 'pingou'
     cla_done = True
     groups = ['packager', 'cla_done']
+    openid = 'https://pingou.id.fedoraproject.org'
 
 
 class Modeltests(unittest.TestCase):
@@ -256,49 +265,49 @@ def create_votes(session):
     """ Add some votes to a some candidates. """
 
     vote = model.Votes(
-        user_name='pingou',
+        user_name='pingou@fp.o',
         candidate_id=1,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='ralph',
+        user_name='ralph@fp.o',
         candidate_id=1,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='pingou',
+        user_name='pingou@fp.o',
         candidate_id=2,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='toshio',
+        user_name='toshio@fp.o',
         candidate_id=1,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='toshio',
+        user_name='toshio@fp.o',
         candidate_id=2,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='pingou',
+        user_name='pingou@fp.o',
         candidate_id=3,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='ralph',
+        user_name='ralph@fp.o',
         candidate_id=3,
     )
     session.add(vote)
 
     vote = model.Votes(
-        user_name='ralph',
+        user_name='ralph@fp.o',
         candidate_id=4,
     )
     session.add(vote)

@@ -70,3 +70,9 @@ NUANCIER_EMAIL_NOTIFICATIONS = False
 NUANCIER_EMAIL_FROM = 'nobody@fedoraproject.org'
 # The smtp server to use to send the notifications
 NUANCIER_EMAIL_SMTP_SERVER = 'localhost'
+
+## Configuration keys used to allow/disable specific OpenID providers
+NUANCIER_ALLOW_FAS_OPENID = True
+NUANCIER_ALLOW_GOOGLE_OPENID = True
+NUANCIER_ALLOW_YAHOO_OPENID = True
+NUANCIER_ALLOW_GENERIC_OPENID = True

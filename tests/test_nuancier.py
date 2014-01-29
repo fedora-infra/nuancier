@@ -102,28 +102,45 @@ class Nuanciertests(Modeltests):
         user = FakeFasUser()
         user.groups = ['packager', 'cla_done']
 
-        output = nuancier.is_nuancier_admin(user)
+        output = nuancier.is_nuancier_admin(user.groups)
         self.assertFalse(output)
 
         user.groups = []
 
-        output = nuancier.is_nuancier_admin(user)
+        output = nuancier.is_nuancier_admin(user.groups)
         self.assertFalse(output)
 
         user.groups.append('sysadmin-main')
 
-        output = nuancier.is_nuancier_admin(user)
+        output = nuancier.is_nuancier_admin(user.groups)
         self.assertTrue(output)
 
     def test_login(self):
         """ Test the login function. """
         output = self.app.get('/login')
-        self.assertEqual(output.status_code, 301)
+        self.assertEqual(output.status_code, 200)
+        self.assertTrue('<h3>OpenId Login</h3>' in output.data)
+        self.assertTrue('placeholder="https://id.openid.server">'
+                        in output.data)
+
+        user = FakeFasUser()
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/login')
+            self.assertEqual(output.status_code, 302)
+
+            output = self.app.get('/login', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertFalse('<h3>OpenId Login</h3>' in output.data)
+            self.assertFalse('placeholder="https://id.openid.server">'
+                             in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
 
     def test_logout(self):
         """ Test the logout function. """
         output = self.app.get('/logout')
-        self.assertEqual(output.status_code, 301)
+        self.assertEqual(output.status_code, 302)
 
         output = self.app.get('/logout/')
         self.assertEqual(output.status_code, 302)
@@ -374,6 +391,36 @@ class Nuanciertests(Modeltests):
 
             self.assertFalse(os.path.exists(upload_path))
 
+        # Change user
+        user.username = 'test'
+        with user_set(nuancier.APP, user):
+            with open(FILE_OK) as stream:
+                data = {
+                    'candidate_name': 'name2',
+                    'candidate_author': 'pingou2',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribute/3', data=data,
+                                       follow_redirects=True)
+                self.assertEqual(output.status_code, 200)
+                print output.data
+                self.assertTrue(
+                    '<li class="message">Thanks for your submission</li>'
+                    in output.data
+                )
+                self.assertTrue('<h1>Nuancier</h1>' in output.data)
+                self.assertTrue(
+                    'Nuancier is a simple voting application'
+                    in output.data)
+
+            self.assertTrue(os.path.exists(upload_path))
+            shutil.rmtree(upload_path)
+
+            self.assertFalse(os.path.exists(upload_path))
+
     def test_elections_list(self):
         """ Test the elections_list function. """
         output = self.app.get('/elections')
@@ -507,6 +554,9 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must be in one more '
                             'group than the CLA</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
 
         # Fails; CLA not signed
         user.groups = ['packager', 'cla_done']
@@ -515,11 +565,26 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/election/1/vote/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must sign the CLA '
-                            '(Contributor License Agreement to use nuancier'
+                            '(Contributor License Agreement) to use nuancier'
                             '</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
+        # Fails: FAS login required
+        user.openid = 'http://example.org'
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/election/1/vote/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You have not authentified '
+                            'with a Fedora account</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
 
         # Works
         user.cla_done = True
+        user.openid = 'http://pingou.id.fedoraproject.org'
         with user_set(nuancier.APP, user):
             output = self.app.get('/election/1/vote')
             self.assertEqual(output.status_code, 301)
@@ -586,7 +651,7 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You must sign the CLA '
-                            '(Contributor License Agreement to use nuancier'
+                            '(Contributor License Agreement) to use nuancier'
                             '</li>' in output.data)
 
         # Fails: no elections
@@ -807,8 +872,20 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Nuancier is a simple voting application'
                             in output.data)
 
+        # Fails: FAS login required
+        user.openid = 'http://example.org'
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/admin/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You have not authentified '
+                            'with a Fedora account</li>' in output.data)
+            self.assertTrue('<h1>Nuancier</h1>' in output.data)
+            self.assertTrue('Nuancier is a simple voting application'
+                            in output.data)
+
         # Success
         user.groups = ['packager', 'cla_done', 'sysadmin-main']
+        user.openid = 'http://pingou.id.fedoraproject.org'
         with user_set(nuancier.APP, user):
             output = self.app.get('/admin/')
             self.assertEqual(output.status_code, 200)
@@ -900,7 +977,7 @@ class Nuanciertests(Modeltests):
             self.assertTrue('election1' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 12)
+            self.assertEqual(output.data.count('>2014</'), 2)
 
             # Edit failed: Name exists
             data = {
@@ -979,9 +1056,9 @@ class Nuanciertests(Modeltests):
             self.assertFalse('election2' in output.data)
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
-            self.assertTrue('Wallpaper F21' in output.data)
             self.assertEqual(output.data.count('2014'), 11)
-            self.assertEqual(output.data.count('2013'), 3)
+            self.assertEqual(output.data.count('>2014</'), 1)
+            self.assertEqual(output.data.count('>2013</'), 2)
 
             # Add the new election
             output = self.app.get('/admin/new/')
@@ -1041,8 +1118,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 15)
-            self.assertEqual(output.data.count('2013'), 3)
+            self.assertEqual(output.data.count('>2014</'), 2)
+            self.assertEqual(output.data.count('>2013</'), 2)
 
             data = {
                 'election_name': 'election2',
@@ -1072,8 +1149,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 19)
-            self.assertEqual(output.data.count('2013'), 3)
+            self.assertEqual(output.data.count('>2014</'), 3)
+            self.assertEqual(output.data.count('>2013</'), 2)
 
             # Edit failed: Name exists
             data = {
@@ -1402,7 +1479,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
 
-            output = self.app.get('/admin/cache/2?next=/', follow_redirects=True)
+            output = self.app.get('/admin/cache/2?next=/',
+                                  follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)

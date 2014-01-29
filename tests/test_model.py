@@ -76,10 +76,10 @@ class NuancierModeltests(Modeltests):
         create_candidates(self.session)
         create_votes(self.session)
 
-        votes = nuancierlib.get_votes_user(self.session, 1, 'pingou')
+        votes = nuancierlib.get_votes_user(self.session, 1, 'pingou@fp.o')
         self.assertTrue(
             votes[0].__repr__().startswith(
-                "Votes(name:u'pingou', candidate_id:1, created:"
+                "Votes(name:u'pingou@fp.o', candidate_id:1, created:"
             )
         )
 

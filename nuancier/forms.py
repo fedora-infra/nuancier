@@ -120,6 +120,9 @@ class AddCandidateForm(flask_wtf.Form):
         '''
         super(AddCandidateForm, self).__init__(*args, **kwargs)
 
+        if 'author' in kwargs:
+            self.candidate_author.data = kwargs['author']
+
 
 class ConfirmationForm(flask_wtf.Form):
     ''' Simply, dummy form used for csrf validation. '''

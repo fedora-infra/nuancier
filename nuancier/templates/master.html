@@ -43,12 +43,25 @@
         </div><!-- end mainNav -->
 
         <span id="loginInfo">
-          {% if g.fas_user %}
+          {% if (g.auth and g.auth.logged_in) %}
             <span class="text">logged in as </span>
-            {{ g.fas_user.username }} |
+            {{ g.auth.nickname or g.auth.fullname }} |
             <a href="{{ url_for('.logout') }}">log out</a>
           {% else %}
-            <a href="{{ url_for('.login') }}">login</a>
+            login:
+            {% if config['NUANCIER_ALLOW_FAS_OPENID'] %}
+            <a href="{{ url_for('.fedora_login') }}">Fedora</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_GOOGLE_OPENID'] %}
+            <a href="{{ url_for('.google_login') }}">Google</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_YAHOO_OPENID'] %}
+            <a href="{{ url_for('.yahoo_login') }}">Yahoo</a> |
+            {% endif %}
+            {% if config['NUANCIER_ALLOW_GENERIC_OPENID'] %}
+            <a href="{{ url_for('.login') }}">OpenID</a>
+            {% endif %}
+            </ul>
           {% endif %}
         </span>
 
