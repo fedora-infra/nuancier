@@ -115,7 +115,8 @@ def contribute(election_id):
                 candidate_author=form.candidate_author.data,
                 candidate_original_url=form.candidate_original_url.data,
                 candidate_license=form.candidate_license.data,
-                candidate_submitter=flask.g.fas_user.username,
+                candidate_submitter='%s -- %s' % (
+                    flask.g.fas_user.username, flask.g.fas_user.email),
                 election_id=election.id
             )
         except nuancierlib.NuancierException as err:
