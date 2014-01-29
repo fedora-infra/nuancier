@@ -147,7 +147,9 @@ class Elections(BASE):
 
     @property
     def election_public(self):
-        ''' Return if this election is opened or not. '''
+        ''' Return if this election is public or not.
+        Public here means that the results are accessible to anyone.
+        '''
         today = datetime.datetime.utcnow().date()
         return (self.submission_date_start <= today
                 and self.election_date_start <= today
