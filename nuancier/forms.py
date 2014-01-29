@@ -23,7 +23,6 @@
 WTF Forms of the nuancier Flask application.
 '''
 
-import flask
 import wtforms as wtf
 ## pylint cannot import flask extension correctly
 # pylint: disable=E0611,F0401
