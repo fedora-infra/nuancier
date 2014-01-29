@@ -205,16 +205,16 @@ class Nuanciertests(Modeltests):
                             in output.data)
 
         create_elections(self.session)
-        upload_path = os.path.join(PICTURE_FOLDER, 'F19')
+        upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
         with user_set(nuancier.APP, user):
-            output = self.app.get('/contribute/1')
+            output = self.app.get('/contribute/3')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                             in output.data)
             self.assertTrue('You are going to submit a new supplemental'
                             in output.data)
-            self.assertTrue('Election : Wallpaper F19 -- 2013'
+            self.assertTrue('Election : Wallpaper F21 -- 2014'
                             in output.data)
             self.assertTrue(
                 '<input id="csrf_token" name="csrf_token"' in output.data)
@@ -242,7 +242,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has a '
@@ -264,7 +264,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has a '
@@ -286,7 +286,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate could not '
@@ -307,7 +307,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data)
+                output = self.app.post('/contribute/3', data=data)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="error">The submitted candidate has the '
@@ -329,7 +329,7 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/1', data=data,
+                output = self.app.post('/contribute/3', data=data,
                                        follow_redirects=True)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
@@ -355,7 +355,7 @@ class Nuanciertests(Modeltests):
                     'candidate_license': 'CC-BY-SA',
                     'csrf_token': csrf_token,
                 }
-                output = self.app.post('/contribute/1', data=data,
+                output = self.app.post('/contribute/3', data=data,
                                        follow_redirects=True)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
@@ -509,13 +509,6 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="error">You must sign the CLA '
                             '(Contributor License Agreement to use nuancier'
                             '</li>' in output.data)
-
-        # Fails: FAS login required
-        with openiduser_set(nuancier.APP):
-            output = self.app.get('/election/1/vote/', follow_redirects=True)
-            self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You have not authentified '
-                            'with a Fedora account</li>' in output.data)
 
         # Works
         user.cla_done = True
@@ -899,7 +892,7 @@ class Nuanciertests(Modeltests):
             self.assertTrue('election1' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 2)
+            self.assertEqual(output.data.count('2014'), 12)
 
             # Edit failed: Name exists
             data = {
@@ -979,8 +972,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 1)
-            self.assertEqual(output.data.count('2013'), 9)
+            self.assertEqual(output.data.count('2014'), 11)
+            self.assertEqual(output.data.count('2013'), 3)
 
             # Add the new election
             output = self.app.get('/admin/new/')
@@ -1040,8 +1033,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 2)
-            self.assertEqual(output.data.count('2013'), 11)
+            self.assertEqual(output.data.count('2014'), 15)
+            self.assertEqual(output.data.count('2013'), 3)
 
             data = {
                 'election_name': 'election2',
@@ -1071,8 +1064,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 3)
-            self.assertEqual(output.data.count('2013'), 13)
+            self.assertEqual(output.data.count('2014'), 19)
+            self.assertEqual(output.data.count('2013'), 3)
 
             # Edit failed: Name exists
             data = {
