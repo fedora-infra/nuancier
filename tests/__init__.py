@@ -85,6 +85,7 @@ class FakeFasUser(object):
     username = 'pingou'
     cla_done = True
     groups = ['packager', 'cla_done']
+    email = 'pingou'
 
 
 class Modeltests(unittest.TestCase):
