@@ -111,11 +111,10 @@ def fas_login_required(function):
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
-        else:
-            if len(flask.g.fas_user.groups) == 0:
-                flask.flash('You must be in one more group than the CLA',
-                            'error')
-                return flask.redirect(flask.url_for('index'))
+        elif len(flask.g.fas_user.groups) == 0:
+            flask.flash('You must be in one more group than the CLA',
+                        'error')
+            return flask.redirect(flask.url_for('index'))
         return function(*args, **kwargs)
     return decorated_function
 
