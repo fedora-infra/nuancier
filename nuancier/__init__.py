@@ -97,6 +97,25 @@ def fas_login_required(function):
     Without that function the redirect if the user is not logged in will not
     work.
 
+    '''
+    @wraps(function)
+    def decorated_function(*args, **kwargs):
+        ''' Wrapped function actually checking if the user is logged in.
+        '''
+        if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
+            return flask.redirect(flask.url_for('.login',
+                                                next=flask.request.url))
+        elif not flask.g.fas_user.cla_done:
+            flask.flash('You must sign the CLA (Contributor License '
+                        'Agreement to use nuancier', 'error')
+            return flask.redirect(flask.url_for('index'))
+        return function(*args, **kwargs)
+    return decorated_function
+
+
+def contributor_required(function):
+    ''' Flask decorator to ensure that the user is logged in against FAS.
+
     We'll always make sure the user is CLA+1 as it's what's needed to be
     allowed to vote.
     '''

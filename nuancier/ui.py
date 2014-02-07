@@ -38,7 +38,8 @@ import nuancier
 import nuancier.lib as nuancierlib
 
 from nuancier import (
-    APP, SESSION, LOG, fas_login_required, validate_input_file
+    APP, SESSION, LOG, fas_login_required, contributor_required,
+    validate_input_file
 )
 
 ## Some of the object we use here have inherited methods which apparently
@@ -227,7 +228,7 @@ def election(election_id):
 
 
 @APP.route('/election/<int:election_id>/vote/')
-@fas_login_required
+@contributor_required
 def vote(election_id):
     ''' Give the possibility to the user to vote for an election. '''
     election = nuancierlib.get_election(SESSION, election_id)
@@ -278,7 +279,7 @@ def vote(election_id):
 
 
 @APP.route('/election/<int:election_id>/voted/', methods=['POST'])
-@fas_login_required
+@contributor_required
 def process_vote(election_id):
     ''' Actually register the vote, after checking if the user is actually
     allowed to vote.
