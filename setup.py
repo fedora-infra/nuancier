@@ -31,7 +31,7 @@ setup(
     author_email='pingou@pingoured.fr',
     maintainer='Pierre-Yves Chibon',
     maintainer_email='pingou@pingoured.fr',
-    license='GPLv3+',
+    license='GPLv2+',
     download_url='https://fedorahosted.org/releases/n/u/nuancier/',
     url='https://github.com/fedora-infra/nuancier/',
     packages=['nuancier'],
