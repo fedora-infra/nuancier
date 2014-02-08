@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.1.2
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -57,15 +57,15 @@ rm -rf $RPM_BUILD_ROOT
 
 # Install apache configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/
-install -m 644 nuancier.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/nuancier.conf
+install -m 644 utility/nuancier.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/nuancier.conf
 
 # Install nuancier configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier
-install -m 644 nuancier.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier.cfg
+install -m 644 utility/nuancier.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier.cfg
 
 # Install nuancier wsgi file
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
-install -m 644 nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
+install -m 644 utility/nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
 install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier_createdb.py
 
 %files
@@ -79,7 +79,7 @@ install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier_created
 
 
 %changelog
-*  Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.0-1
+* Sat Feb 08 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.0-1
 - Rename from nuancier-lite to nuancier
 - Adjust all the configuration file name accordingly
 
