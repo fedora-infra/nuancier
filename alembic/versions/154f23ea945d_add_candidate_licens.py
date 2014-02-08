@@ -19,7 +19,8 @@ def upgrade():
     op.add_column(
         'Candidates',
         sa.Column('candidate_license', sa.String(255),
-                  default='CC-BY-SA', nullable=False)
+                  default='CC-BY-SA')#, nullable=False)
+        # Breaks due to existing candidates in the DB
     )
     op.add_column(
         'Candidates',

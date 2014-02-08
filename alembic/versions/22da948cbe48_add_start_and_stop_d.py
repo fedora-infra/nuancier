@@ -26,6 +26,16 @@ def upgrade():
         sa.Column('election_date_end', sa.Date)
     )
 
+    # This is required for prod as there is already an election in the DB
+    try:
+        ins = "UPDATE \"Elections\" SET election_date_start='2013-10-05';"
+        op.execute(ins)
+        ins = "UPDATE \"Elections\" SET election_date_end='2013-10-04';"
+        op.execute(ins)
+    except:
+        pass
+
+
     ## Enforce the nullable=False
     op.alter_column('Elections', 'election_date_start', nullable=False)
     op.alter_column('Elections', 'election_date_end', nullable=False)

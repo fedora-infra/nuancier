@@ -21,8 +21,11 @@ def upgrade():
         sa.Date)
     )
 
-    ins = "UPDATE Elections SET submission_date_start=election_date_start;"
-    op.execute(ins)
+    try:
+        ins = "UPDATE \"Elections\" SET submission_date_start=election_date_start;"
+        op.execute(ins)
+    except Exception, err:
+        print 'ERROR', err
 
     ## Enforce the nullable=False
     op.alter_column(

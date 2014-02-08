@@ -18,12 +18,22 @@ def upgrade():
     ''' Add the approved column to the Candidates table. '''
     op.add_column(
         'Candidates',
-        sa.Column('approved', sa.Boolean, default=False, nullable=False)
+        sa.Column('approved', sa.Boolean, default=False)
     )
     op.add_column(
         'Candidates',
         sa.Column('approved_motif', sa.Text)
     )
+
+    # This is required for prod as there is already an election in the DB
+    try:
+        ins = "UPDATE \"Candidates\" SET approved=true;"
+        op.execute(ins)
+    except Exception, err:
+        print 'ERROR', err
+
+    ## Enforce the nullable=False
+    op.alter_column('Candidates', 'approved', nullable=False)
 
 
 def downgrade():
