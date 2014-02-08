@@ -37,5 +37,5 @@ setup(
     packages=['nuancier'],
     include_package_data=True,
     install_requires=['Flask', 'SQLAlchemy>=0.6', 'wtforms', 'flask-wtf',
-                      'python-fedora', 'Pillow', 'dogpile.cache'],
+                      'python-fedora', 'Pillow', 'dogpile.cache', 'blinker'],
 )
