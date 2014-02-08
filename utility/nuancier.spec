@@ -62,18 +62,22 @@ install -m 644 utility/nuancier.conf $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d
 # Install nuancier configuration file
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier
 install -m 644 utility/nuancier.cfg.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/nuancier.cfg
-install -m 644 utility/alembic.ini.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/alembic.ini
 
 # Install nuancier wsgi file
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/nuancier
 install -m 644 utility/nuancier.wsgi $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier.wsgi
 install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier_createdb.py
 
+# Install the alembic files
+install -m 644 utility/alembic.ini.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/alembic.ini
+cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
+
 %files
 %doc README.rst COPYING doc/
 %dir %{_sysconfdir}/nuancier/
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/nuancier.conf
 %config(noreplace) %{_sysconfdir}/nuancier/nuancier.cfg
+%config(noreplace) %{_sysconfdir}/nuancier/alembic.ini
 %{_datadir}/nuancier/
 %{python_sitelib}/nuancier/
 %{python_sitelib}/nuancier*.egg-info
