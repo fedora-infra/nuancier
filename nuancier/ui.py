@@ -108,6 +108,25 @@ def contribute(election_id):
         filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
                                    candidate_file.filename))
 
+        # Only save the file once everything has been safely saved in the DB
+        upload_folder = os.path.join(
+            APP.config['PICTURE_FOLDER'], election.election_folder)
+        if not os.path.exists(upload_folder):  # pragma: no cover
+            try:
+                os.mkdir(upload_folder)
+            except OSError, err:
+                LOG.debug('ERROR: cannot add candidate file')
+                LOG.exception(err)
+                flask.flash('An error occured while writing the file, please '
+                'contact an administrator', 'error')
+
+        # The PIL module has already read the stream so we need to back up
+        candidate_file.seek(0)
+
+        candidate_file.save(
+            os.path.join(upload_folder, filename))
+
+        # Save candidate to the database
         try:
             nuancierlib.add_candidate(
                 SESSION,
@@ -131,6 +150,8 @@ def contribute(election_id):
             SESSION.commit()
         except SQLAlchemyError as err:  # pragma: no cover
             SESSION.rollback()
+            # Remove file from the system if the db commit failed
+            os.unlink(os.path.join(upload_folder, filename))
             LOG.debug('ERROR: cannot add candidate - user: "%s" '
                       'election: "%s"', flask.g.fas_user.username,
                       election_id)
@@ -142,20 +163,6 @@ def contribute(election_id):
                 'contribute.html',
                 election=election,
                 form=form)
-
-        # Only save the file once everything has been safely saved in the DB
-        upload_folder = os.path.join(
-            APP.config['PICTURE_FOLDER'],
-            election.election_folder)
-        if not os.path.exists(upload_folder):  # pragma: no cover
-            os.mkdir(upload_folder)
-        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
-                                   candidate_file.filename))
-        # The PIL module has already read the stream so we need to back up
-        candidate_file.seek(0)
-
-        candidate_file.save(
-            os.path.join(upload_folder, filename))
 
         flask.flash('Thanks for your submission')
         return flask.redirect(flask.url_for('index'))
