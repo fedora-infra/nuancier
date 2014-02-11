@@ -120,12 +120,6 @@ def contribute(election_id):
                 flask.flash('An error occured while writing the file, please '
                 'contact an administrator', 'error')
 
-        # The PIL module has already read the stream so we need to back up
-        candidate_file.seek(0)
-
-        candidate_file.save(
-            os.path.join(upload_folder, filename))
-
         # Save candidate to the database
         try:
             nuancierlib.add_candidate(
@@ -145,6 +139,12 @@ def contribute(election_id):
                 'contribute.html',
                 election=election,
                 form=form)
+
+        # The PIL module has already read the stream so we need to back up
+        candidate_file.seek(0)
+
+        candidate_file.save(
+            os.path.join(upload_folder, filename))
 
         try:
             SESSION.commit()
