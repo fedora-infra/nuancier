@@ -372,6 +372,11 @@ class Nuanciertests(Modeltests):
                 self.assertTrue('<h1>Contribute a supplemental wallpaper</h1>'
                                 in output.data)
 
+            self.assertEqual(
+                os.listdir(upload_path), [])
+            self.assertTrue(os.path.exists(upload_path))
+            shutil.rmtree(upload_path)
+
             self.assertFalse(os.path.exists(upload_path))
 
     def test_elections_list(self):
