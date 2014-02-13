@@ -70,3 +70,5 @@ NUANCIER_EMAIL_NOTIFICATIONS = False
 NUANCIER_EMAIL_FROM = 'nobody@fedoraproject.org'
 # The smtp server to use to send the notifications
 NUANCIER_EMAIL_SMTP_SERVER = 'localhost'
+# The email address to send error report to
+NUANCIER_EMAIL_ERROR_TO = 'pingou@pingoured.fr'

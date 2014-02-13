@@ -24,6 +24,7 @@ Top level of the nuancier Flask application.
 '''
 
 import logging
+import logging.handlers
 import os
 import sys
 
@@ -56,7 +57,6 @@ import nuancier.notifications
 __version__ = '0.2.0'
 
 APP = flask.Flask(__name__)
-LOG = logging.getLogger(__name__)
 
 APP.config.from_object('nuancier.default_config')
 if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
@@ -70,6 +70,35 @@ CACHE = dogpile.cache.make_region().configure(
     APP.config.get('NUANCIER_CACHE_BACKEND', 'dogpile.cache.memory'),
     **APP.config.get('NUANCIER_CACHE_KWARGS', {})
 )
+
+# Set up the logger
+## Send emails for big exception
+mail_handler = logging.handlers.SMTPHandler(
+    APP.config.get('NUANCIER_EMAIL_SMTP_SERVER', '127.0.0.1'),
+    APP.config.get('NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org')
+    APP.config.get('NUANCIER_EMAIL_ERROR_TO', 'admin@fedoraproject.org'),
+    '[Nuancier] error')
+mail_handler.setFormatter(logging.Formatter('''
+    Message type:       %(levelname)s
+    Location:           %(pathname)s:%(lineno)d
+    Module:             %(module)s
+    Function:           %(funcName)s
+    Time:               %(asctime)s
+
+    Message:
+
+    %(message)s
+'''))
+mail_handler.setLevel(logging.ERROR)
+APP.logger.addHandler(mail_handler)
+
+# Log to stderr as well
+stderr_log = logging.StreamHandler(sys.stderr)
+stderr_log.setLevel(logging.INFO)
+APP.logger.addHandler(stderr_log)
+
+LOG = APP.logger
+
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
 
