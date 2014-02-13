@@ -75,7 +75,7 @@ CACHE = dogpile.cache.make_region().configure(
 ## Send emails for big exception
 mail_handler = logging.handlers.SMTPHandler(
     APP.config.get('NUANCIER_EMAIL_SMTP_SERVER', '127.0.0.1'),
-    APP.config.get('NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org')
+    APP.config.get('NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org'),
     APP.config.get('NUANCIER_EMAIL_ERROR_TO', 'admin@fedoraproject.org'),
     '[Nuancier] error')
 mail_handler.setFormatter(logging.Formatter('''
