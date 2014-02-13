@@ -86,6 +86,7 @@ class Nuanciertests(Modeltests):
         super(Nuanciertests, self).setUp()
 
         nuancier.APP.config['TESTING'] = True
+        nuancier.APP.logger.handlers = []
         nuancier.SESSION = self.session
         nuancier.admin.SESSION = self.session
         nuancier.ui.SESSION = self.session
