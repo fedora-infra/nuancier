@@ -154,7 +154,8 @@ class NuancierLibtests(Modeltests):
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
-            election_badge_link='http://...'
+            election_badge_link='http://...',
+            user='pingou',
         )
         self.session.commit()
 
@@ -186,6 +187,7 @@ class NuancierLibtests(Modeltests):
             candidate_submitter='pingou',
             candidate_original_url=None,
             election_id=2,
+            user='pingou',
         )
         self.session.commit()
 
@@ -208,6 +210,7 @@ class NuancierLibtests(Modeltests):
             candidate_submitter='pingou',
             candidate_original_url='http://example.org',
             election_id=2,
+            user='pingou',
         )
 
     def test_add_vote(self):
@@ -243,6 +246,7 @@ class NuancierLibtests(Modeltests):
             submission_date_start=TODAY - timedelta(days=2),
             election_n_choice=42,
             election_badge_link='http://badges.fp.o/1234',
+            user='pingou',
         )
 
         self.assertEqual(new_election.election_name, 'elec name')
