@@ -309,7 +309,6 @@ class Candidates(BASE):
                 original_url=self.candidate_original_url,
                 license=self.candidate_license,
                 submitter=self.candidate_submitter,
-                election=self.election.election_name,
             )
         else:  # pragma: no cover
             raise NotImplementedError("Unsupported version %r" % version)
