@@ -139,7 +139,7 @@ def get_results(session, election_id):
 def add_election(session, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
                  submission_date_start, election_n_choice,
-                 election_badge_link=None):
+                 election_badge_link=None, user=None):
     """ Add a new election to the database.
 
     :arg session:
@@ -151,7 +151,11 @@ def add_election(session, election_name, election_folder, election_year,
     :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
+    :kwarg user: The user/admin creating the election.
     """
+    if not user:
+        raise NuancierException('User required to create an election')
+
     election = nuancier.lib.model.Elections(
         election_name=election_name,
         election_folder=election_folder,
@@ -163,6 +167,15 @@ def add_election(session, election_name, election_folder, election_year,
         election_badge_link=election_badge_link,
     )
     session.add(election)
+
+    notifications.publish(
+        topic='election.new',
+        msg=dict(
+            agent=flask.g.fas_user.username,
+            election=election.api_repr(version=1),
+        )
+    )
+
     return election
 
 
@@ -218,6 +231,16 @@ def edit_election(session, election, election_name, election_folder,
 
     if edited:
         session.add(election)
+
+    notifications.publish(
+        topic='election.updated',
+        msg=dict(
+            agent=flask.g.fas_user.username,
+            election=election.api_repr(version=1),
+            updated=edited,
+        )
+    )
+
     return election
 
 
@@ -252,6 +275,17 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
         election_id=election_id,
     )
     session.add(candidate)
+
+    election = nuancier.lib.model.Elections.by_id(election_id)
+
+    notifications.publish(
+        topic='candidate.new',
+        msg=dict(
+            agent=flask.g.fas_user.username,
+            election=election.api_repr(version=1),
+            candidate=candidate.api_repr(version=1),
+        )
+    )
 
 
 def add_vote(session, candidate_id, username):

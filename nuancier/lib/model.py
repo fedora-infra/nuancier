@@ -166,6 +166,9 @@ class Elections(BASE):
                 id=self.id,
                 name=self.election_name,
                 year=self.election_year,
+                date_start=self.election_date_start
+                date_end=self.election_date_end
+                submission_date_start=self.submission_date_start
             )
         else:  # pragma: no cover
             raise NotImplementedError("Unsupported version %r" % version)
@@ -302,6 +305,10 @@ class Candidates(BASE):
         if version == 1:
             return dict(
                 name=self.candidate_name,
+                author=self.candidate_author
+                original_url=self.candidate_original_url
+                license=self.candidate_license
+                submitter=self.candidate_submitter
                 election=self.election.election_name,
             )
         else:  # pragma: no cover
