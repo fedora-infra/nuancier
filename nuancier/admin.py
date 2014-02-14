@@ -120,6 +120,7 @@ def admin_new():
             submission_date_start=form.submission_date_start.data,
             election_n_choice=form.election_n_choice.data,
             election_badge_link=form.election_badge_link.data,
+            user=flask.g.fas_user.username,
         )
 
         try:
@@ -136,6 +137,7 @@ def admin_new():
         flask.flash('Election created')
         if form.generate_cache.data:
             return admin_cache(election.id)
+
         return flask.redirect(flask.url_for('admin_index'))
     return flask.render_template('admin_new.html', form=form)
 
@@ -251,6 +253,8 @@ def admin_process_review(election_id):
             return flask.redirect(
                 flask.url_for('admin_review', election_id=election_id))
 
+    msgs = []
+
     for candidate in selections:
         if candidate:
             candidate = nuancierlib.get_candidate(SESSION, candidate)
@@ -263,8 +267,9 @@ def admin_process_review(election_id):
             else:
                 candidate.approved = False
                 candidate.approved_motif = motif
-                if APP.config[
-                        'NUANCIER_EMAIL_NOTIFICATIONS']:  # pragma: no cover
+                if APP.config.get(
+                        'NUANCIER_EMAIL_NOTIFICATIONS',
+                        False):  # pragma: no cover
                     nuancierlib.notifications.email_publish(
                         to_email=candidate.candidate_submitter,
                         img_title=candidate.candidate_name,
@@ -276,7 +281,16 @@ def admin_process_review(election_id):
                         candidate.candidate_submitter,
                         candidate.candidate_name,
                         motif)
+
             SESSION.add(candidate)
+            msgs.append({
+                topic='candidate.%s' % (action.lower()),
+                msg=dict(
+                    agent=flask.g.fas_user.username,
+                    election=election.api_repr(version=1),
+                    candidate=candidate.api_repr(version=1),
+                )
+            })
         cnt += 1
 
     try:
@@ -290,6 +304,12 @@ def admin_process_review(election_id):
         flask.flash('Could not approve/deny candidate', 'error')
 
     flask.flash('Candidate(s) updated')
+
+    for msg in msgs:
+        notifications.publish(
+            topic=msg['topic'],
+            msg=msg['msg'],
+        )
 
     return flask.redirect(
         flask.url_for('admin_review', election_id=election_id))
