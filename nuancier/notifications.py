@@ -24,6 +24,7 @@ notification shim for nuancier
 '''
 
 import smtplib
+import warnings
 
 from email.mime.text import MIMEText
 
@@ -36,23 +37,13 @@ import nuancier
 # pylint: disable=F0401
 
 
-fedmsg = None
-try:  # pragma: no cover
-    import fedmsg
-except ImportError:  # pragma: no cover
-    pass
-
-
-if fedmsg:
-    fedmsg.init()
-
-
 def publish(topic, msg):  # pragma: no cover
     ''' Send a message on the fedmsg bus. '''
-    if not fedmsg:
-        return
-
-    fedmsg.publish(topic=topic, msg=msg)
+    try:
+        import fedmsg
+        fedmsg.publish(topic=topic, msg=msg)
+    except Exception, err:
+        warnings.warn(str(err))
 
 
 def email_publish(to_email, img_title, motif):  # pragma: no cover
