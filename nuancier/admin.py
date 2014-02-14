@@ -284,8 +284,8 @@ def admin_process_review(election_id):
 
             SESSION.add(candidate)
             msgs.append({
-                topic='candidate.%s' % (action.lower()),
-                msg=dict(
+                topic:'candidate.%s' % (action.lower()),
+                msg:dict(
                     agent=flask.g.fas_user.username,
                     election=election.api_repr(version=1),
                     candidate=candidate.api_repr(version=1),
