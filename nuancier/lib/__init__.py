@@ -49,6 +49,7 @@ except ImportError:  # pragma: no cover
             'them should be installed'
 
 import nuancier.lib.model
+import notifications
 
 
 class NuancierException(Exception):
@@ -171,7 +172,7 @@ def add_election(session, election_name, election_folder, election_year,
     notifications.publish(
         topic='election.new',
         msg=dict(
-            agent=flask.g.fas_user.username,
+            agent=user,
             election=election.api_repr(version=1),
         )
     )
@@ -182,7 +183,7 @@ def add_election(session, election_name, election_folder, election_year,
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
                   submission_date_start, election_n_choice,
-                  election_badge_link=None):
+                  election_badge_link=None, user=None):
     """ Edit an election of the database.
 
     :arg session:
@@ -195,7 +196,11 @@ def edit_election(session, election, election_name, election_folder,
     :arg submission_date_start:
     :arg election_n_choice:
     :kwarg election_badge_link:
+    :kwarg user:
     """
+    if not user:
+        raise NuancierException('User required to edit an election')
+
     edited = []
     if election.election_name != election_name:
         election.election_name = election_name
@@ -235,7 +240,7 @@ def edit_election(session, election, election_name, election_folder,
     notifications.publish(
         topic='election.updated',
         msg=dict(
-            agent=flask.g.fas_user.username,
+            agent=user,
             election=election.api_repr(version=1),
             updated=edited,
         )
@@ -246,7 +251,7 @@ def edit_election(session, election, election_name, election_folder,
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
                   candidate_original_url, candidate_license,
-                  candidate_submitter, election_id):
+                  candidate_submitter, election_id, user=None):
     """ Add a new candidate to the database.
 
     :arg session:
@@ -257,6 +262,9 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg candidate_license:
     :arg election_id:
     """
+    if not user:
+        raise NuancierException('User required to add a new candidate')
+
     candidate = nuancier.lib.model.Candidates.by_election_file(
         session, election_id, candidate_file)
     if candidate:
@@ -276,12 +284,12 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     )
     session.add(candidate)
 
-    election = nuancier.lib.model.Elections.by_id(election_id)
+    election = nuancier.lib.model.Elections.by_id(session, election_id)
 
     notifications.publish(
         topic='candidate.new',
         msg=dict(
-            agent=flask.g.fas_user.username,
+            agent=user,
             election=election.api_repr(version=1),
             candidate=candidate.api_repr(version=1),
         )
