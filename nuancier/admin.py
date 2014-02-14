@@ -80,6 +80,7 @@ def admin_edit(election_id):
             submission_date_start=form.submission_date_start.data,
             election_n_choice=form.election_n_choice.data,
             election_badge_link=form.election_badge_link.data,
+            user=flask.g.fas_user.username,
         )
         try:
             SESSION.commit()
@@ -284,8 +285,8 @@ def admin_process_review(election_id):
 
             SESSION.add(candidate)
             msgs.append({
-                topic:'candidate.%s' % (action.lower()),
-                msg:dict(
+                'topic': 'candidate.%s' % (action.lower()),
+                'msg': dict(
                     agent=flask.g.fas_user.username,
                     election=election.api_repr(version=1),
                     candidate=candidate.api_repr(version=1),
@@ -306,7 +307,7 @@ def admin_process_review(election_id):
     flask.flash('Candidate(s) updated')
 
     for msg in msgs:
-        notifications.publish(
+        nuancierlib.notifications.publish(
             topic=msg['topic'],
             msg=msg['msg'],
         )
