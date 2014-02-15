@@ -49,7 +49,7 @@ except ImportError:  # pragma: no cover
             'them should be installed'
 
 import nuancier.lib.model
-import notifications
+import nuancier.notifications as notifications
 
 
 class NuancierException(Exception):
