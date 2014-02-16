@@ -68,7 +68,7 @@ Before you contribute to an election make sure to <a href="{{ url_for('contribut
 
 {% if contributions %}
 <p>
-{% if contributions|length > 1 %}There {% else %} There are {% endif %}
+{% if contributions|length == 1 %}There is {% else %} There are {% endif %}
 <a href="{{ url_for('contribute_index') }}">{{ contributions|length }} election(s) opened for contribution</a>.
 </p>
 {% else %}
