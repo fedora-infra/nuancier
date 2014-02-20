@@ -46,11 +46,6 @@ body#admin table {
     padding-top:2em;
 }
 
-#content {
-    float:left;
-    width:74%px;
-}
-
 #options {
     float:right;
     width:23%;
