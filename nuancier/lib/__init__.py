@@ -238,7 +238,7 @@ def edit_election(session, election, election_name, election_folder,
         session.add(election)
 
     notifications.publish(
-        topic='election.updated',
+        topic='election.update',
         msg=dict(
             agent=user,
             election=election.api_repr(version=1),
