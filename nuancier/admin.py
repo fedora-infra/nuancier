@@ -69,20 +69,20 @@ def admin_edit(election_id):
         form = nuancier.forms.AddElectionForm(election=election)
 
     if form.validate_on_submit():
-        election = nuancierlib.edit_election(
-            SESSION,
-            election=election,
-            election_name=form.election_name.data,
-            election_folder=form.election_folder.data,
-            election_year=form.election_year.data,
-            election_date_start=form.election_date_start.data,
-            election_date_end=form.election_date_end.data,
-            submission_date_start=form.submission_date_start.data,
-            election_n_choice=form.election_n_choice.data,
-            election_badge_link=form.election_badge_link.data,
-            user=flask.g.fas_user.username,
-        )
         try:
+            election = nuancierlib.edit_election(
+                SESSION,
+                election=election,
+                election_name=form.election_name.data,
+                election_folder=form.election_folder.data,
+                election_year=form.election_year.data,
+                election_date_start=form.election_date_start.data,
+                election_date_end=form.election_date_end.data,
+                submission_date_start=form.submission_date_start.data,
+                election_n_choice=form.election_n_choice.data,
+                election_badge_link=form.election_badge_link.data,
+                user=flask.g.fas_user.username,
+            )
             SESSION.commit()
             flask.flash('Election updated')
         except SQLAlchemyError as err:
@@ -111,20 +111,20 @@ def admin_new():
     form = nuancier.forms.AddElectionForm()
     if form.validate_on_submit():
 
-        election = nuancierlib.add_election(
-            SESSION,
-            election_name=form.election_name.data,
-            election_folder=form.election_folder.data,
-            election_year=form.election_year.data,
-            election_date_start=form.election_date_start.data,
-            election_date_end=form.election_date_end.data,
-            submission_date_start=form.submission_date_start.data,
-            election_n_choice=form.election_n_choice.data,
-            election_badge_link=form.election_badge_link.data,
-            user=flask.g.fas_user.username,
-        )
-
         try:
+            election = nuancierlib.add_election(
+                SESSION,
+                election_name=form.election_name.data,
+                election_folder=form.election_folder.data,
+                election_year=form.election_year.data,
+                election_date_start=form.election_date_start.data,
+                election_date_end=form.election_date_end.data,
+                submission_date_start=form.submission_date_start.data,
+                election_n_choice=form.election_n_choice.data,
+                election_badge_link=form.election_badge_link.data,
+                user=flask.g.fas_user.username,
+            )
+
             SESSION.commit()
         except SQLAlchemyError as err:
             SESSION.rollback()
