@@ -168,6 +168,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_badge_link=election_badge_link,
     )
     session.add(election)
+    session.flush()
 
     notifications.publish(
         topic='election.new',
@@ -236,6 +237,7 @@ def edit_election(session, election, election_name, election_folder,
 
     if edited:
         session.add(election)
+        session.flush()
 
     notifications.publish(
         topic='election.update',
@@ -283,6 +285,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
         election_id=election_id,
     )
     session.add(candidate)
+    session.flush()
 
     election = nuancier.lib.model.Elections.by_id(session, election_id)
 
@@ -308,6 +311,7 @@ def add_vote(session, candidate_id, username):
         candidate_id=candidate_id,
     )
     session.add(votes)
+    session.flush()
 
 
 def generate_thumbnail(filename, picture_folder, cache_folder,
