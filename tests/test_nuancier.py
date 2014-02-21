@@ -1408,7 +1408,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
 
-            output = self.app.get('/admin/cache/2?next=/', follow_redirects=True)
+            output = self.app.get(
+                '/admin/cache/2?next=/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="message">Cache regenerated for '
                             'election Wallpaper F20</li>' in output.data)
