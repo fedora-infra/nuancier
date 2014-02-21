@@ -30,6 +30,8 @@ import unittest
 import sys
 import os
 
+from datetime import timedelta
+
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -39,7 +41,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
 from tests import (Modeltests, create_elections, create_candidates,
-                   create_votes, CACHE_FOLDER, PICTURE_FOLDER)
+                   create_votes, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
 
 
 class NuancierModeltests(Modeltests):
@@ -91,7 +93,14 @@ class NuancierModeltests(Modeltests):
         election = nuancierlib.get_election(self.session, 1)
         self.assertEqual(
             election.api_repr(1),
-            {'id': 1, 'name': 'Wallpaper F19', 'year': 2013}
+            {
+                'date_end': TODAY - timedelta(days=8),
+                'date_start': TODAY - timedelta(days=10),
+                'id': 1,
+                'name': u'Wallpaper F19',
+                'submission_date_start': TODAY - timedelta(days=15),
+                'year': 2013
+            }
         )
 
     def test_candidates_api_repr(self):
@@ -102,7 +111,13 @@ class NuancierModeltests(Modeltests):
         candidate = nuancierlib.get_candidate(self.session, 1)
         self.assertEqual(
             candidate.api_repr(1),
-            {'election': u'Wallpaper F19', 'name': u'Image ok'}
+            {
+                'author': u'pingou',
+                'license': u'CC-BY-SA',
+                'name': u'Image ok',
+                'original_url': None,
+                'submitter': u'pingou',
+            }
         )
 
     def test_election_open(self):

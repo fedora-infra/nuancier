@@ -67,7 +67,10 @@ Before you contribute to an election make sure to <a href="{{ url_for('contribut
     read the guidelines</a>
 
 {% if contributions %}
-There are <a href="{{ url_for('contribute_index') }}">{{ contributions|length }} election(s) opened for contribution</a>.
+<p>
+{% if contributions|length == 1 %}There is {% else %} There are {% endif %}
+<a href="{{ url_for('contribute_index') }}">{{ contributions|length }} election(s) opened for contribution</a>.
+</p>
 {% else %}
 <p>No elections are opened for contributions for the moment.</p>
 {% endif %}

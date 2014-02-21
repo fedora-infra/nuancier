@@ -4,6 +4,7 @@ during development of nuancier.
 
 import socket
 hostname = socket.gethostname()
+hostname = hostname.split('.')[0]
 
 config = dict(
     endpoints={

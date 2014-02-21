@@ -46,7 +46,6 @@ except ImportError:  # pragma: no cover
 
 import nuancier.forms
 import nuancier.lib as nuancierlib
-import nuancier.notifications
 
 
 ## Some of the object we use here have inherited methods which apparently
