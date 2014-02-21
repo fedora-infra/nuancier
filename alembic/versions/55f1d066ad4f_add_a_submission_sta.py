@@ -17,12 +17,14 @@ import sqlalchemy as sa
 def upgrade():
     op.add_column(
         'Elections',
-        sa.Column('submission_date_start',
-        sa.Date)
+        sa.Column(
+            'submission_date_start',
+            sa.Date)
     )
 
     try:
-        ins = "UPDATE \"Elections\" SET submission_date_start=election_date_start;"
+        ins = "UPDATE \"Elections\" SET "\
+            "submission_date_start=election_date_start;"
         op.execute(ins)
     except Exception, err:
         print 'ERROR', err
@@ -33,6 +35,7 @@ def upgrade():
         column_name='submission_date_start',
         nullable=False,
         existing_nullable=True,)
+
 
 def downgrade():
     ''' Remove the columns submission_date_start from the Elections table. '''

@@ -18,8 +18,10 @@ def upgrade():
     ''' Add the candidate_license field to the Candidates table. '''
     op.add_column(
         'Candidates',
-        sa.Column('candidate_license', sa.String(255),
-                  default='CC-BY-SA')#, nullable=False)
+        sa.Column(
+            'candidate_license',
+            sa.String(255),
+            default='CC-BY-SA')  # , nullable=False)
         # Breaks due to existing candidates in the DB
     )
     op.add_column(
