@@ -35,7 +35,6 @@ def upgrade():
     except:
         pass
 
-
     ## Enforce the nullable=False
     op.alter_column('Elections', 'election_date_start', nullable=False)
     op.alter_column('Elections', 'election_date_end', nullable=False)

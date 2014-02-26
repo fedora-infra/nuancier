@@ -117,8 +117,9 @@ def contribute(election_id):
             except OSError, err:
                 LOG.debug('ERROR: cannot add candidate file')
                 LOG.exception(err)
-                flask.flash('An error occured while writing the file, please '
-                'contact an administrator', 'error')
+                flask.flash(
+                    'An error occured while writing the file, please '
+                    'contact an administrator', 'error')
 
         # Save candidate to the database
         try:
