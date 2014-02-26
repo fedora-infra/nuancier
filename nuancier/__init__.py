@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2014  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -53,7 +53,7 @@ import nuancier.lib as nuancierlib
 # pylint: disable=E1101, E1103
 
 
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 APP = flask.Flask(__name__)
 
