@@ -401,8 +401,8 @@ class Nuanciertests(Modeltests):
         self.assertTrue('Wallpaper F21' in output.data)
         self.assertTrue('Wallpaper F19' in output.data)
         self.assertTrue('Wallpaper F20' in output.data)
-        self.assertEqual(output.data.count('static/Approved.png'), 2)
-        self.assertEqual(output.data.count('static/Denied.png'), 4)
+        self.assertEqual(output.data.count('static/Approved.png'), 3)
+        self.assertEqual(output.data.count('static/Denied.png'), 6)
 
     def test_election(self):
         """ Test the election function. """
