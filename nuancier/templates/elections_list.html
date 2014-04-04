@@ -24,7 +24,8 @@
     <tr>
         <th>Name</th>
         <th>Year</th>
-        <th>Open</th>
+        <th>Submissions</th>
+        <th>Votes open</th>
         <th>Published</th>
     </tr>
     {% for election in elections %}
@@ -34,6 +35,16 @@
                 {{ election.election_name }}
             </a>
         <td>{{ election.election_year }}</td>
+        <td>
+            {% if election.submission_open %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Submission open"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Submission closed"/>
+            {% endif %}
+            {{ election.submission_date_start }}
+        </td>
         <td>
             {% if election.election_open %}
             <img src="{{ url_for('static', filename='Approved.png') }}"
