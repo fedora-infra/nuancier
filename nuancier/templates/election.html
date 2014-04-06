@@ -50,8 +50,9 @@ Click on the picture to get a larger version of the image.
                                     )
                                 )
                       }}" alt="img {{ candidate.candidate_file }}"/>
-            </a>
-            Author: {{ candidate.candidate_author }}
+            </a><br />
+            Author: {{ candidate.candidate_author }} <br />
+            License: {{ candidate.candidate_license }}
         </td>
         {% if loop.index % 3 == 0 %}
         </tr>
