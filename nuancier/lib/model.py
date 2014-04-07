@@ -266,7 +266,7 @@ class Candidates(BASE):
                              default=sa.func.current_timestamp(),
                              onupdate=sa.func.current_timestamp())
 
-    election = relation('Elections')
+    election = relation('Elections', backref='candidates')
     __table_args__ = (
         sa.UniqueConstraint('election_id', 'candidate_file'),
     )
