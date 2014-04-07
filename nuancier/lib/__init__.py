@@ -406,6 +406,7 @@ def get_stats(session, election_id):
     :arg session:
     :arg election_id:
     """
+    election = get_election(session, election_id)
     votes = nuancier.lib.model.Votes.cnt_votes(session, election_id)
     voters = nuancier.lib.model.Votes.cnt_voters(session, election_id)
     results = nuancier.lib.model.Votes.by_election(session, election_id)
@@ -428,8 +429,12 @@ def get_stats(session, election_id):
 
     data = [[key, votes_user[key]] for key in votes_user]
 
+    authors = set(
+        [cand.candidate_author for cand in election.candidates_approved])
+
     return dict(
         votes=votes,
         voters=voters,
         data=data,
+        authors=authors,
     )
