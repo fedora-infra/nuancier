@@ -21,6 +21,10 @@
 
 <table>
     <tr>
+        <th>Number of candidates</th>
+        <td>{{ election.candidates_approved | length }}</td>
+    </tr>
+    <tr>
         <th>Number of votes</th>
         <td>{{ stats['votes'] }}</td>
     </tr>
@@ -29,7 +33,11 @@
         <td>{{ stats['voters'] }}</td>
     </tr>
     <tr>
-        <th>Maximum number of votes per person</th>
+        <th>Average number of votes per participant</th>
+        <td>{{ stats['votes'] / stats['voters'] }}</td>
+    </tr>
+    <tr>
+        <th>Maximum number of votes per participant</th>
         <td>{{ election.election_n_choice }}</td>
     </tr>
 </table>
