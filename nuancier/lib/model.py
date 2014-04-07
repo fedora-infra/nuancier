@@ -155,6 +155,11 @@ class Elections(BASE):
                 and self.election_date_start <= today
                 and self.election_date_end <= today)
 
+    @property
+    def candidates_approved(self):
+        ''' Return the approved candidates for this elections. '''
+        return [cand for cand in self.candidates if cand.approved]
+
     def __repr__(self):
         return 'Elections(id:%r, name:%r, year:%r)' % (
             self.id, self.election_name, self.election_year)
