@@ -429,12 +429,22 @@ def get_stats(session, election_id):
 
     data = [[key, votes_user[key]] for key in votes_user]
 
+    # Retrieve the list of authors
     authors = set(
         [cand.candidate_author for cand in election.candidates_approved])
+
+    # Get the distribution of votes per candidate
+    election_results = get_results(session, election_id)
+    data2 = []
+    cnt = 0
+    for result in election_results:
+        cnt += 1
+        data2.append([cnt, result[1]])
 
     return dict(
         votes=votes,
         voters=voters,
         data=data,
         authors=authors,
+        data2=data2,
     )
