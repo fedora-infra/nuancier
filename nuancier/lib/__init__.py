@@ -439,7 +439,7 @@ def get_stats(session, election_id):
     cnt = 0
     for result in election_results:
         cnt += 1
-        data2.append([cnt, result[1]])
+        data2.append([cnt, int(result[1])])
 
     return dict(
         votes=votes,
