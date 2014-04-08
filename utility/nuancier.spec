@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.3.0
+Version:        0.4.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -84,6 +84,11 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Tue Apr 08 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.0-1
+- Update to 0.4.0
+- Improve stats page
+- Fix election table on the elections page
+
 * Wed Feb 26 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.3.0-1
 - Update to 0.3.0
 - fedmsg integration
