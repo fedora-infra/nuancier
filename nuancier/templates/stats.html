@@ -21,7 +21,11 @@
 
 <table>
     <tr>
-        <th>Number of candidates</th>
+        <th>Total number of candidates</th>
+        <td>{{ election.candidates | length }}</td>
+    </tr>
+    <tr>
+        <th>Number of candidates approved</th>
         <td>{{ election.candidates_approved | length }}</td>
     </tr>
     <tr>
