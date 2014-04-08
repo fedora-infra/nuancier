@@ -46,8 +46,15 @@
     </tr>
 </table>
 
+<h3>Distribution of the number of votes</h3>
 <div class="demo-container">
     <div id="placeholder" class="demo-placeholder"></div>
+</div>
+
+
+<h3>Distribution of vote</h3>
+<div class="demo-container">
+    <div id="vote_distribution" class="demo-placeholder"></div>
 </div>
 
 {% endblock %}
@@ -62,6 +69,12 @@
                 'data': {{ stats['data'] }},
                 'label': 'Votes'}
                 ];
+
+    var data2 = [{'color': '#1F77B4',
+                 'bars': {'order': 1, 'barWidth': 0.8, 'show': 1},
+                 'data': {{ stats['data2'] }},
+                 'label': 'Votes'}
+                 ];
 
     $(function() {
         var plot = $.plot("#placeholder", data, {
@@ -78,6 +91,22 @@
                 show: false
             }
         });
+
+        var plot2 = $.plot("#vote_distribution", data2, {
+            series: {
+                clickable: true,
+                hoverable: true
+            },
+            grid: { hoverable: true, clickable: true },
+            xaxis: {
+                mode: "categories",
+                points: { show: true },
+                lines: { show: true },
+                tickLength: 0,
+                show: false
+            }
+        });
+
 
         // show the tooltip
         function showTooltip(x, y, contents) {
@@ -107,6 +136,30 @@
                             y + " user(s) voted on "
                             + data[0].data[item.dataIndex][0]
                             + " wallpaper(s)");
+                }
+            } else {
+                document.body.style.cursor = 'default';
+                $("#tooltip").remove();
+            }
+        });
+
+        $("#vote_distribution").bind("plothover", function (event, pos, item) {
+            $("#x").text(pos.x);
+            $("#y").text(pos.y);
+
+            if (item) {
+                $("#tooltip").remove();
+                var x = item.datapoint[0],
+                    y = item.datapoint[1];
+
+                if (item.series.label == 'Votes') {
+                    var u = 'user';
+                    if ( y > 1 ) {
+                        u = 'users'
+                    }
+                    showTooltip(item.pageX, item.pageY,
+                            y + " " + u + " voted the wallpaper n°:"
+                            + data2[0].data[item.dataIndex][0]);
                 }
             } else {
                 document.body.style.cursor = 'default';
