@@ -12,3 +12,4 @@ doc/_build
 cache/
 pictures/
 alembic.ini
+*.rpm

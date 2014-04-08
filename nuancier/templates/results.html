@@ -27,6 +27,7 @@ from {{ election.election_year }}.
         <th>Name</th>
         <th>Votes</th>
         <th>Image</th>
+        <th></th>
     </tr>
     {% for candidate, votes in results %}
     <tr>
@@ -51,6 +52,10 @@ from {{ election.election_year }}.
                                 )
                       }}" alt="img {{ candidate.candidate_file }}"/>
             </a>
+        </td>
+        <td>
+            Author: {{ candidate.candidate_author }} <br />
+            License: {{ candidate.candidate_license }}
         </td>
     </tr>
     {% endfor %}
