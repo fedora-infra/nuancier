@@ -53,7 +53,7 @@ copyright = u'2013-2014, Red Hat Inc. - Pierre-Yves Chibon <pingou@pingoured.fr>
 #
 # The short X.Y version.
 #version = __version__
-version = '0.4.0'
+version = '0.4.1'
 # The full version, including alpha/beta/rc tags.
 #release = '1'
 

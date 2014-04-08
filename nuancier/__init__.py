@@ -53,7 +53,7 @@ import nuancier.lib as nuancierlib
 # pylint: disable=E1101, E1103
 
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 
 APP = flask.Flask(__name__)
 
