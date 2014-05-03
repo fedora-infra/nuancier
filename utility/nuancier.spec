@@ -18,6 +18,8 @@ BuildRequires:  python-wtforms
 BuildRequires:  python-flask-wtf
 BuildRequires:  python-fedora >= 0.3.33
 BuildRequires:  python-fedora-flask >= 0.3.33
+BuildRequires:  python-setuptools
+BuildRequires:  python-dogpile-cache
 
 # EPEL6
 %if ( 0%{?rhel} && 0%{?rhel} == 6 )
@@ -38,6 +40,7 @@ Requires:  python-flask-wtf
 Requires:  python-fedora >= 0.3.32.3-3
 Requires:  python-fedora-flask
 Requires:  python-dogpile-cache
+Requires:  python-setuptools
 Requires:  fedmsg
 Requires:  mod_wsgi
 
