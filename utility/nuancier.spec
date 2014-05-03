@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.4.1
+Version:        0.4.2
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -84,6 +84,10 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Sat May 03 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.2-1
+- Update to 0.4.2
+- Fix redirect bug
+
 * Tue Apr 08 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.1-1
 - Update to 0.4.1
 - Fix the graph/barplot in the stats page/template
