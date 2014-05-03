@@ -27,6 +27,7 @@ import logging
 import logging.handlers
 import os
 import sys
+import urlparse
 
 import flask
 import dogpile.cache
@@ -101,6 +102,17 @@ LOG = APP.logger
 
 
 SESSION = nuancierlib.create_session(APP.config['DB_URL'])
+
+
+def is_safe_url(target):
+    """ Checks that the target url is safe and sending to the current
+    website not some other malicious one.
+    """
+    ref_url = urlparse.urlparse(flask.request.host_url)
+    test_url = urlparse.urlparse(
+        urlparse.urljoin(flask.request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+        ref_url.netloc == test_url.netloc
 
 
 def is_nuancier_admin(user):
@@ -294,7 +306,8 @@ def login():  # pragma: no cover
     '''
     next_url = None
     if 'next' in flask.request.args:
-        next_url = flask.request.args['next']
+        if is_safe_url(flask.request.args['next']):
+            next_url = flask.request.args['next']
 
     if not next_url or next_url == flask.url_for('.login'):
         next_url = flask.url_for('.index')
