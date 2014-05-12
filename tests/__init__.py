@@ -174,6 +174,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=1,
     )
     session.add(candidate)
@@ -184,6 +185,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=1,
     )
     session.add(candidate)
@@ -194,6 +196,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=2,
     )
     session.add(candidate)
@@ -204,6 +207,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=2,
     )
     session.add(candidate)
@@ -214,6 +218,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=2,
     )
     session.add(candidate)
@@ -224,6 +229,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=3,
     )
     session.add(candidate)
@@ -234,6 +240,7 @@ def create_candidates(session):
         candidate_author='pingou',
         candidate_license='CC-BY-SA',
         candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
         election_id=3,
     )
     session.add(candidate)
