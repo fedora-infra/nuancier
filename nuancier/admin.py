@@ -272,14 +272,14 @@ def admin_process_review(election_id):
                         'NUANCIER_EMAIL_NOTIFICATIONS',
                         False):  # pragma: no cover
                     nuancierlib.notifications.email_publish(
-                        to_email=candidate.candidate_submitter,
+                        to_email=candidate.submitter_email,
                         img_title=candidate.candidate_name,
                         motif=motif)
                 else:
                     LOG.warning(
                         'Should have sent an email to "%s" about "%s" that has'
                         ' been rejected because of "%s"',
-                        candidate.candidate_submitter,
+                        candidate.submitter_email,
                         candidate.candidate_name,
                         motif)
 
