@@ -254,6 +254,7 @@ class Candidates(BASE):
     candidate_original_url = sa.Column(sa.String(255), nullable=True)
     candidate_license = sa.Column(sa.String(255), nullable=False)
     candidate_submitter = sa.Column(sa.String(255), nullable=False)
+    submitter_email = sa.Column(sa.String(255), nullable=False)
     election_id = sa.Column(
         sa.Integer,
         sa.ForeignKey('Elections.id',
@@ -277,8 +278,8 @@ class Candidates(BASE):
     )
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
-                 candidate_license, candidate_submitter, election_id,
-                 candidate_original_url=None, approved=False):
+                 candidate_license, candidate_submitter, submitter_email,
+                 election_id, candidate_original_url=None, approved=False):
         """ Constructor
 
         :arg candidate_file: the file name of the candidate
@@ -298,6 +299,7 @@ class Candidates(BASE):
         self.election_id = election_id
         self.candidate_license = candidate_license
         self.candidate_submitter = candidate_submitter
+        self.submitter_email = submitter_email
         self.approved = approved
 
     def __repr__(self):
