@@ -131,6 +131,7 @@ def contribute(election_id):
                 candidate_original_url=form.candidate_original_url.data,
                 candidate_license=form.candidate_license.data,
                 candidate_submitter=flask.g.fas_user.username,
+                submitter_email=flask.g.fas_user.email,
                 election_id=election.id,
                 user=flask.g.fas_user.username,
             )

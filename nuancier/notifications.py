@@ -78,5 +78,5 @@ The Nuancier administrators team
     # envelope header.
     smtp = smtplib.SMTP(nuancier.APP.config.get(
         'NUANCIER_EMAIL_SMTP_SERVER', 'localhost'))
-    #smtp.sendmail(from_email, [to_email], msg.as_string())
+    smtp.sendmail(from_email, [to_email], msg.as_string())
     smtp.quit()

@@ -253,7 +253,8 @@ def edit_election(session, election, election_name, election_folder,
 
 def add_candidate(session, candidate_file, candidate_name, candidate_author,
                   candidate_original_url, candidate_license,
-                  candidate_submitter, election_id, user=None):
+                  candidate_submitter, submitter_email,
+                  election_id, user=None):
     """ Add a new candidate to the database.
 
     :arg session:
@@ -262,6 +263,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg candidate_author:
     :arg candidate_original_url:
     :arg candidate_license:
+    :arg submitter_email:
     :arg election_id:
     """
     if not user:
@@ -282,6 +284,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
         candidate_original_url=candidate_original_url,
         candidate_license=candidate_license,
         candidate_submitter=candidate_submitter,
+        submitter_email=submitter_email,
         election_id=election_id,
     )
     session.add(candidate)
