@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.4.3
+Version:        0.5.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -87,6 +87,11 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Tue May 13 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0
+- Update to 0.5.0
+- Store the email of the submitter
+- Fix sending emails
+
 * Sun May 04 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.3-1
 - Update to 0.4.3
 - Fix bug when sending email about a rejected candidate

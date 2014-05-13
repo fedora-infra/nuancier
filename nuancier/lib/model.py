@@ -387,6 +387,7 @@ class Candidates(BASE):
             Candidates.candidate_original_url,
             Candidates.candidate_license,
             Candidates.candidate_submitter,
+            Candidates.submitter_email,
             Candidates.election_id,
             Candidates.approved,
             Candidates.approved_motif,
