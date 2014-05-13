@@ -263,6 +263,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg candidate_author:
     :arg candidate_original_url:
     :arg candidate_license:
+    :arg candidate_submitter:
     :arg submitter_email:
     :arg election_id:
     """
