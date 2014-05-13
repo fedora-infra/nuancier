@@ -285,6 +285,9 @@ class Candidates(BASE):
         :arg candidate_file: the file name of the candidate
         :arg candidate_name: the name of the candidate
         :arg candidate_author: the name of the author of this candidate
+        :arg candidate_license: the license name of the candidate
+        :arg candidate_submitter: the name of the submitter of this candidate
+        :arg submitter_email: the email address of submitter
         :arg election_id: the identifier of the election this candidate is
             candidate for.
         :kwarg candidate_original_url: if the artwork originates from
