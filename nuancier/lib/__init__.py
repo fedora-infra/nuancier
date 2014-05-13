@@ -257,14 +257,18 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
                   election_id, user=None):
     """ Add a new candidate to the database.
 
-    :arg session:
-    :arg candidate_file:
-    :arg candidate_name:
-    :arg candidate_author:
-    :arg candidate_original_url:
-    :arg candidate_license:
-    :arg submitter_email:
-    :arg election_id:
+    :arg session: session name
+    :arg candidate_file: the file name of candidate
+    :arg candidate_name: the name of candidate
+    :arg candidate_author: the name of the author of this candidate
+    :arg candidate_original_url: if the artwork originates from
+            someone else, this should be a link to the original artwork.
+    :arg candidate_license: the license name of candidate
+    :arg candidate_submitter: the name of the submitter of this candidate
+    :arg submitter_email: mail ID of submitter
+    :arg election_id: the identifier of the election this candidate is
+            candidate for.
+
     """
     if not user:
         raise NuancierException('User required to add a new candidate')
