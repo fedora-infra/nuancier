@@ -257,6 +257,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
                   election_id, user=None):
     """ Add a new candidate to the database.
 
+<<<<<<< HEAD
     :arg session: session name
     :arg candidate_file: the file name of candidate
     :arg candidate_name: the name of candidate
@@ -268,6 +269,17 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     :arg submitter_email: mail ID of submitter
     :arg election_id: the identifier of the election this candidate is
             candidate for.
+=======
+    :arg session:
+    :arg candidate_file:
+    :arg candidate_name:
+    :arg candidate_author:
+    :arg candidate_original_url:
+    :arg candidate_license:
+    :arg candidate_submitter:
+    :arg submitter_email:
+    :arg election_id:
+>>>>>>> 6615438d8714645d5de40d101f485a9abc92f4e7
     """
     if not user:
         raise NuancierException('User required to add a new candidate')
