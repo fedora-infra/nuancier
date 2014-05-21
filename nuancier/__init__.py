@@ -47,6 +47,7 @@ except ImportError:  # pragma: no cover
 
 import nuancier.forms
 import nuancier.lib as nuancierlib
+import nuancier.proxy
 
 
 ## Some of the object we use here have inherited methods which apparently
@@ -64,6 +65,7 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
 
 # Set up FAS extension
 FAS = FAS(APP)
+APP.wsgi_app = nuancier.proxy.ReverseProxied(APP.wsgi_app)
 
 # Initialize the cache.
 CACHE = dogpile.cache.make_region().configure(
