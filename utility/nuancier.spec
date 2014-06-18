@@ -3,7 +3,7 @@
 
 Name:           nuancier
 Version:        0.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A web-based voting application for wallpapers
 
 License:        GPLv2+
@@ -20,6 +20,8 @@ BuildRequires:  python-fedora >= 0.3.33
 BuildRequires:  python-fedora-flask >= 0.3.33
 BuildRequires:  python-setuptools
 BuildRequires:  python-dogpile-cache
+BuildRequires:  python-nose
+BuildRequires:  python-coverage
 
 # EPEL6
 %if ( 0%{?rhel} && 0%{?rhel} == 6 )
@@ -75,6 +77,11 @@ install -m 644 createdb.py $RPM_BUILD_ROOT/%{_datadir}/nuancier/nuancier_created
 install -m 644 utility/alembic.ini.sample $RPM_BUILD_ROOT/%{_sysconfdir}/nuancier/alembic.ini
 cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
+
+%check
+./runtests.sh -v -x
+
+
 %files
 %doc README.rst COPYING doc/
 %dir %{_sysconfdir}/nuancier/
@@ -87,7 +94,11 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
-* Tue May 13 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0
+* Wed Jun 18 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0-2
+- Fix changelog entry for 0.5.0-1
+- Run tests at build time in the %%check section
+
+* Tue May 13 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0-1
 - Update to 0.5.0
 - Store the email of the submitter
 - Fix sending emails
