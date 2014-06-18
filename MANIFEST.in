@@ -1,5 +1,5 @@
 include COPYING README.rst *.sample  requirements.txt
-include runtests.sh createdb.py
+include runtests.sh createdb.py nosetests
 recursive-include nuancier *
 recursive-include alembic *
 include utility/*
