@@ -14,20 +14,23 @@ At the top of the page three tabs are presented.
 - The ``Results`` tab gives you a list of links pointing to the result page
   of each election whose results have been published.
 
+If you are an administrator you will also see one additional tab:
+
+- ``Admin`` tab takes you to the administrative page where you can create
+  a new election, edit an existing election, regenerate the cache for an election,
+  review the election, and see the stats for an election.
+
 
 Finding the elections open
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To find all the election open, go to the ``Elections`` tab at the top of
-the page.
-
-In the column ``Open`` of the table the election open for vote are marked
-with:
+Open elections can be found on the ``Elections`` tab. They are designated with the
+following image in the ``Votes Open`` column:
 
 .. image:: Approved.png
 
-The elections whose votes are either not yet opened or already closed are
-marked with the symbol:
+If the election hasn't opened yet or is already closed it will be designated with the
+following image in the ``Votes Open`` column:
 
 .. image:: Denied.png
 
@@ -46,7 +49,7 @@ table:
 This will bring you to the page to vote.
 
 In front of you, in the middle of the page, on a white background are
-presented all the candidates for the election you choosed.
+presented all the candidates for the election you selected.
 By hovering your mouse over the image, you can see two icons appearing:
 
 .. mouse_over:
@@ -88,13 +91,12 @@ You will be brought back to the list of elections and thanks for voting.
 
 
 
-Finding the elections published
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Finding published elections
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By published, is meant election whose results have been published, thus
-elections whose results are public.
+Published elections are elections whose resules have been made public.
 
-To find all the election whose results are public, go to the ``Elections``
+To find all the elections whose results are public, go to the ``Elections``
 tab at the top of the page.
 
 In the column ``Published`` of the table the election whose results are
