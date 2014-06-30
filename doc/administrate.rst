@@ -1,21 +1,21 @@
 Administrate
 ============
 
-Users
------
+Account Types
+-------------
 
-Nuancier has basically two levels for the users:
+Nuancier has two types of accounts:
 
- - administrators
- - users
+- administrators
+- users
 
 
 Administrators
 ~~~~~~~~~~~~~~
 
 Administrators are people with an account on the
-`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_
-and belong the one of administrator groups as set in the :doc:`configuration`.
+`Fedora Account System (FAS) <https://admin.fedoraproject.org/accounts/>`_
+who belong to one of the administrator groups as set in the :doc:`configuration`.
 
 Administrators are the only people allowed to create an election, open or
 close it for votes, open or close the results and generate the cache
@@ -26,9 +26,10 @@ Users
 ~~~~~
 
 Users are people with an account on the
-`Fedora account system (FAS) <https://admin.fedoraproject.org/accounts/>`_ and
-belong to at least one more group than the ``fedora_cla`` group which
-every contributor should sign to contribute to Fedora.
+`Fedora Account System (FAS) <https://admin.fedoraproject.org/accounts/>`_ who
+belong to the ``fedora_cla`` group as well as one additional group. All contributing
+users should be part of the ``fedora_cla`` group once they have signed it.
+
 
 
 .. upload_candidates:
@@ -36,10 +37,20 @@ every contributor should sign to contribute to Fedora.
 Upload new pictures for an election
 -----------------------------------
 
-When preparing an election, the election wrangler needs to gather all the
-candidate wallpapers into a folder, with a unique name and place this folder
-in the directory specified under ``PICTURE_FOLDER`` in :doc:`configuration`.
+All users can contribute candidates to an election by clicking on the ``contribute``
+tab. On that page you can find a list of the rules, allowable subject matter, composition, and
+technical requirements regarding the submitted images. At the bottom of you page you can
+see elections that are currently accepting submissions.
 
+When submitting an image you will need to provide the following:
+
+- Title
+- Author
+- URL of the original work
+- File location
+- License type
+
+Note: Files are limited to a max size of 16 MB.
 
 
 .. administration_panel:
@@ -119,12 +130,8 @@ events.
 Publish results of an election
 -------------------------------
 
-Once an election has ended, to publish its results, the administrator can
-simply log in nuancier, go to the administration panel, find the
-correct election and on the `Published` column click on the ``toggle`` link.
-
-If fedmsg is installed on the server, fedmsg messages are published for these
-events.
+Once an election has ended the results will be published automatically. If fedmsg
+is installed on the server, fedmsg messages are published for these events.
 
 
 .. _generate_cache:
