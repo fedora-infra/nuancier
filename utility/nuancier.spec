@@ -2,8 +2,8 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.5.0
-Release:        2%{?dist}
+Version:        0.6.0
+Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
 License:        GPLv2+
@@ -94,6 +94,13 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Wed Jul 16 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.6.0-1
+- Update 0.6.0
+- Update the documentation (Thanks Michael Haynes and Chaoyi Zha)
+- Add comment on the stats page about the possibility to hover over the bars
+  of the graph
+- Fix https/proxy settings
+
 * Wed Jun 18 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0-2
 - Fix changelog entry for 0.5.0-1
 - Run tests at build time in the %%check section
