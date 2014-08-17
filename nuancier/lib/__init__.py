@@ -408,12 +408,19 @@ def generate_cache(session, election, picture_folder, cache_folder,
     candidates = nuancier.lib.model.Candidates.by_election(
         session, election.id)
 
+    exceptions = []
     for candidate in candidates:
-        generate_thumbnail(
-            candidate.candidate_file,
-            picture_folder,
-            cache_folder,
-            size)
+        try:
+            generate_thumbnail(
+                candidate.candidate_file,
+                picture_folder,
+                cache_folder,
+                size)
+        except NuancierException, err:  # pragma: no cover
+            exceptions.append(err.message)
+
+    if exceptions:  # pragma: no cover
+        raise NuancierMultiExceptions(exceptions)
 
 
 def get_stats(session, election_id):
