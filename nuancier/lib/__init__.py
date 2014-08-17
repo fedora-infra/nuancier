@@ -345,7 +345,7 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
         image = Image.open(infile)
         image.thumbnail(size, Image.ANTIALIAS)
         image.save(outfile)
-    except IOError, err:  # pragma: no cover
+    except (IOError, IndexError) as err:  # pragma: no cover
         print >> sys.stderr, "Cannot create thumbnail", err
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
 
