@@ -62,11 +62,9 @@ class NuancierMultiExceptions(NuancierException):
     """ Generic Exception object used to throw nuancier specific error.
     """
 
-    messages = []
-
-    def __init__(self, msg):
+    def __init__(self, messages):
         ''' Instanciate a new NuancierMultiExceptions object. '''
-        self.messages.append(msg)
+        self.messages = messages
 
 
 def create_session(db_url, debug=False, pool_recycle=3600):
