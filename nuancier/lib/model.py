@@ -347,6 +347,8 @@ class Candidates(BASE):
                 Candidates.approved == approved
             )
 
+        query = query.order_by(Candidates.date_created)
+
         return query.all()
 
     @classmethod
