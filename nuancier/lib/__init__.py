@@ -58,6 +58,17 @@ class NuancierException(Exception):
     pass
 
 
+class NuancierMultiExceptions(NuancierException):
+    """ Generic Exception object used to throw nuancier specific error.
+    """
+
+    messages = []
+
+    def __init__(self, msg):
+        ''' Instanciate a new NuancierMultiExceptions object. '''
+        self.messages.append(msg)
+
+
 def create_session(db_url, debug=False, pool_recycle=3600):
     """ Create the Session object to use to query the database.
 
