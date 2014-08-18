@@ -277,6 +277,13 @@ def shutdown_session(exception=None):
     SESSION.remove()
 
 
+# pylint: disable=W0613
+@APP.before_request
+def set_session():
+    """ Set the flask session as permanent. """
+    flask.session.permanent = True
+
+
 @CACHE.cache_on_arguments(expiration_time=3600)
 @APP.route('/pictures/<path:filename>')
 def base_picture(filename):
