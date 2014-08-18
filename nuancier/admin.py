@@ -165,7 +165,13 @@ def admin_review(election_id):
             ' can no longer be changed', 'error')
         return flask.redirect(flask.url_for('admin_index'))
 
-    candidates = nuancierlib.get_candidates(SESSION, election_id)
+    status = flask.request.args.get('status', 'all')
+    if status == 'all':
+        status = None
+
+    candidates = nuancierlib.get_candidates(
+        SESSION, election_id, approved=status
+    )
 
     return flask.render_template(
         'admin_review.html',
