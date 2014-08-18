@@ -37,6 +37,15 @@ candidates or not.
 >(Re-)generate cache</a>
 </p>
 
+<form action="." method="GET">
+  <select name="status">
+    <option value="all">all</option>
+    <option value="1">Approved</option>
+    <option value="0">Pending/Rejected</option>
+  </select>
+  <input type="submit" value="Filter"/>
+</form>
+
 {% if candidates %}
 <form action="{{ url_for('admin_process_review', election_id=election.id) }}" method="POST">
 <table>
