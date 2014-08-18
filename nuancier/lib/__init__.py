@@ -58,6 +58,15 @@ class NuancierException(Exception):
     pass
 
 
+class NuancierMultiExceptions(NuancierException):
+    """ Generic Exception object used to throw nuancier specific error.
+    """
+
+    def __init__(self, messages):
+        ''' Instanciate a new NuancierMultiExceptions object. '''
+        self.messages = messages
+
+
 def create_session(db_url, debug=False, pool_recycle=3600):
     """ Create the Session object to use to query the database.
 
@@ -336,7 +345,7 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
         image = Image.open(infile)
         image.thumbnail(size, Image.ANTIALIAS)
         image.save(outfile)
-    except IOError, err:  # pragma: no cover
+    except (IOError, IndexError) as err:  # pragma: no cover
         print >> sys.stderr, "Cannot create thumbnail", err
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
 
@@ -397,12 +406,19 @@ def generate_cache(session, election, picture_folder, cache_folder,
     candidates = nuancier.lib.model.Candidates.by_election(
         session, election.id)
 
+    exceptions = []
     for candidate in candidates:
-        generate_thumbnail(
-            candidate.candidate_file,
-            picture_folder,
-            cache_folder,
-            size)
+        try:
+            generate_thumbnail(
+                candidate.candidate_file,
+                picture_folder,
+                cache_folder,
+                size)
+        except NuancierException, err:  # pragma: no cover
+            exceptions.append(err.message)
+
+    if exceptions:  # pragma: no cover
+        raise NuancierMultiExceptions(exceptions)
 
 
 def get_stats(session, election_id):
