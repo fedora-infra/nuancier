@@ -90,8 +90,9 @@ candidates or not.
         <td> {{ candidate.candidate_author }} </td>
         <td>
             {% if candidate.candidate_original_url %}
-            <a href="{{ candidate.candidate_original_url }}">
-            {{ candidate.candidate_original_url }}</a>
+            <a href="{{ candidate.candidate_original_url }}"
+               title="{{ candidate.candidate_original_url }}">
+            {{ candidate.candidate_original_url[:15] }}...{{ candidate.candidate_original_url[-10:] }}</a>
             {% else %}
             -
             {% endif %}
