@@ -1,0 +1,83 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}results{% endblock %}
+
+{%block head %}
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.9.2.custom.min.js') }}"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Denied submissions</h1>
+
+<h3>Overview</h3>
+<p>
+  Listed below are the candidates that you have submitted and that were
+  rejected with the reason why. <br />
+  This gives you the possibility to update your submission based on the
+  feedback you have received.
+</p>
+
+{% if contributions %}
+<table>
+    {% for candidate in contributions %}
+    <tr>
+        <td> {{ candidate.candidate_name }} </td>
+        <td>
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ candidate.election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        <td>
+            {% if candidate.approved == true %}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Candidate approved"/>
+            {% elif candidate.approved == False %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Candidate denied"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='New.png') }}"
+                alt="Candidate pending review"/>
+            {% endif %}
+        </td>
+        <td>{{ candidate.approved_motif }} </td>
+        <td>
+            {% if candidate.election.submission_open %}
+            Update
+            {% else %}
+            Submission are closed
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="error">No denied contributions have been found for you.</p>
+{% endif %}
+
+{% endblock %}
