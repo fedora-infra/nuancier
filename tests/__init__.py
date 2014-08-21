@@ -257,7 +257,7 @@ def create_candidates(session):
 
 
 def approve_candidate(session):
-    """ Approve the all candidates for testing. """
+    """ Approve some candidates for testing. """
 
     for ids in [1, 2, 3, 4, 5]:
         candidate = model.Candidates.by_id(session, ids)
