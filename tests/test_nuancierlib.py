@@ -192,6 +192,20 @@ class NuancierLibtests(Modeltests):
         """ Test the add_candidate function. """
         create_elections(self.session)
 
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_candidate,
+            session=self.session,
+            candidate_file='test.png',
+            candidate_name='test image',
+            candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
+            submitter_email='pingou@fp.o',
+            candidate_original_url=None,
+            election_id=2,
+        )
+
         nuancierlib.add_candidate(
             session=self.session,
             candidate_file='test.png',
