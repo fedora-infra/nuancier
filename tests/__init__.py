@@ -268,6 +268,19 @@ def approve_candidate(session):
     session.commit()
 
 
+def deny_candidate(session):
+    """ Deny some candidates for testing. """
+
+    for ids in [6, 7]:
+        candidate = model.Candidates.by_id(session, ids)
+        candidate.approved = False
+        candidate.approved_motif = 'Denied'
+
+        session.add(candidate)
+
+    session.commit()
+
+
 def create_votes(session):
     """ Add some votes to a some candidates. """
 
