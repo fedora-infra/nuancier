@@ -470,3 +470,15 @@ def get_stats(session, election_id):
         authors=authors,
         data2=data2,
     )
+
+
+def get_denied_contribution(session, submitter):
+    """ Return the list of contributions that have been denied and that
+    were made by the specified submitter.
+
+    :arg session:
+    :arg submitter:
+    """
+
+    return nuancier.lib.model.Candidates.get_denied_by_submitter(
+        session, submitter)
