@@ -400,6 +400,24 @@ class Candidates(BASE):
         )
         return query.all()
 
+    @classmethod
+    def get_denied_by_submitter(cls, session, submitter):
+        """ Return the list of denied submission of the specified submitter
+
+        """
+
+        query = session.query(
+            Candidates
+        ).filter(
+            Candidates.candidate_submitter == submitter
+        ).filter(
+            Candidates.approved == False
+        ).order_by(
+            Candidates.id
+        )
+
+        return query.all()
+
 
 class Votes(BASE):
     ''' This table lists the results of the elections
