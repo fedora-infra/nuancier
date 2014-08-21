@@ -33,25 +33,32 @@
         candidate.election.election_year }}
 </p>
 
-<p>
-    <a href="{{ url_for('base_picture',
-                         filename='%s/%s' % (
-                            candidate.election.election_folder,
-                            candidate.candidate_file
-                            )
-                        )
-              }}"
-        data-lightbox='{{ candidate.election.election_name }}'
-        title='{{ candidate.candidate_name }}'>
-        <img src="{{ url_for('base_cache',
-                         filename='%s/%s' % (
-                            candidate.election.election_folder,
-                            candidate.candidate_file
-                            )
-                        )
-              }}" alt="img {{ candidate.candidate_file }}"/>
-    </a>
-</p>
+<table>
+    <tr>
+        <td>
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ candidate.election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        <td>
+            {{ candidate.approved_motif }}
+        </td>
+    </tr>
+</table>
 
 <form action="{{ url_for('update_candidate', cand_id=candidate.id) }}"
       method="post" enctype="multipart/form-data">
