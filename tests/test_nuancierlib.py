@@ -251,6 +251,21 @@ class NuancierLibtests(Modeltests):
         create_elections(self.session)
         election = nuancierlib.get_election(self.session, 2)
 
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.edit_election,
+            session=self.session,
+            election=election,
+            election_name='elec name',
+            election_folder='Test',
+            election_year=2048,
+            election_date_start=TODAY,
+            election_date_end=TODAY + timedelta(days=2),
+            submission_date_start=TODAY - timedelta(days=2),
+            election_n_choice=42,
+            election_badge_link='http://badges.fp.o/1234',
+        )
+
         new_election = nuancierlib.edit_election(
             self.session,
             election=election,
