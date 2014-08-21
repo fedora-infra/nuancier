@@ -43,7 +43,7 @@ import nuancier.lib as nuancierlib
 from nuancier.lib import model
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, FakeFasUser, user_set, approve_candidate,
-                   CACHE_FOLDER, PICTURE_FOLDER, TODAY)
+                   deny_candidate, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
 
 
 FILE_OK = os.path.join(
@@ -1447,6 +1447,32 @@ class Nuanciertests(Modeltests):
         self.assertTrue('<h1>Election statistics</h1>' in output.data)
         self.assertTrue('<div id="placeholder" class="demo-placeholder">'
                         '</div>' in output.data)
+
+
+    def test_contributions(self):
+        """ Test the contributions function. """
+        output = self.app.get('/contributions')
+        self.assertEqual(output.status_code, 301)
+
+        # Redirects to the OpenID page
+        output = self.app.get('/contributions/')
+        self.assertEqual(output.status_code, 302)
+
+        user = FakeFasUser()
+        user.groups = ['packager', 'cla_done']
+
+        create_elections(self.session)
+        create_candidates(self.session)
+        deny_candidate(self.session)
+
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contributions/')
+            self.assertEqual(output.status_code, 200)
+
+            self.assertTrue(
+                '<a href="/contribution/6/update">' in output.data)
+            self.assertTrue(
+                '<a href="/contribution/7/update">' in output.data)
 
 
 if __name__ == '__main__':
