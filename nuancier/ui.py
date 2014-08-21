@@ -481,11 +481,11 @@ def update_candidate(cand_id):
         except nuancierlib.NuancierException as err:
             LOG.debug('ERROR: Uploaded file is invalid - user: "%s" '
                       'election: "%s"', flask.g.fas_user.username,
-                      election_id)
+                      candidate.election.id)
             LOG.exception(err)
             flask.flash(err.message, 'error')
             return flask.render_template(
-                'update_candidate.html',
+                'update_contribution.html',
                 candidate=candidate,
                 form=form)
 
@@ -533,7 +533,7 @@ def update_candidate(cand_id):
                 'Someone has already upload a file with the same file name'
                 ' for this election', 'error')
             return flask.render_template(
-                'update_candidate.html',
+                'update_contribution.html',
                 candidate=candidate,
                 form=form)
 
