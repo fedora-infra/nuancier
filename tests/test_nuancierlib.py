@@ -145,6 +145,20 @@ class NuancierLibtests(Modeltests):
 
     def test_add_election(self):
         """ Test the add_election function. """
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_election,
+            session=self.session,
+            election_name='Test',
+            election_folder='test',
+            election_year='2013',
+            submission_date_start=TODAY - timedelta(days=1),
+            election_date_start=TODAY + timedelta(days=3),
+            election_date_end=TODAY + timedelta(days=7),
+            election_n_choice=2,
+            election_badge_link='http://...',
+        )
+
         nuancierlib.add_election(
             session=self.session,
             election_name='Test',
