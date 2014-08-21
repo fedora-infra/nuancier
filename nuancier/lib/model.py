@@ -415,7 +415,7 @@ class Candidates(BASE):
         ).filter(
             Candidates.approved_motif != False
         ).order_by(
-            Candidates.id
+            Candidates.id.desc()
         )
 
         return query.all()
