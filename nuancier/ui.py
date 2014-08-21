@@ -466,6 +466,11 @@ def update_candidate(cand_id):
             'The election of this candidate is not open for submission',
             'error')
         return flask.redirect(flask.url_for('elections_list'))
+    elif candidate.approved:
+        flask.flash(
+            'This candidate was already approved, you cannot update it',
+            'error')
+        return flask.redirect(flask.url_for('elections_list'))
     elif candidate.candidate_submitter != flask.g.fas_user.username:
         flask.flash(
             'You are not the person that submitted this candidate, you may '
