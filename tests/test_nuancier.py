@@ -1499,6 +1499,13 @@ class Nuanciertests(Modeltests):
                 '<li class="error">The election of this candidate is not '
                 'open for submission</li>' in output.data)
 
+            output = self.app.get(
+                '/contribution/8/update', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">This candidate was already approved, you '
+                'cannot update it</li>' in output.data)
+
         upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
         with user_set(nuancier.APP, user):
