@@ -472,7 +472,7 @@ def get_stats(session, election_id):
     )
 
 
-def get_denied_contribution(session, submitter):
+def get_denied_contributions(session, submitter):
     """ Return the list of contributions that have been denied and that
     were made by the specified submitter.
 

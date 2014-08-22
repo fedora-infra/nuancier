@@ -443,7 +443,7 @@ def stats(election_id):
 @fas_login_required
 def denied_contributions():
     ''' Display the contributions denied made by the user logged in. '''
-    contributions = nuancierlib.get_denied_contribution(
+    contributions = nuancierlib.get_denied_contributions(
         SESSION, flask.g.fas_user.username)
 
     return flask.render_template(
