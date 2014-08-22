@@ -277,6 +277,14 @@ class Candidates(BASE):
         sa.UniqueConstraint('election_id', 'candidate_file'),
     )
 
+    @property
+    def denied(self):
+        """ Return a boolean specifying if the candidate has been denied or
+        is either Approved or Pending Review.
+        """
+        denied = (not self.approved and self.approved_motif is not None)
+        return denied
+
     def __init__(self, candidate_file, candidate_name, candidate_author,
                  candidate_license, candidate_submitter, submitter_email,
                  election_id, candidate_original_url=None, approved=False):
