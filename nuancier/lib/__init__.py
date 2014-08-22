@@ -62,7 +62,7 @@ class NuancierMultiExceptions(NuancierException):
     """ Generic Exception object used to throw nuancier specific error.
     """
 
-    def __init__(self, messages):
+    def __init__(self, messages):  # pragma: no cover
         ''' Instanciate a new NuancierMultiExceptions object. '''
         self.messages = messages
 
