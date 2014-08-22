@@ -218,6 +218,19 @@ class Nuanciertests(Modeltests):
                 in output.data)
             self.assertTrue('<h1>Elections</h1>' in output.data)
 
+        # Fails - CLA not done
+        user.cla_done = False
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contribute/3')
+            self.assertEqual(output.status_code, 302)
+
+            output = self.app.get('/contribute/3', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">You must sign the CLA (Contributor '
+                'License Agreement to use nuancier</li>' in output.data)
+
+        user.cla_done = True
         with user_set(nuancier.APP, user):
             output = self.app.get('/contribute/3')
             self.assertEqual(output.status_code, 200)
