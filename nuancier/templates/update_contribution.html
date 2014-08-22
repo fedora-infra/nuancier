@@ -1,0 +1,87 @@
+{% extends "master.html" %}
+{% from "_formhelpers.html" import render_field_in_row %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block tag %}submissions{% endblock %}
+
+{%block head %}
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.9.2.custom.min.js') }}"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Update your candidate</h1>
+
+<p>
+  You are updating an existing candidate, before you do so,
+  make sure you have carefully read <a href="{{ url_for('contribute_index')
+  }}">the instructions</a>.
+</p>
+
+<p>
+    Election : {{ candidate.election.election_name }} -- {{
+        candidate.election.election_year }}
+</p>
+
+<table>
+    <tr>
+        <td>
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ candidate.election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
+                                    candidate.election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        <td>
+            {{ candidate.approved_motif }}
+        </td>
+    </tr>
+</table>
+
+<form action="{{ url_for('update_candidate', cand_id=candidate.id) }}"
+      method="post" enctype="multipart/form-data">
+<table>
+    {{ render_field_in_row(form.candidate_name) }}
+    {{ render_field_in_row(form.candidate_author) }}
+    {{ render_field_in_row(form.candidate_original_url) }}
+    {{ render_field_in_row(form.candidate_file) }}
+    {{ render_field_in_row(form.candidate_license) }}
+</table>
+
+<p class="warning">
+  Be sure that the information provided here are correct, you will not be
+  able to change them once the submission has been approved.
+</p>
+<p>
+  Files submitted are limited to {{ config['MAX_CONTENT_LENGTH'] / 1024 / 1024 }} MB.
+</p>
+
+<input type="submit" class="submit positive button" value="Submit">
+<input type="button" value="Cancel" class="button" onclick="history.back();">
+{{ form.csrf_token }}
+<p class="smaller error">Mandatory fields are marked with '*'</p>
+</form>
+
+{% endblock %}

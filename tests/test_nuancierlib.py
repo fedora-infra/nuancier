@@ -60,9 +60,11 @@ class NuancierLibtests(Modeltests):
         self.assertEqual(0, len(candidates))
 
         candidates = nuancierlib.get_candidates(self.session, 3, False)
-        self.assertEqual(2, len(candidates))
+        self.assertEqual(4, len(candidates))
         self.assertEqual('Image too small2.0', candidates[0].candidate_name)
         self.assertEqual('Image too small2.1', candidates[1].candidate_name)
+        self.assertEqual('Image too small2.2', candidates[2].candidate_name)
+        self.assertEqual('Image too small2.3', candidates[3].candidate_name)
 
         candidates = nuancierlib.get_candidates(self.session, 2, True)
         self.assertEqual(0, len(candidates))
@@ -145,6 +147,20 @@ class NuancierLibtests(Modeltests):
 
     def test_add_election(self):
         """ Test the add_election function. """
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_election,
+            session=self.session,
+            election_name='Test',
+            election_folder='test',
+            election_year='2013',
+            submission_date_start=TODAY - timedelta(days=1),
+            election_date_start=TODAY + timedelta(days=3),
+            election_date_end=TODAY + timedelta(days=7),
+            election_n_choice=2,
+            election_badge_link='http://...',
+        )
+
         nuancierlib.add_election(
             session=self.session,
             election_name='Test',
@@ -177,6 +193,20 @@ class NuancierLibtests(Modeltests):
     def test_add_candidate(self):
         """ Test the add_candidate function. """
         create_elections(self.session)
+
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_candidate,
+            session=self.session,
+            candidate_file='test.png',
+            candidate_name='test image',
+            candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
+            submitter_email='pingou@fp.o',
+            candidate_original_url=None,
+            election_id=2,
+        )
 
         nuancierlib.add_candidate(
             session=self.session,
@@ -236,6 +266,21 @@ class NuancierLibtests(Modeltests):
         """ Test the edit_election function. """
         create_elections(self.session)
         election = nuancierlib.get_election(self.session, 2)
+
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.edit_election,
+            session=self.session,
+            election=election,
+            election_name='elec name',
+            election_folder='Test',
+            election_year=2048,
+            election_date_start=TODAY,
+            election_date_end=TODAY + timedelta(days=2),
+            submission_date_start=TODAY - timedelta(days=2),
+            election_n_choice=42,
+            election_badge_link='http://badges.fp.o/1234',
+        )
 
         new_election = nuancierlib.edit_election(
             self.session,

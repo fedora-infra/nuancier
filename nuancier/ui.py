@@ -437,3 +437,115 @@ def stats(election_id):
         'stats.html',
         stats=statsinfo,
         election=election)
+
+
+@APP.route('/contributions/denied/')
+@fas_login_required
+def denied_contributions():
+    ''' Display the contributions denied made by the user logged in. '''
+    contributions = nuancierlib.get_denied_contributions(
+        SESSION, flask.g.fas_user.username)
+
+    return flask.render_template(
+        'contributions.html',
+        contributions=contributions)
+
+
+@APP.route('/contribution/<cand_id>/update', methods=['GET', 'POST'])
+@fas_login_required
+def update_candidate(cand_id):
+    ''' Display the index page for interested contributor. '''
+    candidate = nuancierlib.get_candidate(SESSION, cand_id)
+
+    # First some security checks
+    if not candidate:
+        flask.flash('No candidate found', 'error')
+        return flask.render_template('msg.html')
+    elif not candidate.election.submission_open:
+        flask.flash(
+            'The election of this candidate is not open for submission',
+            'error')
+        return flask.redirect(flask.url_for('elections_list'))
+    elif candidate.approved:
+        flask.flash(
+            'This candidate was already approved, you cannot update it',
+            'error')
+        return flask.redirect(flask.url_for('elections_list'))
+    elif candidate.candidate_submitter != flask.g.fas_user.username:
+        flask.flash(
+            'You are not the person that submitted this candidate, you may '
+            'not update it', 'error')
+        return flask.redirect(flask.url_for('elections_list'))
+
+    form = nuancier.forms.AddCandidateForm(obj=candidate)
+    if form.validate_on_submit():
+        candidate_file = flask.request.files['candidate_file']
+
+        try:
+            validate_input_file(candidate_file)
+        except nuancierlib.NuancierException as err:
+            LOG.debug('ERROR: Uploaded file is invalid - user: "%s" '
+                      'election: "%s"', flask.g.fas_user.username,
+                      candidate.election.id)
+            LOG.exception(err)
+            flask.flash(err.message, 'error')
+            return flask.render_template(
+                'update_contribution.html',
+                candidate=candidate,
+                form=form)
+
+        filename = secure_filename('%s-%s' % (flask.g.fas_user.username,
+                                   candidate_file.filename))
+
+        # Only save the file once everything has been safely saved in the DB
+        upload_folder = os.path.join(
+            APP.config['PICTURE_FOLDER'],
+            candidate.election.election_folder)
+        if not os.path.exists(upload_folder):  # pragma: no cover
+            try:
+                os.mkdir(upload_folder)
+            except OSError, err:
+                LOG.debug('ERROR: cannot add candidate file')
+                LOG.exception(err)
+                flask.flash(
+                    'An error occured while writing the file, please '
+                    'contact an administrator', 'error')
+
+        # Update the candidate
+        form.populate_obj(obj=candidate)
+        candidate.candidate_file = filename
+        candidate.approved = False
+        candidate.approved_motif = None
+        SESSION.add(candidate)
+
+        # The PIL module has already read the stream so we need to back up
+        candidate_file.seek(0)
+        candidate_file.save(
+            os.path.join(upload_folder, filename))
+
+        try:
+            SESSION.commit()
+        except SQLAlchemyError as err:  # pragma: no cover
+            LOG.debug(err)
+            SESSION.rollback()
+            # Remove file from the system if the db commit failed
+            os.unlink(os.path.join(upload_folder, filename))
+            LOG.debug('ERROR: cannot add candidate - user: "%s" '
+                      'election: "%s"', flask.g.fas_user.username,
+                      candidate.election.id)
+            LOG.exception(err)
+            flask.flash(
+                'Someone has already upload a file with the same file name'
+                ' for this election', 'error')
+            return flask.render_template(
+                'update_contribution.html',
+                candidate=candidate,
+                form=form)
+
+        flask.flash('Thanks for updating your submission')
+        return flask.redirect(flask.url_for('index'))
+
+    return flask.render_template(
+        'update_contribution.html',
+        candidate=candidate,
+        form=form)

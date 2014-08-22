@@ -169,6 +169,7 @@ def create_elections(session):
 
 def create_candidates(session):
     """ Create some basic candidates for testing. """
+    #id 1
     candidate = model.Candidates(
         candidate_file='ok.JPG',
         candidate_name='Image ok',
@@ -180,6 +181,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 2
     candidate = model.Candidates(
         candidate_file='narrow.JPG',
         candidate_name='Image too narrow',
@@ -191,6 +193,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 3
     candidate = model.Candidates(
         candidate_file='small.JPG',
         candidate_name='Image too small',
@@ -202,6 +205,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 4
     candidate = model.Candidates(
         candidate_file='small2.JPG',
         candidate_name='Image too small2',
@@ -213,6 +217,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 5
     candidate = model.Candidates(
         candidate_file='small3.JPG',
         candidate_name='Image too small3',
@@ -224,6 +229,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 6
     candidate = model.Candidates(
         candidate_file='small2.0.JPG',
         candidate_name='Image too small2.0',
@@ -235,6 +241,7 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 7
     candidate = model.Candidates(
         candidate_file='small2.1.JPG',
         candidate_name='Image too small2.1',
@@ -246,15 +253,52 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 8
+    candidate = model.Candidates(
+        candidate_file='small2.2.JPG',
+        candidate_name='Image too small2.2',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='pingou',
+        submitter_email='pingou@fp.o',
+        election_id=3,
+    )
+    session.add(candidate)
+
+    #id 9
+    candidate = model.Candidates(
+        candidate_file='small2.3.JPG',
+        candidate_name='Image too small2.3',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='toshio',
+        submitter_email='pingou@fp.o',
+        election_id=3,
+    )
+    session.add(candidate)
+
     session.commit()
 
 
 def approve_candidate(session):
-    """ Approve the all candidates for testing. """
+    """ Approve some candidates for testing. """
 
-    for ids in [1, 2, 3, 4, 5]:
+    for ids in [1, 2, 3, 4, 5, 8]:
         candidate = model.Candidates.by_id(session, ids)
         candidate.approved = True
+
+        session.add(candidate)
+
+    session.commit()
+
+
+def deny_candidate(session):
+    """ Deny some candidates for testing. """
+
+    for ids in [6, 7]:
+        candidate = model.Candidates.by_id(session, ids)
+        candidate.approved = False
+        candidate.approved_motif = 'Denied'
 
         session.add(candidate)
 

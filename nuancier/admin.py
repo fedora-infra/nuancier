@@ -349,7 +349,7 @@ def admin_cache(election_id):
             size=APP.config['THUMB_SIZE'])
         flask.flash('Cache regenerated for election %s' %
                     election.election_name)
-    except nuancierlib.NuancierMultiExceptions as multierr:
+    except nuancierlib.NuancierMultiExceptions as multierr:  # pragma: no cover
         SESSION.rollback()
         LOG.debug('User: "%s" could not generate cache for "%s"',
                   flask.g.fas_user.username, election_id)
