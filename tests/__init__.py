@@ -265,6 +265,18 @@ def create_candidates(session):
     )
     session.add(candidate)
 
+    #id 9
+    candidate = model.Candidates(
+        candidate_file='small2.3.JPG',
+        candidate_name='Image too small2.3',
+        candidate_author='pingou',
+        candidate_license='CC-BY-SA',
+        candidate_submitter='toshio',
+        submitter_email='pingou@fp.o',
+        election_id=3,
+    )
+    session.add(candidate)
+
     session.commit()
 
 
