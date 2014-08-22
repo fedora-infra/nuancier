@@ -1177,7 +1177,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('name="candidates_id"'), 3)
+            self.assertEqual(output.data.count('name="candidates_id"'), 4)
 
         user.groups = ['packager', 'cla_done']
 
@@ -1213,7 +1213,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('name="candidates_id"'), 3)
+            self.assertEqual(output.data.count('name="candidates_id"'), 4)
 
             csrf_token = output.data.split(
                 'name="csrf_token" type="hidden" value="')[1].split('">')[0]
@@ -1233,7 +1233,7 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
 
-            self.assertEqual(output.data.count('="/static/New.png"'), 3)
+            self.assertEqual(output.data.count('="/static/New.png"'), 4)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
@@ -1295,7 +1295,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/New.png"'), 3)
+            self.assertEqual(output.data.count('="/static/New.png"'), 4)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
@@ -1318,7 +1318,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/New.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 3)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 1)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
@@ -1368,7 +1368,7 @@ class Nuanciertests(Modeltests):
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/New.png"'), 2)
+            self.assertEqual(output.data.count('="/static/New.png"'), 3)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
 
