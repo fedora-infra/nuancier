@@ -439,9 +439,9 @@ def stats(election_id):
         election=election)
 
 
-@APP.route('/contributions/')
+@APP.route('/contributions/denied/')
 @fas_login_required
-def contributions():
+def denied_contributions():
     ''' Display the contributions denied made by the user logged in. '''
     contributions = nuancierlib.get_denied_contribution(
         SESSION, flask.g.fas_user.username)
