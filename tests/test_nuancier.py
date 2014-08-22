@@ -1473,6 +1473,182 @@ class Nuanciertests(Modeltests):
             self.assertTrue(
                 '<a href="/contribution/7/update">' in output.data)
 
+    def test_update_candidate(self):
+        """ Test the update_candidate function. """
+
+        # Fails login required
+        output = self.app.get('/contribution/6/update')
+        self.assertEqual(output.status_code, 302)
+
+        create_elections(self.session)
+        create_candidates(self.session)
+        approve_candidate(self.session)
+        deny_candidate(self.session)
+
+        user = FakeFasUser()
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contribution/60/update')
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">No candidate found</li>' in output.data)
+
+            output = self.app.get(
+                '/contribution/4/update', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">The election of this candidate is not '
+                'open for submission</li>' in output.data)
+
+        upload_path = os.path.join(PICTURE_FOLDER, 'F21')
+
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contributions/')
+            self.assertEqual(output.status_code, 200)
+
+            self.assertTrue(
+                '<a href="/contribution/6/update">' in output.data)
+            self.assertTrue(
+                '<a href="/contribution/7/update">' in output.data)
+
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contribution/6/update')
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Update your candidate</h1>'
+                            in output.data)
+            self.assertTrue(
+                '<img src="/cache/F21/small2.0.JPG" alt="img small2.0.JPG"/>'
+                in output.data)
+
+            self.assertTrue(
+                '<input id="csrf_token" name="csrf_token"' in output.data)
+
+            csrf_token = output.data.split(
+                'name="csrf_token" type="hidden" value="')[1].split('">')[0]
+
+            data = {
+                'candidate_name': 'name',
+                'candidate_author': 'pingou',
+                'candidate_file': None,
+                'candidate_license': 'CC-BY-SA',
+                'csrf_token': csrf_token,
+            }
+
+            self.assertFalse(os.path.exists(upload_path))
+
+            # Wrong width
+            with open(FILE_NOTOK) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    '<li class="error">The submitted candidate has a '
+                    'width of 1280 pixels which is lower than the minimum '
+                    '1600 pixels required</li>' in output.data
+                )
+                self.assertTrue('<h1>Update your candidate</h1>'
+                            in output.data)
+
+            self.assertFalse(os.path.exists(upload_path))
+
+            # Wrong hight
+            with open(FILE_NOTOK2) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    '<li class="error">The submitted candidate has a '
+                    'height of 1166 pixels which is lower than the minimum '
+                    '1200 pixels required</li>' in output.data
+                )
+                self.assertTrue('<h1>Update your candidate</h1>'
+                                in output.data)
+
+            self.assertFalse(os.path.exists(upload_path))
+
+            # Is not an image
+            with open(FILE_NOTOK3) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    '<li class="error">The submitted candidate could not '
+                    'be opened as an Image</li>' in output.data
+                )
+                self.assertTrue('<h1>Update your candidate</h1>'
+                                in output.data)
+
+            self.assertFalse(os.path.exists(upload_path))
+
+            # Wrong file extension
+            with open(FILE_NOTOK4) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    '<li class="error">The submitted candidate has the '
+                    'file extension "txt" which is not an allowed format'
+                    in output.data
+                )
+                self.assertTrue('<h1>Update your candidate</h1>'
+                                in output.data)
+
+            self.assertFalse(os.path.exists(upload_path))
+
+            # Right file, works as it should
+            with open(FILE_OK) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data,
+                                       follow_redirects=True)
+                self.assertEqual(output.status_code, 200)
+                self.assertTrue(
+                    'class="message">Thanks for updating your submission</li>'
+                    in output.data
+                )
+                self.assertTrue('<h1>Nuancier</h1>' in output.data)
+                self.assertTrue(
+                    'Nuancier is a simple voting application'
+                    in output.data)
+
+            self.assertTrue(os.path.exists(upload_path))
+            shutil.rmtree(upload_path)
+
+            self.assertFalse(os.path.exists(upload_path))
+
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(Nuanciertests)
