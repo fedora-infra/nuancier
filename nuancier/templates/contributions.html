@@ -57,7 +57,7 @@
             {% if candidate.approved == true %}
             <img src="{{ url_for('static', filename='Approved.png') }}"
                 alt="Candidate approved"/>
-            {% elif candidate.approved == False %}
+            {% elif candidate.denied == true %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
                 alt="Candidate denied"/>
             {% else %}
