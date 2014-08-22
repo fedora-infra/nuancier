@@ -1465,11 +1465,11 @@ class Nuanciertests(Modeltests):
 
     def test_contributions(self):
         """ Test the contributions function. """
-        output = self.app.get('/contributions')
+        output = self.app.get('/contributions/denied')
         self.assertEqual(output.status_code, 301)
 
         # Redirects to the OpenID page
-        output = self.app.get('/contributions/')
+        output = self.app.get('/contributions/denied/')
         self.assertEqual(output.status_code, 302)
 
         user = FakeFasUser()
@@ -1480,7 +1480,7 @@ class Nuanciertests(Modeltests):
         deny_candidate(self.session)
 
         with user_set(nuancier.APP, user):
-            output = self.app.get('/contributions/')
+            output = self.app.get('/contributions/denied/')
             self.assertEqual(output.status_code, 200)
 
             self.assertTrue(
@@ -1532,7 +1532,7 @@ class Nuanciertests(Modeltests):
         upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
         with user_set(nuancier.APP, user):
-            output = self.app.get('/contributions/')
+            output = self.app.get('/contributions/denied/')
             self.assertEqual(output.status_code, 200)
 
             self.assertTrue(
