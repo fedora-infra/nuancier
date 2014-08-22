@@ -198,6 +198,7 @@ class Nuanciertests(Modeltests):
         output = self.app.get('/contribute/1')
         self.assertEqual(output.status_code, 302)
 
+        # Fails - No election in the DB
         user = FakeFasUser()
         with user_set(nuancier.APP, user):
             output = self.app.get('/contribute/1')
@@ -208,6 +209,7 @@ class Nuanciertests(Modeltests):
         create_elections(self.session)
         upload_path = os.path.join(PICTURE_FOLDER, 'F21')
 
+        # Fails - Election closed for submission
         with user_set(nuancier.APP, user):
             output = self.app.get('/contribute/2', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
