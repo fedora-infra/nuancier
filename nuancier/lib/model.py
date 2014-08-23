@@ -143,7 +143,7 @@ class Elections(BASE):
         today = datetime.datetime.utcnow().date()
         return (self.submission_date_start <= today
                 and self.election_date_start <= today
-                and self.election_date_end >= today)
+                and self.election_date_end > today)
 
     @property
     def election_public(self):
