@@ -157,13 +157,11 @@ def admin_review(election_id):
         flask.flash(
             'This election is already open to public votes and can no '
             'longer be changed', 'error')
-        return flask.redirect(flask.url_for('admin_index'))
 
     if election.election_public:
         flask.flash(
             'The results of this election are already public, this election'
             ' can no longer be changed', 'error')
-        return flask.redirect(flask.url_for('admin_index'))
 
     status = flask.request.args.get('status', 'all')
     if status == 'all':
@@ -173,8 +171,12 @@ def admin_review(election_id):
         SESSION, election_id, approved=status
     )
 
+    template = 'admin_review.html'
+    if election.election_public or election.election_open:
+        template = 'admin_review_ro.html'
+
     return flask.render_template(
-        'admin_review.html',
+        template,
         election=election,
         form=nuancier.forms.ConfirmationForm(),
         candidates=candidates,
