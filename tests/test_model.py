@@ -30,7 +30,7 @@ import unittest
 import sys
 import os
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
@@ -145,6 +145,66 @@ class NuancierModeltests(Modeltests):
 
         election = nuancierlib.get_election(self.session, 3)
         self.assertEqual(election.election_public, False)
+
+    def test_submission_open_today(self):
+        """ Test the submission_open property for today. """
+        today = datetime.utcnow().date()
+        election = model.Elections(
+            election_name='Wallpaper F19',
+            election_folder='F19',
+            election_year='2013',
+            election_n_choice=2,
+            submission_date_start=today,
+            election_date_start=today + timedelta(days=2),
+            election_date_end=today + timedelta(days=4),
+        )
+        self.session.add(election)
+        self.session.commit()
+
+        election = nuancierlib.get_election(self.session, 1)
+        self.assertEqual(election.submission_open, True)
+        self.assertEqual(election.election_open, False)
+        self.assertEqual(election.election_public, False)
+
+    def test_election_open_today(self):
+        """ Test the election_open property for today. """
+        today = datetime.utcnow().date()
+        election = model.Elections(
+            election_name='Wallpaper F19',
+            election_folder='F19',
+            election_year='2013',
+            election_n_choice=2,
+            submission_date_start=today - timedelta(days=2),
+            election_date_start=today,
+            election_date_end=today + timedelta(days=2),
+        )
+        self.session.add(election)
+        self.session.commit()
+
+        election = nuancierlib.get_election(self.session, 1)
+        self.assertEqual(election.submission_open, False)
+        self.assertEqual(election.election_open, True)
+        self.assertEqual(election.election_public, False)
+
+    def test_election_public_today(self):
+        """ Test the election_public property for today. """
+        today = datetime.utcnow().date()
+        election = model.Elections(
+            election_name='Wallpaper F19',
+            election_folder='F19',
+            election_year='2013',
+            election_n_choice=2,
+            submission_date_start=today - timedelta(days=4),
+            election_date_start=today - timedelta(days=2),
+            election_date_end=today,
+        )
+        self.session.add(election)
+        self.session.commit()
+
+        election = nuancierlib.get_election(self.session, 1)
+        self.assertEqual(election.submission_open, False)
+        self.assertEqual(election.election_open, False)
+        self.assertEqual(election.election_public, True)
 
 
 if __name__ == '__main__':

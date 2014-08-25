@@ -1,0 +1,121 @@
+{% extends "master.html" %}
+
+{% block title %} {{ super() }} {% endblock %}
+
+{%block head %}
+<link rel="stylesheet" type="text/css" media="screen"
+        href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
+{% endblock %}
+
+{% block jscripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.9.2.custom.min.js') }}"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+{% endblock %}
+
+{%block tag %}admin{% endblock %}
+
+{% block content %}
+
+<h1>Review election: {{ election.election_name }} - {{ election.election_year }}</h1>
+
+<h3>Overview</h3>
+<p>Here below are presented all the candidates of the election {{ election.election_name }}
+from {{ election.election_year }}, regardless of wether they are valid
+candidates or not.
+</p>
+<p>
+  You may select one or more candidates using the checkbox in the first
+  column of the table below and approve or deny them all using the buttons
+  at the bottom.
+</p>
+
+<p>
+<a class="large_button"
+ href="{{ url_for('admin_cache', election_id=election.id) }}?next={{request.url}}"
+>(Re-)generate cache</a>
+</p>
+
+<form action="." method="GET">
+  <select name="status">
+    <option value="all">all</option>
+    <option value="1">Approved</option>
+    <option value="0">Pending/Rejected</option>
+  </select>
+  <input type="submit" value="Filter"/>
+</form>
+
+{% if candidates %}
+<table>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Author</th>
+        <th>Original artwork</th>
+        <th>License</th>
+        <th>Submitter</th>
+        <th>Approved</th>
+        <th>Motif</th>
+    </tr>
+    {% for candidate in candidates %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td> {{ candidate.candidate_name }} </td>
+        <td>
+            <a href="{{ url_for('base_picture',
+                                 filename='%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}"
+                data-lightbox='{{ election.election_name }}'
+                title='{{ candidate.candidate_name }}'>
+                <img src="{{ url_for('base_cache',
+                                 filename='%s/%s' % (
+                                    election.election_folder,
+                                    candidate.candidate_file
+                                    )
+                                )
+                      }}" alt="img {{ candidate.candidate_file }}"/>
+            </a>
+        </td>
+        <td> {{ candidate.candidate_author }} </td>
+        <td>
+            {% if candidate.candidate_original_url %}
+            <a href="{{ candidate.candidate_original_url }}"
+               title="{{ candidate.candidate_original_url }}">
+            {{ candidate.candidate_original_url[:15] }}...{{ candidate.candidate_original_url[-10:] }}</a>
+            {% else %}
+            -
+            {% endif %}
+        </td>
+        <td> {{ candidate.candidate_license }} </td>
+        <td> {{ candidate.candidate_submitter }} </td>
+        <td>
+            {% if candidate.approved == true%}
+            <img src="{{ url_for('static', filename='Approved.png') }}"
+                alt="Candidate approved"/>
+            {% elif candidate.denied == true %}
+            <img src="{{ url_for('static', filename='Denied.png') }}"
+                alt="Candidate denied"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='New.png') }}"
+                alt="Candidate Pending Review"/>
+            {% endif %}
+        </td>
+        <td>
+            {{ candidate.approved_motif }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</form>
+{% else %}
+<p class="error">No candidates found for this election.</p>
+{% endif %}
+
+{% endblock %}
