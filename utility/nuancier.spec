@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.6.0
+Version:        0.7.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -94,6 +94,21 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Tue Aug 26 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.7.0-1
+- Update to 0.7.0
+- Fix error message when no election are opened for submission
+- Order the candidates in the review page by their date of creation
+- Handle the possibility that generating thumbnails fails for one of the image,
+  keep generating the others though
+- Allow the admin to filter the candidates in the review page by their status
+  (Approved, Denied/Pending)
+- Activate the session time-out
+- Add possibility for user to update candidate that have been denied
+- Let the admins see the review page as read-only once the submission period has
+  ended
+- Rework the result page to show a limit between the candidates that have been
+  elected and those that were not
+
 * Wed Jul 16 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.6.0-1
 - Update 0.6.0
 - Update the documentation (Thanks Michael Haynes and Chaoyi Zha)
