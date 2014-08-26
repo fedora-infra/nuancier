@@ -367,3 +367,8 @@ body#elections
 {
     background-image:url(screen.png)!important;
 }
+
+.firstout tr,
+.firstout td {
+    border-top: 2px solid red !important;
+}

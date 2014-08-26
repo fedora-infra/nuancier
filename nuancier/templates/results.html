@@ -30,7 +30,29 @@ from {{ election.election_year }}.
         <th></th>
     </tr>
     {% for candidate, votes in results %}
-    <tr>
+    {% if loop.index <= election.election_n_choice %}
+    {# If we are below the number of user that will be selected, get the number
+    of votes and the flag to False#}
+    {% set flag = False %}
+    {% set curvotes = votes %}
+    {% elif loop.index > election.election_n_choice and curvotes > votes and not flag %}
+    {# if we are above the number of user that will be selected (seats
+    available), check if the number of votes for this candidate is lower than
+    the number of votes for the last candidate and if the Flag is False
+    So this takes care of the case where there are 10 seats elected and the 11th
+    candidate has the same score as the 10th one.
+    In this case we would end up with one more person that the number of seats
+    available and we'll need to either find a way to select one over the other
+    or deal with having one more candidate accepted #}
+    {% set flag = True %}
+    {% set lastrow = True %}
+    {% else %}
+    {# we are above the number of seats available, the number of votes is below
+    that of the last candidate above selected and the Flag is True which means
+    we already passed the condition above #}
+    {% set lastrow = False %}
+    {% endif %}
+    <tr class="{% if lastrow == True %}firstout{% endif %}">
         <td>{{ loop.index }}</td>
         <td> {{ candidate.candidate_name }} </td>
         <td> {{ votes }} </td>
