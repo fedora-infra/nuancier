@@ -17,7 +17,6 @@ function checkboxCheck(checkbox) {
             ).length + " of " + votelimit);
         $("#sidethumb-"+myid).remove();
         $(".hoveroverlay").removeClass("limit");
-        $(".resizelink").removeClass("limit");
     });
 }
 
@@ -25,7 +24,6 @@ function checkboxCheck(checkbox) {
 function updateActionAndInfo(){
     if ($('input[type=checkbox]:checked').length == votelimit) {
         $(".hoveroverlay").addClass("limit");
-        $(".resizelink").addClass("limit");
 
         $("#fix_info").html($('input[type=checkbox]:checked'
         ).length + " of " + votelimit + " -- You have reached the "
