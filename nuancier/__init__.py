@@ -145,7 +145,7 @@ def is_nuancier_reviewer(user):
     reviewers = APP.config['REVIEW_GROUP']
     if isinstance(reviewers, basestring):  # pragma: no cover
         reviewers = set([reviewers])
-    else:
+    else:  # pragma: no cover
         reviewers = set(reviewers)
 
     return len(set(user.groups).intersection(reviewers)) > 0
