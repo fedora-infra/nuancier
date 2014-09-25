@@ -40,6 +40,9 @@ SECRET_KEY = '<insert here your own key>'
 #ADMIN_GROUP = 'sysadmin-nuancier'
 ADMIN_GROUP = ('sysadmin-main', 'designteam')
 
+# FAS group for the nuancier reviewers
+REVIEW_GROUP = ('designteam')
+
 # Pictures folder
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'pictures')
 
