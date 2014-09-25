@@ -218,7 +218,8 @@ def nuancier_admin_required(function):
             flask.flash(
                 'You must be in one more group than the CLA', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif not is_nuancier_admin(flask.g.fas_user):
+        elif not is_nuancier_admin(flask.g.fas_user) \
+                and not is_nuancier_reviewer(flask.g.fas_user):
             flask.flash('You are not an administrator of nuancier',
                         'error')
             return flask.redirect(flask.url_for('msg'))
