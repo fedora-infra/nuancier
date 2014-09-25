@@ -314,7 +314,7 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     )
 
 
-def add_vote(session, candidate_id, username):
+def add_vote(session, candidate_id, username, value=1):
     """ Register the vote of username on candidate.
 
     :arg session:
@@ -324,6 +324,7 @@ def add_vote(session, candidate_id, username):
     votes = nuancier.lib.model.Votes(
         user_name=username,
         candidate_id=candidate_id,
+        value=value,
     )
     session.add(votes)
     session.flush()
