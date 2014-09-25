@@ -39,7 +39,7 @@
             {% if g.fas_user %}
             <li id="submissionsTab"><a href="{{url_for('.denied_contributions')}}">Denied Submissions</a></li>
             {% endif %}
-            {% if is_admin %}
+            {% if is_admin or is_reviewer %}
             <li id="adminTab"><a href="{{url_for('.admin_index')}}">admin</a></li>
             {% endif %}
           </ul>
