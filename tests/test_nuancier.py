@@ -870,6 +870,13 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="error">You are not an administrator'
                             ' of nuancier</li>' in output.data)
 
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/admin/1/edit/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You are not an administrator'
+                            ' of nuancier</li>' in output.data)
+
         user.groups.append('sysadmin-main')
         with user_set(nuancier.APP, user):
             output = self.app.get('/admin/1/edit/')
@@ -982,6 +989,13 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/new/')
             self.assertEqual(output.status_code, 302)
 
+            output = self.app.get('/admin/new/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You are not an administrator'
+                            ' of nuancier</li>' in output.data)
+
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
             output = self.app.get('/admin/new/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You are not an administrator'
@@ -1207,6 +1221,14 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/admin/review/1/process')
             self.assertEqual(output.status_code, 302)
 
+            output = self.app.post('/admin/review/1/process',
+                                   follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">You are not an administrator'
+                            ' of nuancier</li>' in output.data)
+
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
             output = self.app.post('/admin/review/1/process',
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
