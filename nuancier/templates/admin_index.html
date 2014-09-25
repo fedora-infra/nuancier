@@ -67,10 +67,12 @@ and stop an existing election.
             {{ election.election_date_end }}
         </td>
         <td>{{ election.election_n_choice }}</td>
+        {% if is_admin %}
         <td>
             <a href="{{ url_for('admin_edit', election_id=election.id) }}">
                 Edit</a>
         </td>
+        {% endif %}
         <td>
             <a href="{{ url_for('admin_cache', election_id=election.id) }}">
                 (Re-)generate cache</a>
