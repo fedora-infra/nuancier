@@ -384,7 +384,7 @@ class Candidates(BASE):
         """
         query = session.query(
             Candidates,
-            sa.func.count(Votes.candidate_id).label('votes')
+            sa.func.sum(Votes.value).label('votes')
         ).filter(
             Candidates.election_id == election_id
         ).filter(
