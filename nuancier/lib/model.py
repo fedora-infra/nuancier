@@ -451,7 +451,7 @@ class Votes(BASE):
                              default=sa.func.current_timestamp(),
                              onupdate=sa.func.current_timestamp())
 
-    def __init__(self, user_name, candidate_id):
+    def __init__(self, user_name, candidate_id, value=1):
         """ Constructor
 
         :arg name: the name of the user who voted
@@ -460,6 +460,7 @@ class Votes(BASE):
         """
         self.user_name = user_name
         self.candidate_id = candidate_id
+        self.value = value
 
     def __repr__(self):
         return 'Votes(name:%r, candidate_id:%r, created:%r' % (
