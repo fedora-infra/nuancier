@@ -474,12 +474,12 @@ class Votes(BASE):
         :arg election_id:
         """
         return session.query(
-            cls
+            sa.func.sum(cls.value)
         ).filter(
             Votes.candidate_id == Candidates.id
         ).filter(
             Candidates.election_id == election_id
-        ).count()
+        ).first()[0]
 
     @classmethod
     def cnt_voters(cls, session, election_id,):
