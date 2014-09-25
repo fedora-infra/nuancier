@@ -182,7 +182,8 @@ def admin_review(election_id):
     )
 
     template = 'admin_review.html'
-    if election.election_public or election.election_open:
+    if election.election_public or election.election_open \
+            or not nuancier.is_nuancier_admin(flask.g.fas_user):
         template = 'admin_review_ro.html'
 
     return flask.render_template(
