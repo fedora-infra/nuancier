@@ -151,6 +151,23 @@ def is_nuancier_reviewer(user):
     return len(set(user.groups).intersection(reviewers)) > 0
 
 
+def has_weigthed_vote(user):
+    ''' Has the user a weigthed vote or not.
+    '''
+    if not user:  # pragma: no cover
+        return False
+    if not user.cla_done or len(user.groups) < 1:  # pragma: no cover
+        return False
+
+    voters = APP.config['WEIGHTED_GROUP']
+    if isinstance(voters, basestring):  # pragma: no cover
+        voters = set([voters])
+    else:  # pragma: no cover
+        voters = set(voters)
+
+    return len(set(user.groups).intersection(voters)) > 0
+
+
 def fas_login_required(function):
     ''' Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
