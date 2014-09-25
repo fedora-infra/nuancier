@@ -721,6 +721,11 @@ class Nuanciertests(Modeltests):
                             'number of votes allowed for this election.</li>'
                             in output.data)
 
+        # Only 1 vote by 1 person registered
+        results = nuancierlib.get_results(self.session, 2)
+        self.assertEqual(2, len(results))
+        self.assertEqual(1, results[0][1])  # number of votes
+
         # Works
         user.username = 'toshio'
         user.groups.append('designteam')
@@ -738,6 +743,11 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="message">Your vote has been '
                             'recorded, thank you for voting on Wallpaper'
                             ' F20 2013</li>' in output.data)
+
+        # 2 person voted but 3 votes recorded:
+        results = nuancierlib.get_results(self.session, 2)
+        self.assertEqual(2, len(results))
+        self.assertEqual(3, results[0][1])  # number of votes
 
     def test_results_list(self):
         """ Test the results_list function. """
