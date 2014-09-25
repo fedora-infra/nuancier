@@ -284,6 +284,7 @@ def inject_is_admin():
     if hasattr(flask.g, 'fas_user'):
         user = flask.g.fas_user
     return dict(is_admin=is_nuancier_admin(user),
+                is_reviewer=is_nuancier_reviewer(user),
                 version=__version__)
 
 
