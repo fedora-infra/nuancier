@@ -359,6 +359,15 @@ def login():  # pragma: no cover
             reviewers = set(reviewers)
 
         groups.extend(reviewers)
+
+        voters = APP.config['WEIGHTED_GROUP']
+        if isinstance(voters, basestring):  # pragma: no cover
+            voters = set([voters])
+        else:
+            voters = set(voters)
+
+        groups.extend(voters)
+
         return FAS.login(return_url=next_url, groups=groups)
 
 
