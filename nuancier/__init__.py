@@ -342,7 +342,21 @@ def login():  # pragma: no cover
         return flask.redirect(next_url)
     else:
         admins = APP.config['ADMIN_GROUP']
-        return FAS.login(return_url=next_url, groups=admins)
+        if isinstance(admins, basestring):  # pragma: no cover
+            admins = set([admins])
+        else:
+            admins = set(admins)
+
+        groups = list(admins)[:]
+
+        reviewers = APP.config['REVIEW_GROUP']
+        if isinstance(reviewers, basestring):  # pragma: no cover
+            reviewers = set([reviewers])
+        else:
+            reviewers = set(reviewers)
+
+        groups.extend(reviewers)
+        return FAS.login(return_url=next_url, groups=groups)
 
 
 @APP.route('/logout/')
