@@ -220,8 +220,9 @@ def nuancier_admin_required(function):
             return flask.redirect(flask.url_for('index'))
         elif not is_nuancier_admin(flask.g.fas_user) \
                 and not is_nuancier_reviewer(flask.g.fas_user):
-            flask.flash('You are not an administrator of nuancier',
-                        'error')
+            flask.flash(
+                'You are neither an administrator or a reviewer of nuancier',
+                'error')
             return flask.redirect(flask.url_for('msg'))
         else:
             return function(*args, **kwargs)
