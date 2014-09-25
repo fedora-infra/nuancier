@@ -134,6 +134,23 @@ def is_nuancier_admin(user):
     return len(set(user.groups).intersection(admins)) > 0
 
 
+def is_nuancier_reviewer(user):
+    ''' Is the user a nuancier reviewer.
+    '''
+    if not user:
+        return False
+    if not user.cla_done or len(user.groups) < 1:
+        return False
+
+    reviewers = APP.config['REVIEW_GROUP']
+    if isinstance(reviewers, basestring):  # pragma: no cover
+        reviewers = set([reviewers])
+    else:
+        reviewers = set(reviewers)
+
+    return len(set(user.groups).intersection(reviewers)) > 0
+
+
 def fas_login_required(function):
     ''' Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
