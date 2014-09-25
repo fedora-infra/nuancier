@@ -721,6 +721,24 @@ class Nuanciertests(Modeltests):
                             'number of votes allowed for this election.</li>'
                             in output.data)
 
+        # Works
+        user.username = 'toshio'
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
+            # Works
+            data = {
+                'selection': [3, 4],
+                'csrf_token': csrf_token
+            }
+
+            output = self.app.post('/election/2/voted/', data=data,
+                                   follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Elections</h1>' in output.data)
+            self.assertTrue('<li class="message">Your vote has been '
+                            'recorded, thank you for voting on Wallpaper'
+                            ' F20 2013</li>' in output.data)
+
     def test_results_list(self):
         """ Test the results_list function. """
         output = self.app.get('/results')
