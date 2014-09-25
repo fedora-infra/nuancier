@@ -443,6 +443,7 @@ class Votes(BASE):
         nullable=False,
         primary_key=True
     )
+    value = sa.Column(sa.Integer, nullable=False, default=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
