@@ -795,8 +795,9 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You are not an administrator'
-                            ' of nuancier</li>' in output.data)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
 
         # Fails - did not sign the CLA
         user.cla_done = False
@@ -865,6 +866,14 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/1/edit/')
             self.assertEqual(output.status_code, 302)
 
+            output = self.app.get('/admin/1/edit/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
+
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
             output = self.app.get('/admin/1/edit/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You are not an administrator'
@@ -982,6 +991,14 @@ class Nuanciertests(Modeltests):
             output = self.app.get('/admin/new/')
             self.assertEqual(output.status_code, 302)
 
+            output = self.app.get('/admin/new/', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
+
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
             output = self.app.get('/admin/new/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<li class="error">You are not an administrator'
@@ -1155,8 +1172,9 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/review/1/', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You are not an administrator'
-                            ' of nuancier</li>' in output.data)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
 
@@ -1207,6 +1225,15 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/admin/review/1/process')
             self.assertEqual(output.status_code, 302)
 
+            output = self.app.post('/admin/review/1/process',
+                                   follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
+
+        user.groups.append('designteam')
+        with user_set(nuancier.APP, user):
             output = self.app.post('/admin/review/1/process',
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
@@ -1404,8 +1431,9 @@ class Nuanciertests(Modeltests):
 
             output = self.app.get('/admin/cache/2', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You are not an administrator'
-                            ' of nuancier</li>' in output.data)
+            self.assertTrue(
+                '<li class="error">You are neither an administrator or a '
+                'reviewer of nuancier</li>' in output.data)
 
         user.groups.append('sysadmin-main')
 

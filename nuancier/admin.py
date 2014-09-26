@@ -58,6 +58,11 @@ def admin_index():
 @nuancier_admin_required
 def admin_edit(election_id):
     ''' Edit an election. '''
+    if not nuancier.is_nuancier_admin(flask.g.fas_user):
+        flask.flash('You are not an administrator of nuancier',
+                        'error')
+        return flask.redirect(flask.url_for('msg'))
+
     election = nuancierlib.get_election(SESSION, election_id)
 
     if not election:
@@ -108,6 +113,11 @@ def admin_edit(election_id):
 @nuancier_admin_required
 def admin_new():
     ''' Create a new election. '''
+    if not nuancier.is_nuancier_admin(flask.g.fas_user):
+        flask.flash('You are not an administrator of nuancier',
+                        'error')
+        return flask.redirect(flask.url_for('msg'))
+
     form = nuancier.forms.AddElectionForm()
     if form.validate_on_submit():
 
@@ -172,7 +182,8 @@ def admin_review(election_id):
     )
 
     template = 'admin_review.html'
-    if election.election_public or election.election_open:
+    if election.election_public or election.election_open \
+            or not nuancier.is_nuancier_admin(flask.g.fas_user):
         template = 'admin_review_ro.html'
 
     return flask.render_template(
@@ -190,6 +201,11 @@ def admin_review(election_id):
 @nuancier_admin_required
 def admin_process_review(election_id):
     ''' Process the reviewing of a new election. '''
+    if not nuancier.is_nuancier_admin(flask.g.fas_user):
+        flask.flash('You are not an administrator of nuancier',
+                        'error')
+        return flask.redirect(flask.url_for('msg'))
+
     election = nuancierlib.get_election(SESSION, election_id)
 
     form = nuancier.forms.ConfirmationForm()

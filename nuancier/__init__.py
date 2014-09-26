@@ -134,6 +134,23 @@ def is_nuancier_admin(user):
     return len(set(user.groups).intersection(admins)) > 0
 
 
+def is_nuancier_reviewer(user):
+    ''' Is the user a nuancier reviewer.
+    '''
+    if not user:
+        return False
+    if not user.cla_done or len(user.groups) < 1:
+        return False
+
+    reviewers = APP.config['REVIEW_GROUP']
+    if isinstance(reviewers, basestring):  # pragma: no cover
+        reviewers = set([reviewers])
+    else:
+        reviewers = set(reviewers)
+
+    return len(set(user.groups).intersection(reviewers)) > 0
+
+
 def fas_login_required(function):
     ''' Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
@@ -201,9 +218,11 @@ def nuancier_admin_required(function):
             flask.flash(
                 'You must be in one more group than the CLA', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif not is_nuancier_admin(flask.g.fas_user):
-            flask.flash('You are not an administrator of nuancier',
-                        'error')
+        elif not is_nuancier_admin(flask.g.fas_user) \
+                and not is_nuancier_reviewer(flask.g.fas_user):
+            flask.flash(
+                'You are neither an administrator or a reviewer of nuancier',
+                'error')
             return flask.redirect(flask.url_for('msg'))
         else:
             return function(*args, **kwargs)
@@ -267,6 +286,7 @@ def inject_is_admin():
     if hasattr(flask.g, 'fas_user'):
         user = flask.g.fas_user
     return dict(is_admin=is_nuancier_admin(user),
+                is_reviewer=is_nuancier_reviewer(user),
                 version=__version__)
 
 
@@ -325,7 +345,21 @@ def login():  # pragma: no cover
         return flask.redirect(next_url)
     else:
         admins = APP.config['ADMIN_GROUP']
-        return FAS.login(return_url=next_url, groups=admins)
+        if isinstance(admins, basestring):  # pragma: no cover
+            admins = set([admins])
+        else:
+            admins = set(admins)
+
+        groups = list(admins)[:]
+
+        reviewers = APP.config['REVIEW_GROUP']
+        if isinstance(reviewers, basestring):  # pragma: no cover
+            reviewers = set([reviewers])
+        else:
+            reviewers = set(reviewers)
+
+        groups.extend(reviewers)
+        return FAS.login(return_url=next_url, groups=groups)
 
 
 @APP.route('/logout/')
