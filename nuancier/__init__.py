@@ -293,6 +293,17 @@ def validate_input_file(input_file):
 
 ## Generic APP functions
 
+@APP.template_filter('format_grp')
+def format_grp(groups):
+    """ Template filter to present correctly the groups given.
+    In this case groups can be a string or a list
+    """
+    if isinstance(groups, basestring):  # pragma: no cover
+        groups = set([groups])
+    else:  # pragma: no cover
+        groups = set(groups)
+
+    return ', '.join(groups)
 
 @APP.context_processor
 def inject_is_admin():
