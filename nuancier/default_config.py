@@ -43,6 +43,9 @@ ADMIN_GROUP = ('sysadmin-main', 'sysadmin-nuancier')
 # FAS group for the nuancier reviewers
 REVIEW_GROUP = ('designteam')
 
+# FAS group of users having a higher vote
+WEIGHTED_GROUP = ('sysadmin-nuancier', 'designteam')
+
 # Pictures folder
 PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'pictures')
 

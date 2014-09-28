@@ -359,8 +359,11 @@ def process_vote(election_id):
 
     # Allowed to vote, selection sufficient, choice confirmed: process
     for selection in entries:
-        nuancierlib.add_vote(SESSION, selection,
-                             flask.g.fas_user.username)
+        value = 1
+        if nuancier.has_weigthed_vote(flask.g.fas_user):
+            value = 2
+        nuancierlib.add_vote(
+            SESSION, selection, flask.g.fas_user.username, value=value)
 
     try:
         SESSION.commit()

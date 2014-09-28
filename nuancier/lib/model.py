@@ -384,7 +384,7 @@ class Candidates(BASE):
         """
         query = session.query(
             Candidates,
-            sa.func.count(Votes.candidate_id).label('votes')
+            sa.func.sum(Votes.value).label('votes')
         ).filter(
             Candidates.election_id == election_id
         ).filter(
@@ -443,6 +443,7 @@ class Votes(BASE):
         nullable=False,
         primary_key=True
     )
+    value = sa.Column(sa.Integer, nullable=False, default=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -450,7 +451,7 @@ class Votes(BASE):
                              default=sa.func.current_timestamp(),
                              onupdate=sa.func.current_timestamp())
 
-    def __init__(self, user_name, candidate_id):
+    def __init__(self, user_name, candidate_id, value=1):
         """ Constructor
 
         :arg name: the name of the user who voted
@@ -459,6 +460,7 @@ class Votes(BASE):
         """
         self.user_name = user_name
         self.candidate_id = candidate_id
+        self.value = value
 
     def __repr__(self):
         return 'Votes(name:%r, candidate_id:%r, created:%r' % (
@@ -472,12 +474,12 @@ class Votes(BASE):
         :arg election_id:
         """
         return session.query(
-            cls
+            sa.func.sum(cls.value)
         ).filter(
             Votes.candidate_id == Candidates.id
         ).filter(
             Candidates.election_id == election_id
-        ).count()
+        ).first()[0]
 
     @classmethod
     def cnt_voters(cls, session, election_id,):

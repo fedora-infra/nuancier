@@ -36,6 +36,13 @@ Click on the wallpapers to select the ones you like.
 </p>
 {% endif %}
 
+{% if config.get('WEIGHTED_GROUP', None) %}
+<p>
+  The votes of the members of the group(s)
+  {{ config['WEIGHTED_GROUP'] |format_grp}} count double.
+</p>
+{% endif %}
+
 
 {% if candidates %}
 <form action="{{ url_for('process_vote', election_id=election.id) }}"

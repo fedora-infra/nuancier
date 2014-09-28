@@ -145,10 +145,27 @@ def is_nuancier_reviewer(user):
     reviewers = APP.config['REVIEW_GROUP']
     if isinstance(reviewers, basestring):  # pragma: no cover
         reviewers = set([reviewers])
-    else:
+    else:  # pragma: no cover
         reviewers = set(reviewers)
 
     return len(set(user.groups).intersection(reviewers)) > 0
+
+
+def has_weigthed_vote(user):
+    ''' Has the user a weigthed vote or not.
+    '''
+    if not user:  # pragma: no cover
+        return False
+    if not user.cla_done or len(user.groups) < 1:  # pragma: no cover
+        return False
+
+    voters = APP.config['WEIGHTED_GROUP']
+    if isinstance(voters, basestring):  # pragma: no cover
+        voters = set([voters])
+    else:  # pragma: no cover
+        voters = set(voters)
+
+    return len(set(user.groups).intersection(voters)) > 0
 
 
 def fas_login_required(function):
@@ -276,6 +293,17 @@ def validate_input_file(input_file):
 
 ## Generic APP functions
 
+@APP.template_filter('format_grp')
+def format_grp(groups):
+    """ Template filter to present correctly the groups given.
+    In this case groups can be a string or a list
+    """
+    if isinstance(groups, basestring):  # pragma: no cover
+        groups = set([groups])
+    else:  # pragma: no cover
+        groups = set(groups)
+
+    return ', '.join(groups)
 
 @APP.context_processor
 def inject_is_admin():
@@ -359,6 +387,15 @@ def login():  # pragma: no cover
             reviewers = set(reviewers)
 
         groups.extend(reviewers)
+
+        voters = APP.config['WEIGHTED_GROUP']
+        if isinstance(voters, basestring):  # pragma: no cover
+            voters = set([voters])
+        else:
+            voters = set(voters)
+
+        groups.extend(voters)
+
         return FAS.login(return_url=next_url, groups=groups)
 
 
