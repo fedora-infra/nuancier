@@ -2,7 +2,7 @@
     color: green;
 }
 
-.error {
+.error, .required {
     color: red;
 }
 
