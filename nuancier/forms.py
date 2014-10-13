@@ -51,29 +51,29 @@ def is_number(form, field):
 class AddElectionForm(flask_wtf.Form):
     ''' Form to add a new election. '''
     election_name = wtf.TextField(
-        'Election name <span class="error">*</span>',
+        'Election name',
         [wtf.validators.Required()])
     election_folder = wtf.TextField(
         'Name of the folder containing the pictures '
         '<span class="error">*</span>',
         [wtf.validators.Required()])
     election_year = wtf.TextField(
-        'Year <span class="error">*</span>',
+        'Year',
         [wtf.validators.Required()])
     submission_date_start = wtf.DateField(
-        'Submission start date (in utc) <span class="error">*</span>',
+        'Submission start date (in utc)',
         [wtf.validators.Required()])
     election_date_start = wtf.DateField(
-        'Start date (in utc) <span class="error">*</span>',
+        'Start date (in utc)',
         [wtf.validators.Required()])
     election_date_end = wtf.DateField(
-        'End date (in utc) <span class="error">*</span>',
+        'End date (in utc)',
         [wtf.validators.Required()])
     election_badge_link = wtf.TextField(
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
     election_n_choice = wtf.TextField(
-        'Number of votes a user can make <span class="error">*</span>',
+        'Number of votes a user can make',
         [wtf.validators.Required(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
@@ -97,15 +97,15 @@ class AddElectionForm(flask_wtf.Form):
 class AddCandidateForm(flask_wtf.Form):
     ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
-        'Title <span class="error">*</span>', [wtf.validators.Required()])
+        'Title', [wtf.validators.Required()])
     candidate_author = wtf.TextField(
-        'Author <span class="error">*</span>', [wtf.validators.Required()])
+        'Author', [wtf.validators.Required()])
     candidate_original_url = wtf.TextField(
         'URL to the original artwork')
     candidate_file = wtf.FileField(
-        'File <span class="error">*</span>', [wtf.validators.Required()])
+        'File', [wtf.validators.Required()])
     candidate_license = wtf.SelectField(
-        'License <span class="error">*</span>', [wtf.validators.Required()],
+        'License', [wtf.validators.Required()],
         choices=[
             (None, ''),
             ('CC0', 'CC0'),
