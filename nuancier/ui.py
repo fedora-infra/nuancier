@@ -120,6 +120,10 @@ def contribute(election_id):
                 flask.flash(
                     'An error occured while writing the file, please '
                     'contact an administrator', 'error')
+                return flask.render_template(
+                    'contribute.html',
+                    election=election,
+                    form=form)
 
         # Save candidate to the database
         try:
@@ -513,6 +517,10 @@ def update_candidate(cand_id):
                 flask.flash(
                     'An error occured while writing the file, please '
                     'contact an administrator', 'error')
+                return flask.render_template(
+                    'update_contribution.html',
+                    candidate=candidate,
+                    form=form)
 
         # Update the candidate
         form.populate_obj(obj=candidate)
