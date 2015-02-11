@@ -85,3 +85,37 @@ The ``THUMB_SIZE`` is a set of length, width coordinate providing indication
 to nuancier about the desired size of the thumbnails.
 
 By default ``THUMB_SIZE`` is at 256x256.
+
+
+Security
+--------
+
+It is a good practice to have the cookies require a https connection for
+security reason. However, while developing this can prevent the authentication
+from working. So by default this is turned off to provide an out-of-the-box
+working configuration, however you will want to change it in production.
+
+The setting to change is ``SESSION_COOKIE_SECURE``.
+
+**Default** ``SESSION_COOKIE_SECURE =  False``
+
+To change to ``SESSION_COOKIE_SECURE = True``.
+
+
+Cookie conflicts
+----------------
+
+If you run multiple applications at different level of your server, by default
+the ``path`` of the cookie will be ``/``, eventually leading to cookie conflict
+but providing a working configuration out of the box
+
+To prevent this, adjust the ``APPLICATION_ROOT`` or ``SESSION_COOKIE_NAME`` as
+needed (in Fedora we used ``APPLICATION_ROOT``).
+
+**Default** ``APPLICATION_ROOT = '/'``
+
+.. note:: The application root should start with a ``/`` otherwise the ``path``
+          of the cookie is not set correctly
+
+.. note:: More configuration information are described in the `flask
+          documentation <http://flask.pocoo.org/docs/latest/config/>`_.
