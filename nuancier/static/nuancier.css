@@ -353,16 +353,6 @@ a:visited.large_button {
     width:70px;
 }
 
-body#elections #wrap
-{
-    max-width:800px;
-}
-
-body#elections
-{
-    margin-right:170px;
-}
-
 #s3slider
 {
     background-image:url(screen.png)!important;
