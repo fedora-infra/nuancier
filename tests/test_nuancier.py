@@ -958,7 +958,9 @@ class Nuanciertests(Modeltests):
             self.assertTrue('election1' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 12)
+            self.assertEqual(output.data.count('2014'), 3)
+            self.assertEqual(output.data.count(str(TODAY.year)), 9)
+
 
             # Edit failed: Name exists
             data = {
@@ -1046,7 +1048,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 11)
+            self.assertEqual(output.data.count('2014'), 2)
+            self.assertEqual(output.data.count(str(TODAY.year)), 9)
             self.assertEqual(output.data.count('2013'), 3)
 
             # Add the new election
@@ -1107,7 +1110,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 15)
+            self.assertEqual(output.data.count('2014'), 3)
+            self.assertEqual(output.data.count(str(TODAY.year)), 12)
             self.assertEqual(output.data.count('2013'), 3)
 
             data = {
@@ -1138,7 +1142,8 @@ class Nuanciertests(Modeltests):
             self.assertTrue('Wallpaper F19' in output.data)
             self.assertTrue('Wallpaper F20' in output.data)
             self.assertTrue('Wallpaper F21' in output.data)
-            self.assertEqual(output.data.count('2014'), 19)
+            self.assertEqual(output.data.count('2014'), 4)
+            self.assertEqual(output.data.count(str(TODAY.year)), 15)
             self.assertEqual(output.data.count('2013'), 3)
 
             # Edit failed: Name exists
