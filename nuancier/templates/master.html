@@ -49,9 +49,9 @@
           {% if g.fas_user %}
             <span class="text">logged in as </span>
             {{ g.fas_user.username }} |
-            <a href="{{ url_for('.logout') }}">log out</a>
+            <a href="{{ url_for('.logout') }}?next={{request.url}}">log out</a>
           {% else %}
-            <a href="{{ url_for('.login') }}">login</a>
+            <a href="{{ url_for('.login') }}?next={{request.url}}">login</a>
           {% endif %}
         </span>
 
