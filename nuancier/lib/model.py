@@ -420,6 +420,10 @@ class Candidates(BASE):
             Candidates.candidate_submitter == submitter
         ).filter(
             Candidates.approved == False
+        ).filter(
+            Candidates.approved_motif != None
+        ).filter(
+            Candidates.approved_motif != ''
         ).order_by(
             Candidates.id.desc()
         )
