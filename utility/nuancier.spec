@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.7.0
+Version:        0.8.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -94,6 +94,17 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Tue Feb 24 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.8.0-1
+- Update to 0.8.0
+- Create a group of reviewers that can approve/deny candidates
+- Create a group of users having weighted votes (their votes count double)
+- Fix the form to automatically add the red '*' when the field is mandatory
+- Redirect the user when os.mkdir fails
+- Drop some css instructions breaking the elections tab/pages
+- Improve the configuration documentation
+- Add URL to come back to the page you're at when login in/out
+- Fix the query retrieving the denied candidate
+
 * Tue Aug 26 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.7.0-1
 - Update to 0.7.0
 - Fix error message when no election are opened for submission
