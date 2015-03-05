@@ -7,11 +7,12 @@ From sources
 Clone the source::
 
  git clone https://github.com/fedora-infra/nuancier.git
+ cd nuancier
 
 
 Copy the configuration files::
 
-  cp nuancier.cfg.sample nuancier.cfg
+  cp utility/nuancier.cfg.sample nuancier.cfg
 
 Adjust the configuration files (secret key, database URL, admin group...).
 See :doc:`configuration` for detailed information about the configuration.
