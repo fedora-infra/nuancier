@@ -27,8 +27,9 @@ Users
 
 Users are people with an account on the
 `Fedora Account System (FAS) <https://admin.fedoraproject.org/accounts/>`_ who
-belong to the ``fedora_cla`` group as well as one additional group. All contributing
-users should be part of the ``fedora_cla`` group once they have signed it.
+belong to the ``fedora_cla`` group as well as one additional group. All
+contributing users should be part of the ``fedora_cla`` group once they
+have signed it.
 
 
 
@@ -37,10 +38,11 @@ users should be part of the ``fedora_cla`` group once they have signed it.
 Upload new pictures for an election
 -----------------------------------
 
-All users can contribute candidates to an election by clicking on the ``contribute``
-tab. On that page you can find a list of the rules, allowable subject matter, composition, and
-technical requirements regarding the submitted images. At the bottom of you page you can
-see elections that are currently accepting submissions.
+All users can contribute candidates to an election by clicking on the
+``contribute`` tab. On that page you can find a list of the rules,
+allowable subject matter, composition, and technical requirements regarding
+the submitted images. At the bottom of you page you can see elections that are
+currently accepting submissions.
 
 When submitting an image you will need to provide the following:
 
@@ -87,8 +89,9 @@ The form to will ask for:
   of the folder containing the pictures for that election that has been
   placed in the folder specified under ``PICTURE_FOLDER`` in
   :doc:`configuration`.
+
   .. note:: It is a good idea to keep this name simple, unique, ascii and
-     and without spaces.
+    without spaces.
 
 - ``Year``: the year the election is taking place, this is purely for
   information.
@@ -96,18 +99,18 @@ The form to will ask for:
 - ``Open``: This is a checkbox to specify whether this election is already
   open for votes or not.
 
-- ``URL to claim a badge for voting``: this allows to specify a link where
-  people will be able to go to collect a badge announcing they participated
-  on this election. You should coordinate with the people of the
+- ``URL to claim a badge for voting``: This allows to specify a link where
+  people will be able to go to collect a badge announcing that they participated
+  in this election. You should coordinate with the people of the
   `badge <https://fedorahosted.org/fedora-badges/>`_ project to get this
   link.
 
-- ``Number of votes a user can make``: this specifies the number of choices
+- ``Number of votes a user can make``: This specifies the number of choices
   a user can make for this election.
-  For example, a user might be allowed to select only 16 wallpapers, thus
+  For example, if a user is allowed to select only 16 wallpapers, then
   this field should be `16`.
 
-- ``Generate cache``: this is checkbox offering to generate the cache
+- ``Generate cache``: This is a checkbox offering to generate the cache
   assuming the pictures have already been placed on the ``PICTURE_FOLDER``,
   together with the ``infos.txt`` file.
 
@@ -118,7 +121,7 @@ Open/Close election for votes
 ------------------------------
 
 Once an election is opened for vote or has ended, the administrator can
-simply log in nuancier, go to the administration panel, find the
+simply log into nuancier, go to the administration panel, find the
 correct election and on the `Open` column click on the ``toggle`` link.
 
 If fedmsg is installed on the server, fedmsg messages are published for these
@@ -130,8 +133,9 @@ events.
 Publish results of an election
 -------------------------------
 
-Once an election has ended the results will be published automatically. If fedmsg
-is installed on the server, fedmsg messages are published for these events.
+Once an election has ended the results will be published automatically. If
+fedmsg is installed on the server, fedmsg messages are published for
+these events.
 
 
 .. _generate_cache:
@@ -139,8 +143,8 @@ is installed on the server, fedmsg messages are published for these events.
 Generate cache
 --------------
 
-To decrease the weight of the page where all the candidates of an election
-are shown, nuancier generates thumbnails.
+In order to reduce the size(and hence the loading time) of the page where all
+the candidates of an election are shown, nuancier generates thumbnails.
 
 To generate the cache of an election, the administrator needs to log in
 nuancier, go to the administration panel, find the correct election

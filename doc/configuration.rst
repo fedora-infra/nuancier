@@ -23,10 +23,10 @@ for example to generate a 50 characters long random key
 The database URL
 -----------------
 
-Nuancier uses `SQLAlchemy <http://sqlalchemy.org>`_ has Object
-Relationship Mapper and thus to connect to the database. You need to provide
-under the key ``DB_URL`` in the configuration file the required information
-to connect to the database.
+Nuancier uses `SQLAlchemy <http://sqlalchemy.org>`_ an SQL Toolkit and Object
+Relationship Mapper in Python, and is used to connect to the database. In order
+to connect to the database, you need to provide the database name in a URL
+format under the key ``DB_URL`` in the configuration file.
 
 
 Examples URLs are::
@@ -59,27 +59,28 @@ layer of nuancier.
 The pictures folder
 -------------------
 
-The ``PICTURE_FOLDER`` field provides to the application the full path
-to the folder in which are placed the pictures candidates for the elections
-(within a folder, specific for each election).
+The ``PICTURE_FOLDER`` field takes the full path to the folder in which
+the application will place all the pictures submitted by the candidates (within
+a folder, specific for each election).
 
 
 The cache folder
 -------------------
 
-The ``CACHE_FOLDER`` field provides to the application the full path
-to the folder in which the application is allowed to generate the thumbnails
-of the pictures present in the ``PICTURE_FOLDER``.
+The ``CACHE_FOLDER`` field takes the full path to the folder in which the
+application is allowed to generate the thumbnails of the pictures present in
+the ``PICTURE_FOLDER``.
 
-.. note:: This folder should be writtable by the application (ie: apache).
+.. note:: This folder should be write-able by the application (ie: apache).
 
 
 The thumb size
 ---------------
 
-In order to decrease the weight of the pages displaying all the pictures
-candidate to an election, nuancier creates thumbnails of these pictures.
-These thumbnails are generated with anti-aliases to maintain a certain quality.
+In order to reduce the size(and hence the loading time) of the pages displaying
+all the pictures submitted by a candidate to an election, nuancier creates
+thumbnails of these pictures. These thumbnails are generated with anti-aliases
+to maintain a certain quality.
 
 The ``THUMB_SIZE`` is a set of length, width coordinate providing indication
 to nuancier about the desired size of the thumbnails.
@@ -91,25 +92,27 @@ Security
 --------
 
 It is a good practice to have the cookies require a https connection for
-security reason. However, while developing this can prevent the authentication
+security reason. However, while developing, this can prevent the authentication
 from working. So by default this is turned off to provide an out-of-the-box
 working configuration, however you will want to change it in production.
 
-The setting to change is ``SESSION_COOKIE_SECURE``.
+The setting is ``SESSION_COOKIE_SECURE``.
 
 **Default** ``SESSION_COOKIE_SECURE =  False``
 
-To change to ``SESSION_COOKIE_SECURE = True``.
+Change this ``SESSION_COOKIE_SECURE = True`` when using the application in a
+production environment.
 
 
 Cookie conflicts
 ----------------
 
-If you run multiple applications at different level of your server, by default
+If you run multiple applications at different levels of your server, by default
 the ``path`` of the cookie will be ``/``, eventually leading to cookie conflict
 but providing a working configuration out of the box
 
-To prevent this, adjust the ``APPLICATION_ROOT`` or ``SESSION_COOKIE_NAME`` as
+To prevent this, adjust the ``APPLICATION_ROOT`` value or  the
+``SESSION_COOKIE_NAME`` as
 needed (in Fedora we used ``APPLICATION_ROOT``).
 
 **Default** ``APPLICATION_ROOT = '/'``

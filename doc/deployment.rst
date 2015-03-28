@@ -53,7 +53,7 @@ Start by installing ``mod_wsgi``::
 
 Then configure apache::
 
- sudo vim /etc/httd/conf.d/nuancier.conf
+ sudo vim /etc/httpd/conf.d/nuancier.conf
 
 uncomment the content of the file and adjust as desired.
 
