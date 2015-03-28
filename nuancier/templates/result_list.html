@@ -12,18 +12,22 @@
 <p>The elections below have ended and their results are now public. </p>
 
 {% if elections %}
-<ul>
+<table border=1>
     {% for election in elections %}
-    <li>
-        <a href="{{ url_for('results', election_id=election.id) }}">
+    <tr>
+        <td>
+            <a href="{{ url_for('results', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
-        </a> -
-        <a href="{{ url_for('stats', election_id=election.id) }}">
+            </a>
+        </td>
+        <td>
+            <a href="{{ url_for('stats', election_id=election.id) }}">
             stats
-        </a>
-    </li>
+            </a>
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+</table>
 {% else %}
 <p class="error">No election results have been made public (yet).</p>
 {% endif %}
