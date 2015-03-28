@@ -16,7 +16,7 @@
     {% for election in elections %}
     <li>
         <a href="{{ url_for('results', election_id=election.id) }}">
-            {{ election.election_name }} - {{ election.election_year }}
+            {{ election.election_name }} <PRE>     -----    </PRE>  {{ election.election_year }}
         </a> -
         <a href="{{ url_for('stats', election_id=election.id) }}">
             stats
