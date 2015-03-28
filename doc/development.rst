@@ -55,8 +55,8 @@ your source.
 
 
 We are also inspecting the code using `pylint
-<http://pypi.python.org/pypi/pylint>`_ and aim of course for a 10/10 code
-(but it is an assymptotic goal).
+<http://pypi.python.org/pypi/pylint>`_ and aim,of course, for a 10/10 code
+(but it is an asymptotic goal).
 
 .. note:: both pep8 and pylint are available in Fedora via yum:
 
@@ -69,7 +69,7 @@ Send patch
 ----------
 
 The easiest way to work on nuancier is to make your own branch in git,
-make your changes to this branch, commit whenever you want, rebase on master,
+make your changes to this branch, commit whenever you want, rebase on master
 whenever you need and when you are done, send the patch either by email or
 via the github pull-request mechanism.
 
@@ -118,7 +118,7 @@ unit-tests of the project with coverage information using `python-nose
 
 .. note:: You can specify additional arguments to the nose command used
           in this script by just passing arguments to the script.
-          
+
           For example you can specify the ``-x`` / ``--stop`` argument:
           `Stop running tests after the first error or failure` by just doing
 
@@ -127,8 +127,8 @@ unit-tests of the project with coverage information using `python-nose
             ./runtests.sh --stop
 
 
-Each unit-tests files (located under ``tests/``) can be called
-by alone, allowing easier debugging of the tests. For example:
+Unit-test files(located under ``tests/``) can be can be invoked individually,
+allowing easier debugging of the tests. For example:
 
 ::
 

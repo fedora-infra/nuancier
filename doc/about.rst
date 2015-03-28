@@ -4,7 +4,7 @@ About nuancier
 Nuancier is a web-based voting application for the supplementary
 wallpapers of Fedora.
 
-Here are some more information about the technology, layout and artwork used
+Here is some more information about the technology, layout and artwork used
 in this application.
 
 
@@ -27,7 +27,8 @@ as javascript library to pop-up the pictures and present a larger version.
 
 Icons
 ~~~~~
-The icons used are coming from the `echo icon theme <https://fedorahosted.org/echo-icon-theme/>`_
+The icons used come from the
+`echo icon theme <https://fedorahosted.org/echo-icon-theme/>`_
 
 (License: CC-BY-SA)
 
