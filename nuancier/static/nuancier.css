@@ -5,7 +5,10 @@
 .error, .required {
     color: red;
 }
-
+.hyphen{
+    margin-left:80px;
+    margin-right:80px;
+}
 .warning {
     color: #FF8000;
 }
