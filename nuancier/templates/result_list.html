@@ -17,7 +17,8 @@
     <li>
         <a href="{{ url_for('results', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
-        </a> -
+        </a> 
+        <span class="hyphen"> - </span>
         <a href="{{ url_for('stats', election_id=election.id) }}">
             stats
         </a>
