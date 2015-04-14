@@ -1,3 +1,19 @@
+input {
+    font-size: 100%;
+}
+
+textarea {
+    font-size: 100%;
+}
+
+button {
+    font-size: 100%;
+}
+
+select {
+    font-size: 100%;
+}
+
 .message {
     color: green;
 }
