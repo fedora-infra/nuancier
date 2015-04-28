@@ -42,7 +42,11 @@
     </tr>
     <tr>
         <th>Average number of votes per participant</th>
+        {% if stats['voters'] -%}
         <td>{{ stats['votes'] / stats['voters'] }}</td>
+        {% else %}
+        <td>0</td>
+        {%- endif %}
     </tr>
     <tr>
         <th>Maximum number of votes per participant</th>
