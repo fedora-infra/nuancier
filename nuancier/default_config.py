@@ -83,3 +83,6 @@ NUANCIER_EMAIL_FROM = 'nobody@fedoraproject.org'
 NUANCIER_EMAIL_SMTP_SERVER = 'localhost'
 # The email address to send error report to
 NUANCIER_EMAIL_ERROR_TO = 'pingou@pingoured.fr'
+
+FEDMENU_URL = 'https://apps.fedoraproject.org/fedmenu'
+FEDMENU_DATA_URL = 'https://apps.fedoraproject.org/js/data.js'
