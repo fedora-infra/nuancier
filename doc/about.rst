@@ -43,12 +43,12 @@ It was first named ``nuancier-lite`` and renamed to ``nuancier`` when support
 for uploads and moderation was added.
 
 
-On April 29, 2014 (versoin 0.8.1), the list looks as follow:
+On April 29, 2014 (versoin 0.8.2), the list looks as follow:
 
 =================  ===========
 Number of commits  Contributor
 =================  ===========
-    613             Pierre-Yves Chibon <pingou@pingoured.fr>
+    616             Pierre-Yves Chibon <pingou@pingoured.fr>
      31             Ralph Bean <rbean@redhat.com>
       9             Ryan Lerch <ryanlerch@fedoraporject.org>
       5             Jenn <jennlkotler@gmail.com>
