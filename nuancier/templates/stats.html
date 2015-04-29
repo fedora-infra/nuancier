@@ -4,15 +4,6 @@
 
 {%block tag %}results{% endblock %}
 
-{% block head %}
-   <script language="javascript" type="text/javascript"
-        src="{{ url_for('static', filename='jquery.js') }}"></script>
-    <script language="javascript" type="text/javascript"
-        src="{{ url_for('static', filename='jquery.flot.js') }}"></script>
-    <script language="javascript" type="text/javascript"
-        src="{{ url_for('static', filename='jquery.flot.categories.js') }}"></script>
-{% endblock %}
-
 {% block content %}
 
 <h1>Election statistics</h1>
@@ -70,6 +61,10 @@
 
 {% block jscripts %}
 {{ super() }}
+<script language="javascript" type="text/javascript"
+    src="{{ url_for('static', filename='jquery.flot.js') }}"></script>
+<script language="javascript" type="text/javascript"
+    src="{{ url_for('static', filename='jquery.flot.categories.js') }}"></script>
 <script type="text/javascript">
 
     var data = [{'color': '#1F77B4',
