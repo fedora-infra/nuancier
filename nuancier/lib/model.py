@@ -185,7 +185,7 @@ class Elections(BASE):
         return session.query(
             cls
         ).order_by(
-            Elections.election_year.desc()
+            Elections.election_date_end.asc()
         ).all()
 
     @classmethod
