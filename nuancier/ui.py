@@ -188,7 +188,7 @@ def elections_list():
 
     return flask.render_template(
         'elections_list.html',
-        elections=sorted(elections, key=lambda e: e.election_date_end))
+        elections=elections)
 
 
 @APP.route('/election/<int:election_id>/')
