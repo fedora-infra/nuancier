@@ -169,6 +169,8 @@
         <a class="large_button" href="{{ url_for('contribute', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
         </a>
+        <span>Submission ends on : </span>
+        {{ election.election_date_start }}
     </li>
     {% endfor %}
 </ul>
