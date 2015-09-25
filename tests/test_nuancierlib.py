@@ -87,8 +87,8 @@ class NuancierLibtests(Modeltests):
         elections = nuancierlib.get_elections(self.session)
         self.assertEqual(3, len(elections))
         self.assertEqual('Wallpaper F21', elections[0].election_name)
-        self.assertEqual('Wallpaper F19', elections[1].election_name)
-        self.assertEqual('Wallpaper F20', elections[2].election_name)
+        self.assertEqual('Wallpaper F20', elections[1].election_name)
+        self.assertEqual('Wallpaper F19', elections[2].election_name)
 
     def test_get_election(self):
         """ Test the get_election function. """
