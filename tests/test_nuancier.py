@@ -1284,7 +1284,7 @@ class Nuanciertests(Modeltests):
             self.assertTrue('<li class="error">Wrong input submitted</li>'
                             in output.data)
 
-            output = self.app.get('/admin/review/3/', follow_redirects=True)
+            output = self.app.get('/admin/review/3/all', follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
@@ -1303,7 +1303,7 @@ class Nuanciertests(Modeltests):
 
         with user_set(nuancier.APP, user):
             # Check the review page before changes
-            output = self.app.get('/admin/review/3/')
+            output = self.app.get('/admin/review/3/all')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
@@ -1366,7 +1366,7 @@ class Nuanciertests(Modeltests):
                             '</li>' in output.data)
 
             # Check again the review page - no changes
-            output = self.app.get('/admin/review/3/')
+            output = self.app.get('/admin/review/3/all')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
@@ -1389,12 +1389,21 @@ class Nuanciertests(Modeltests):
                             in output.data)
 
             # Check again the review page for changes
-            output = self.app.get('/admin/review/3/')
+            output = self.app.get('/admin/review/3/all')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
             self.assertEqual(output.data.count('="/static/New.png"'), 3)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 1)
+            self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
+
+            # Check again the review page for changes
+            output = self.app.get('/admin/review/3/pending')
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
+                            in output.data)
+            self.assertEqual(output.data.count('="/static/New.png"'), 3)
+            self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 0)
 
             # Fails: no motif to reject candidate
@@ -1439,11 +1448,11 @@ class Nuanciertests(Modeltests):
                             in output.data)
 
             # Check again the review page for changes
-            output = self.app.get('/admin/review/3/')
+            output = self.app.get('/admin/review/3/denied')
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
                             in output.data)
-            self.assertEqual(output.data.count('="/static/New.png"'), 3)
+            self.assertEqual(output.data.count('="/static/New.png"'), 0)
             self.assertEqual(output.data.count('="/static/Approved.png"'), 0)
             self.assertEqual(output.data.count('="/static/Denied.png"'), 1)
 
