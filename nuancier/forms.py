@@ -95,6 +95,7 @@ class AddElectionForm(flask_wtf.Form):
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
             self.submission_date_start.data = election.submission_date_start
+            self.user_n_candidates.data = election.user_n_candidates
 
 
 class AddCandidateForm(flask_wtf.Form):
