@@ -37,7 +37,9 @@
             <li id="electionsTab"><a href="{{url_for('.elections_list')}}">Elections</a></li>
             <li id="resultsTab"><a href="{{url_for('.results_list')}}">Results</a></li>
             {% if g.fas_user %}
-            <li id="submissionsTab"><a href="{{url_for('.denied_contributions')}}">Denied Submissions</a></li>
+            <li id="submissionsTab">
+              <a href="{{url_for('.contributions')}}">Your submissions</a>
+            </li>
             {% endif %}
             {% if is_admin or is_reviewer %}
             <li id="adminTab"><a href="{{url_for('.admin_index')}}">admin</a></li>

@@ -19,18 +19,24 @@
 
 {% block content %}
 
-<h1>Denied submissions</h1>
+<h1>Your submissions</h1>
 
 <h3>Overview</h3>
 <p>
-  Listed below are the candidates that you have submitted and that were
-  rejected with the reason why. <br />
+  Listed below are the candidates that you have submitted and their status.<br />
   This gives you the possibility to update your submission based on the
-  feedback you have received.
+  feedback you have received if you like.
 </p>
 
 {% if contributions %}
 <table>
+    <tr>
+      <th>Name |</th>
+      <th>Picture |</th>
+      <th>Status |</th>
+      <th>Motif (if rejected) |</th>
+      <th>Election status</th>
+    </tr>
     {% for candidate in contributions %}
     <tr>
         <td> {{ candidate.candidate_name }} </td>
