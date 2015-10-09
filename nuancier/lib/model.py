@@ -410,7 +410,7 @@ class Candidates(BASE):
         return query.all()
 
     @classmethod
-    def get_by_submitter(cls, session, submitter):
+    def get_by_submitter(cls, session, submitter, election_id=None):
         """ Return the list of denied submission of the specified submitter
 
         """
@@ -420,8 +420,13 @@ class Candidates(BASE):
         ).filter(
             Candidates.candidate_submitter == submitter
         ).order_by(
-            Candidates.id.desc()
+            Candidates.date_updated.desc()
         )
+
+        if election_id:
+            query = query.filter(
+                Candidates.election_id == election_id
+            )
 
         return query.all()
 
