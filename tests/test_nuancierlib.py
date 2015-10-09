@@ -158,6 +158,7 @@ class NuancierLibtests(Modeltests):
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
+            user_n_candidates=5,
             election_badge_link='http://...',
         )
 
@@ -170,6 +171,7 @@ class NuancierLibtests(Modeltests):
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
+            user_n_candidates=5,
             election_badge_link='http://...',
             user='pingou',
         )
@@ -279,6 +281,7 @@ class NuancierLibtests(Modeltests):
             election_date_end=TODAY + timedelta(days=2),
             submission_date_start=TODAY - timedelta(days=2),
             election_n_choice=42,
+            user_n_candidates=5,
             election_badge_link='http://badges.fp.o/1234',
         )
 
@@ -292,6 +295,7 @@ class NuancierLibtests(Modeltests):
             election_date_end=TODAY + timedelta(days=2),
             submission_date_start=TODAY - timedelta(days=2),
             election_n_choice=42,
+            user_n_candidates=5,
             election_badge_link='http://badges.fp.o/1234',
             user='pingou',
         )

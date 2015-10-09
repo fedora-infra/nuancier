@@ -945,6 +945,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -972,6 +973,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -993,6 +995,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -1071,6 +1074,7 @@ class Nuanciertests(Modeltests):
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 'abc',
                 'generate_cache': True,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -1090,6 +1094,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'generate_cache': True,
                 'csrf_token': csrf_token,
             }
@@ -1123,6 +1128,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -1156,6 +1162,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 
@@ -1176,6 +1183,7 @@ class Nuanciertests(Modeltests):
                 'election_date_end': TODAY - timedelta(days=8),
                 'election_badge_link': 'http://badges.fp.org',
                 'election_n_choice': 3,
+                'user_n_candidates': 5,
                 'csrf_token': csrf_token,
             }
 

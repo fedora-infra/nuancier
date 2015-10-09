@@ -137,6 +137,7 @@ def create_elections(session):
         election_date_start=TODAY - timedelta(days=10),
         election_date_end=TODAY - timedelta(days=8),
         submission_date_start=TODAY - timedelta(days=15),
+        user_n_candidates=10,
     )
     session.add(election)
 
@@ -150,6 +151,7 @@ def create_elections(session):
         election_date_start=TODAY - timedelta(days=2),
         election_date_end=TODAY + timedelta(days=3),
         election_badge_link="http://badges.fp.org",
+        user_n_candidates=10,
     )
     session.add(election)
 
@@ -162,6 +164,7 @@ def create_elections(session):
         submission_date_start=TODAY - timedelta(days=2),
         election_date_start=TODAY + timedelta(days=1),
         election_date_end=TODAY + timedelta(days=6),
+        user_n_candidates=10,
     )
     session.add(election)
     session.commit()
