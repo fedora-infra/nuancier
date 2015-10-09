@@ -282,7 +282,7 @@ class Candidates(BASE):
         """ Return a boolean specifying if the candidate has been denied or
         is either Approved or Pending Review.
         """
-        denied = (not self.approved and self.approved_motif is not None)
+        denied = (not self.approved and self.approved_motif not in [None, ''])
         return denied
 
     def __init__(self, candidate_file, candidate_name, candidate_author,
