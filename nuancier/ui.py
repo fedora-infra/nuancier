@@ -88,6 +88,15 @@ def contribute(election_id):
         flask.flash('This election is not open for submission', 'error')
         return flask.redirect(flask.url_for('elections_list'))
 
+    candidates = nuancier.lib.model.Candidates.get_by_submitter(
+        SESSION, flask.g.fas_user.username, election_id)
+    if len(candidates) >= election.user_n_candidates:
+        flask.flash(
+            'You have uploaded the maximum number of candidates (%s) you '
+            'can upload for this election' % election.user_n_candidates,
+            'error')
+        return flask.redirect(flask.url_for('elections_list'))
+
     form = nuancier.forms.AddCandidateForm()
     if form.validate_on_submit():
         candidate_file = flask.request.files['candidate_file']
