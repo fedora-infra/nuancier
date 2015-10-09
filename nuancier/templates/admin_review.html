@@ -39,9 +39,18 @@ candidates or not.
 
 <form action="." method="GET">
   <select name="status">
-    <option value="all">all</option>
-    <option value="1">Approved</option>
-    <option value="0">Pending/Rejected</option>
+    <option value="all"{% if status == 'all'%} selected{% endif %}>
+      All
+    </option>
+    <option value="approved"{% if status == 'all'%} selected{% endif %}>
+      Approved
+    </option>
+    <option value="pending"{% if status == 'all'%} selected{% endif %}>
+      Pending
+    </option>
+    <option value="denied"{% if status == 'all'%} selected{% endif %}>
+      Rejected
+    </option>
   </select>
   <input type="submit" value="Filter"/>
 </form>
