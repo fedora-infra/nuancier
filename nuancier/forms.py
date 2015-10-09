@@ -77,7 +77,7 @@ class AddElectionForm(flask_wtf.Form):
         [wtf.validators.Required(), is_number])
     user_n_candidates = wtf.TextField(
         'Number of candidate an user can upload',
-        [wtf.validators.Required(), is_number])
+        [is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):

@@ -99,7 +99,7 @@ class Elections(BASE):
     election_date_start = sa.Column(sa.Date, nullable=False)
     election_date_end = sa.Column(sa.Date, nullable=False)
     submission_date_start = sa.Column(sa.Date, nullable=False)
-    user_n_candidates = sa.Column(sa.Integer, nullable=False)
+    user_n_candidates = sa.Column(sa.Integer, nullable=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
@@ -110,7 +110,7 @@ class Elections(BASE):
     def __init__(self, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
                  submission_date_start, election_n_choice=16,
-                 user_n_candidates=5, election_badge_link=None):
+                 user_n_candidates=None, election_badge_link=None):
         """ Constructor.
 
         :arg election_name:

@@ -90,7 +90,8 @@ def contribute(election_id):
 
     candidates = nuancier.lib.model.Candidates.get_by_submitter(
         SESSION, flask.g.fas_user.username, election_id)
-    if len(candidates) >= election.user_n_candidates:
+    if election.user_n_candidates and \
+        len(candidates) >= election.user_n_candidates:
         flask.flash(
             'You have uploaded the maximum number of candidates (%s) you '
             'can upload for this election' % election.user_n_candidates,

@@ -292,7 +292,8 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
 
     candidates = nuancier.lib.model.Candidates.get_by_submitter(
         session, candidate_submitter, election_id)
-    if len(candidates) >= election.user_n_candidates:
+    if election.user_n_candidates and \
+        len(candidates) >= election.user_n_candidates:
         raise NuancierException(
             'You have uploaded the maximum number of candidates (%s) you '
             'can upload for this election' % election.user_n_candidates)
