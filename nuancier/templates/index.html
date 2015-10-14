@@ -46,7 +46,7 @@ wallpapers included in Fedora.
         <a class="large_button" href="{{ url_for('election', election_id=election.id) }}">
             {{ election.election_name }} - {{ election.election_year }}
         </a>
-        until {{ election.election_date_start }}
+        until {{ election.election_date_end }}
     </li>
     {% endfor %}
 </ul>
