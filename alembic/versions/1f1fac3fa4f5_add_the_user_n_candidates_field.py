@@ -15,14 +15,12 @@ import sqlalchemy as sa
 
 
 def upgrade():
-    ''' Add the election_date_start and election_date_end columns to the
-    Elections table '''
+    ''' Add the user_n_candidates column to the Elections table '''
     op.add_column(
         'Elections', sa.Column('user_n_candidates', sa.Integer)
     )
 
 
 def downgrade():
-    ''' Remove the columns election_date_start and election_date_end from the
-    Elections table. '''
+    ''' Remove the user_n_candidates column from the Elections table. '''
     op.drop_column('Elections', 'user_n_candidates')
