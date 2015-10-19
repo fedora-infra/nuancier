@@ -155,7 +155,7 @@ def admin_new():
 
 @APP.route('/admin/review/<election_id>/', methods=['GET'])
 @nuancier_admin_required
-def admin_review(election_id):
+def admin_review(election_id, status='all'):
     ''' Review a new election. '''
     election = nuancierlib.get_election(SESSION, election_id)
 
@@ -173,13 +173,53 @@ def admin_review(election_id):
             'The results of this election are already public, this election'
             ' can no longer be changed', 'error')
 
-    status = flask.request.args.get('status', 'all')
+    status = flask.request.args.get('status', status)
+
+    return flask.redirect(flask.url_for(
+        'admin_review_status', election_id=election_id, status=status))
+
+
+@APP.route('/admin/review/<election_id>/<status>', methods=['GET'])
+@nuancier_admin_required
+def admin_review_status(election_id, status):
+    ''' Review a new election depending on the status of the candidates. '''
+    election = nuancierlib.get_election(SESSION, election_id)
+
+    if not election:
+        flask.flash('No election found', 'error')
+        return flask.render_template('msg.html')
+
+    if election.election_open:
+        flask.flash(
+            'This election is already open to public votes and can no '
+            'longer be changed', 'error')
+
+    if election.election_public:
+        flask.flash(
+            'The results of this election are already public, this election'
+            ' can no longer be changed', 'error')
+
+    status = flask.request.args.get('status', status)
     if status == 'all':
-        status = None
+        _status = None
+    elif status in ['pending', 'denied']:
+        _status = 0
+    else:
+        _status = 1
 
     candidates = nuancierlib.get_candidates(
-        SESSION, election_id, approved=status
+        SESSION, election_id, approved=_status
     )
+    if status == 'pending':
+        candidates = [
+            candidate for candidate in candidates
+            if candidate.approved_motif in [None, '']
+        ]
+    elif status == 'denied':
+        candidates = [
+            candidate for candidate in candidates
+            if candidate.approved_motif not in [None, '']
+        ]
 
     template = 'admin_review.html'
     if election.election_public or election.election_open \
@@ -194,7 +234,9 @@ def admin_review(election_id):
         picture_folder=os.path.join(
             APP.config['PICTURE_FOLDER'], election.election_folder),
         cache_folder=os.path.join(
-            APP.config['CACHE_FOLDER'], election.election_folder))
+            APP.config['CACHE_FOLDER'], election.election_folder),
+        status=status,
+    )
 
 
 @APP.route('/admin/review/<election_id>/process', methods=['POST'])
@@ -205,6 +247,11 @@ def admin_process_review(election_id):
         flask.flash('You are not an administrator of nuancier',
                         'error')
         return flask.redirect(flask.url_for('msg'))
+
+    status = flask.request.args.get('status', None)
+    endpoint = 'admin_review'
+    if status:
+        endpoint = 'admin_review_status'
 
     election = nuancierlib.get_election(SESSION, election_id)
 
@@ -243,8 +290,8 @@ def admin_process_review(election_id):
         flask.flash(
             'Only the actions "Approved" or "Denied" are accepted',
             'error')
-        return flask.redirect(
-            flask.url_for('admin_review', election_id=election_id))
+        return flask.redirect(flask.url_for(
+                endpoint, election_id=election_id, status=status))
 
     selections = []
     for cand in candidates_id:
@@ -266,8 +313,8 @@ def admin_process_review(election_id):
             flask.flash(
                 'You must provide a motif to deny a candidate',
                 'error')
-            return flask.redirect(
-                flask.url_for('admin_review', election_id=election_id))
+            return flask.redirect(flask.url_for(
+                endpoint, election_id=election_id, status=status))
 
     cnt = 0
     for candidate in candidates_selected:
@@ -275,8 +322,8 @@ def admin_process_review(election_id):
             flask.flash(
                 'One of the candidate submitted was not candidate in this '
                 'election', 'error')
-            return flask.redirect(
-                flask.url_for('admin_review', election_id=election_id))
+            return flask.redirect(flask.url_for(
+                endpoint, election_id=election_id, status=status))
 
     msgs = []
 
@@ -336,8 +383,8 @@ def admin_process_review(election_id):
             msg=msg['msg'],
         )
 
-    return flask.redirect(
-        flask.url_for('admin_review', election_id=election_id))
+    return flask.redirect(flask.url_for(
+        endpoint, election_id=election_id, status=status))
 
 
 @APP.route('/admin/cache/<int:election_id>')
