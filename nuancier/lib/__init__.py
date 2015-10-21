@@ -149,7 +149,7 @@ def get_results(session, election_id):
 def add_election(session, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
                  submission_date_start, election_n_choice,
-                 election_badge_link=None, user=None):
+                 user_n_candidates, election_badge_link=None, user=None):
     """ Add a new election to the database.
 
     :arg session:
@@ -160,6 +160,7 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_date_end:
     :arg submission_date_start:
     :arg election_n_choice:
+    :arg user_n_candidates:
     :kwarg election_badge_link:
     :kwarg user: The user/admin creating the election.
     """
@@ -174,6 +175,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_date_end=election_date_end,
         submission_date_start=submission_date_start,
         election_n_choice=election_n_choice,
+        user_n_candidates=user_n_candidates,
         election_badge_link=election_badge_link,
     )
     session.add(election)
@@ -193,7 +195,7 @@ def add_election(session, election_name, election_folder, election_year,
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
                   submission_date_start, election_n_choice,
-                  election_badge_link=None, user=None):
+                  user_n_candidates, election_badge_link=None, user=None):
     """ Edit an election of the database.
 
     :arg session:
@@ -205,6 +207,7 @@ def edit_election(session, election, election_name, election_folder,
     :arg election_date_end:
     :arg submission_date_start:
     :arg election_n_choice:
+    :arg user_n_candidates:
     :kwarg election_badge_link:
     :kwarg user:
     """
@@ -244,6 +247,10 @@ def edit_election(session, election, election_name, election_folder,
         election.election_badge_link = election_badge_link
         edited.append('election badge link')
 
+    if election.user_n_candidates != user_n_candidates:
+        election.user_n_candidates = user_n_candidates
+        edited.append('Number of candidates per user')
+
     if edited:
         session.add(election)
         session.flush()
@@ -281,6 +288,16 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     if not user:
         raise NuancierException('User required to add a new candidate')
 
+    election = nuancier.lib.model.Elections.by_id(session, election_id)
+
+    candidates = nuancier.lib.model.Candidates.get_by_submitter(
+        session, candidate_submitter, election_id)
+    if election.user_n_candidates and \
+        len(candidates) >= election.user_n_candidates:
+        raise NuancierException(
+            'You have already uploaded the maximum number of candidates (%s) '
+            'you can upload for this election' % election.user_n_candidates)
+
     candidate = nuancier.lib.model.Candidates.by_election_file(
         session, election_id, candidate_file)
     if candidate:
@@ -301,8 +318,6 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     )
     session.add(candidate)
     session.flush()
-
-    election = nuancier.lib.model.Elections.by_id(session, election_id)
 
     notifications.publish(
         topic='candidate.new',

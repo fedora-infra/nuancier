@@ -73,8 +73,11 @@ class AddElectionForm(flask_wtf.Form):
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
     election_n_choice = wtf.TextField(
-        'Number of votes a user can make',
+        'Number of votes an user can make',
         [wtf.validators.Required(), is_number])
+    user_n_candidates = wtf.TextField(
+        'Number of candidate an user can upload',
+        [is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):
@@ -92,6 +95,7 @@ class AddElectionForm(flask_wtf.Form):
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
             self.submission_date_start.data = election.submission_date_start
+            self.user_n_candidates.data = election.user_n_candidates
 
 
 class AddCandidateForm(flask_wtf.Form):
