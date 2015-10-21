@@ -205,9 +205,9 @@ def admin_review_status(election_id, status):
     if status == 'all':
         _status = None
     elif status in ['pending', 'denied']:
-        _status = 0
+        _status = False
     else:
-        _status = 1
+        _status = True
 
     candidates = nuancierlib.get_candidates(
         SESSION, election_id, approved=_status
