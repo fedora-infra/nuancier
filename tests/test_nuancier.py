@@ -1757,6 +1757,29 @@ class Nuanciertests(Modeltests):
 
             self.assertFalse(os.path.exists(upload_path))
 
+    def test_contribute_max_upload(self):
+        """ Test the contribute function when the user has already submitted
+        a number of candidates.
+        """
+
+        create_elections(self.session)
+        create_candidates(self.session)
+        upload_path = os.path.join(PICTURE_FOLDER, 'F21')
+
+        user = FakeFasUser()
+        user.cla_done = True
+        with user_set(nuancier.APP, user):
+            output = self.app.get('/contribute/3', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Elections</h1>' in output.data)
+            self.assertTrue(
+                'Listed here are all current and past elections.'
+                in output.data)
+            self.assertTrue(
+                '<li class="error">You have uploaded the maximum number of '
+                'candidates (3) you can upload for this election</li>'
+                in output.data)
+
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(Nuanciertests)

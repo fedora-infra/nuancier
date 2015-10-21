@@ -159,6 +159,7 @@ def create_elections(session):
         election_folder='F21',
         election_year='2014',
         election_n_choice=2,
+        user_n_candidates=3,
         submission_date_start=TODAY - timedelta(days=2),
         election_date_start=TODAY + timedelta(days=1),
         election_date_end=TODAY + timedelta(days=6),
