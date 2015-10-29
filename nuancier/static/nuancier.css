@@ -237,8 +237,8 @@ a:visited.large_button {
 {
     display:block;
     -moz-transition: height 0.6s ease-out, opacity 0.8s ease-out;
-    opacity:0;
-    height: 0;
+    opacity:0.3;
+    pointer-events: none;
 }
 
 
