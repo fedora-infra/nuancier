@@ -54,8 +54,7 @@ class AddElectionForm(flask_wtf.Form):
         'Election name',
         [wtf.validators.Required()])
     election_folder = wtf.TextField(
-        'Name of the folder containing the pictures '
-        '<span class="error">*</span>',
+        'Name of the folder containing the pictures',
         [wtf.validators.Required()])
     election_year = wtf.TextField(
         'Year',
