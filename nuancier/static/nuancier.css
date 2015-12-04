@@ -237,9 +237,8 @@ a:visited.large_button {
 {
     display:block;
     -moz-transition: height 0.6s ease-out, opacity 0.8s ease-out;
-    opacity:0;
-    height:0;
-
+    opacity:0.3;
+    pointer-events: none;
 }
 
 
@@ -265,19 +264,19 @@ a:visited.large_button {
     width:100%;
 }
 
-#votechoice .hoveroverlay
+#votechoice .resizelink
 {
     position:absolute;
     width:250px;
     height:100%;
     min-height:100%;
     top:0;
-    cursor:pointer;
     left:0;
+    cursor:pointer;
     background-color:rgba(50,50,50,0.7);
     z-index:999;
     display:none;
-    background-image:url(vote-hover.png);
+    background-image:url(zoomin-hover.png);
     background-repeat: no-repeat;
     background-position: bottom 10px right 10px;
 }
@@ -309,7 +308,7 @@ a:visited.large_button {
     left:0;
 }
 
-.resizelink
+.hoveroverlay
 {
     position:absolute;
     left:-9999px;
@@ -318,7 +317,7 @@ a:visited.large_button {
     z-index:1000;
     width:50px;
     height:50px;
-    background-image:url(zoomin.png);
+    background-image:url(vote.png);
     background-repeat:no-repeat;
     background-position: top right;
 }
@@ -330,16 +329,16 @@ a:visited.large_button {
     left:-9999px!important;
 }
 
-.resizelink:hover,
-.resizelink:focus
+.hoveroverlay:hover,
+.hoveroverlay:focus
 {
-    background-image:url(zoomin-hover.png);
+    background-image:url(vote-hover.png);
 }
 
-.resizelink:hover + label > .hoveroverlay,
-.resizelink:focus + label > .hoveroverlay
+.hoveroverlay:hover + label > .resizelink,
+.hoveroverlay:focus + label > .resizelink
 {
-    background-image:url(vote.png)!important;
+    background-image:url(zoomin.png)!important;
 }
 
 #fixedsidebar
