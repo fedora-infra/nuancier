@@ -43,25 +43,30 @@ It was first named ``nuancier-lite`` and renamed to ``nuancier`` when support
 for uploads and moderation was added.
 
 
-On April 29, 2014 (versoin 0.8.2), the list looks as follow:
+On December 04, 2015 (version 0.9.0), the list looks as follow:
 
 =================  ===========
 Number of commits  Contributor
 =================  ===========
-    616             Pierre-Yves Chibon <pingou@pingoured.fr>
-     31             Ralph Bean <rbean@redhat.com>
-      9             Ryan Lerch <ryanlerch@fedoraporject.org>
-      5             Jenn <jennlkotler@gmail.com>
-      4             Shagufta <methwanishagufta@gmail.com>
-      3             Michael Haynes <mhaynes.linux@gmail.com>
-      2             Ricky Elrod <ricky@elrod.me>
-      1             Chaoyi Zha <summermontreal@gmail.com>
-      1             Gerard Ryan <gerard@ryan.lt>
-      1             Paul W. Frields <stickster@gmail.com>
-      1             Praveen Kumar <prkumar@redhat.com>
-      1             Toshio Kuratomi <a.badger@gmail.com>
-      1             Vatsala Dorairajan <vatsala.dorairajan@gmail.com>
-      1             anshu <anshu@aerospike.com>
+   662              Pierre-Yves Chibon <pingou@pingoured.fr>
+    32              Ralph Bean <rbean@redhat.com>
+     9              Ryan Lerch <ryanlerch@fedoraporject.org>
+     5              Jenn <jennlkotler@gmail.com>
+     4              Shagufta <methwanishagufta@gmail.com>
+     3              Michael Haynes <mhaynes.linux@gmail.com>
+     2              Gaurav Kumar <aavrug@gmail.com>
+     2              Ricky Elrod <ricky@elrod.me>
+     1              Chaoyi Zha <summermontreal@gmail.com>
+     1              Gerard Ryan <gerard@ryan.lt>
+     1              Micah Abbott <miabbott@redhat.com>
+     1              Paul W. Frields <stickster@gmail.com>
+     1              Praveen Kumar <prkumar@redhat.com>
+     1              Sayan Chowdhury <sayan.chowdhury2012@gmail.com>
+     1              Toshio Kuratomi <a.badger@gmail.com>
+     1              Vatsala Dorairajan <vatsala.dorairajan@gmail.com>
+     1              Vivek Anand <vivekanand1101@users.noreply.github.com>
+     1              anshu <anshu@aerospike.com>
+     1              farhaanbukhsh <farhaan.bukhsh@gmail.com>
 =================  ===========
 
 This list is generated using

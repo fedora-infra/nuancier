@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.8.2
+Version:        0.9.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -94,6 +94,22 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Fri Dec 04 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.9.0-1
+- Update to 0.9.0
+- Adjust the url to faitout for the tests
+- Fix incorrect FAS URLs in the templates (Micah Abbott)
+- Show the end of the submission period on the contribute page (farhaanbukhsh)
+- Order the election by the date of publication of their results (Vivek Anand)
+- Adjust the header of the table listing the elections
+- Near the vote button show the end date of the election
+- Update the "Denied submissions" page to become a "Your submissions" page
+- Have one page per submissions status, allowing easier come-back
+- Limit the number of uploads per person
+- Bug fixes from Gaurav Kumar and Sayan Chowdhury
+- Change behavior on the voting page (Default to zoom, don't remove candidate
+  when voting on it)
+- Update to the latest lightbox
+
 * Wed Apr 29 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.8.2-1
 - Update to 0.8.2
 - Fix the graph on the stats page

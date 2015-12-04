@@ -55,7 +55,7 @@ import nuancier.proxy
 # pylint: disable=E1101, E1103
 
 
-__version__ = '0.8.2'
+__version__ = '0.9.0'
 
 APP = flask.Flask(__name__)
 
