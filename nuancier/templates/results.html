@@ -3,8 +3,8 @@
 {% block title %} {{ super() }} {% endblock %}
 
 {%block head %}
-<script src="{{ url_for('static', filename='lightbox/js/jquery-1.10.2.min.js') }}"></script>
-<script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox/js/lightbox.js') }}"></script>
 <link rel="stylesheet" type="text/css" media="screen"
         href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}"/>
 {% endblock %}
