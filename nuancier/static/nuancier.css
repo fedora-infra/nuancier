@@ -381,3 +381,7 @@ a:visited.large_button {
 .firstout td {
     border-top: 2px solid red !important;
 }
+
+.progress-bar {
+    background-color: #2970A2;
+}
