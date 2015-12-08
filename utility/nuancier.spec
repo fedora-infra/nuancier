@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.9.0
+Version:        0.10.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -94,6 +94,12 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Tue Dec 08 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.10.0-1
+- Update to 0.10.0
+- Added progress bar when uploading candidates file (Gaurav Kumar)
+- Fix the URLs pointing where jquery and lightbox (broken with the lightbox
+  update)
+
 * Fri Dec 04 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.9.0-1
 - Update to 0.9.0
 - Adjust the url to faitout for the tests
