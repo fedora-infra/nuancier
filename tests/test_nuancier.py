@@ -1425,7 +1425,7 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/admin/review/3/process', data=data,
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You must provide a motif to '
+            self.assertTrue('<li class="error">You must provide a reason to '
                             'deny a candidate</li>' in output.data)
 
             # Fails: no motif to reject candidate
@@ -1438,7 +1438,7 @@ class Nuanciertests(Modeltests):
             output = self.app.post('/admin/review/3/process', data=data,
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
-            self.assertTrue('<li class="error">You must provide a motif to '
+            self.assertTrue('<li class="error">You must provide a reason to '
                             'deny a candidate</li>' in output.data)
 
             # Valid submission

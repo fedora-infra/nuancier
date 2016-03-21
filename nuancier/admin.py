@@ -313,7 +313,7 @@ def admin_process_review(election_id):
                 break
         if req_motif:
             flask.flash(
-                'You must provide a motif to deny a candidate',
+                'You must provide a reason to deny a candidate',
                 'error')
             return flask.redirect(flask.url_for(
                 endpoint, election_id=election_id, status=status))
