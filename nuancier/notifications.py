@@ -68,7 +68,8 @@ The Nuancier administrators team
 """.format(motif)
 
     msg = MIMEText(message)
-    msg['Subject'] = '[Nuancier] {0} has been rejected'.format(img_title)
+    msg['Subject'] = '[Nuancier] {0} has been rejected'.format(
+        img_title.encode('utf-8'))
     from_email = nuancier.APP.config.get(
         'NUANCIER_EMAIL_FROM', 'nobody@fedoraproject.org')
     msg['From'] = from_email
