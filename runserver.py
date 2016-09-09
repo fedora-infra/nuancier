@@ -36,8 +36,7 @@ args = parser.parse_args()
 if args.config:
     config = args.config
     if not config.startswith('/'):
-        here = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-        config = os.path.join(here, config)
+        config = os.path.join(os.getcwd(), config)
     os.environ['NUANCIER_CONFIG'] = config
 
 from nuancier import APP
