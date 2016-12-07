@@ -23,20 +23,24 @@
 WTF Forms of the nuancier Flask application.
 '''
 
+import datetime
+
 import wtforms as wtf
-## pylint cannot import flask extension correctly
+# pylint cannot import flask extension correctly
 # pylint: disable=E0611,F0401
 from flask.ext import wtf as flask_wtf
 
+from nuancier import APP
 
-## We apparently use old style super in our __init__
+
+# We apparently use old style super in our __init__
 # pylint: disable=E1002
-## One of our forms does not even have __init__
+# One of our forms does not even have __init__
 # pylint: disable=W0232
-## Couple of our forms do not have enough methods
+# Couple of our forms do not have enough methods
 # pylint: disable=R0903
 
-## Yes we do nothing with the form argument but it's required...
+# Yes we do nothing with the form argument but it's required...
 # pylint: disable=W0613
 def is_number(form, field):
     ''' Check if the data in the field is a number and raise an exception
@@ -48,7 +52,39 @@ def is_number(form, field):
         raise wtf.ValidationError('Field must contain a number')
 
 
-class AddElectionForm(flask_wtf.Form):
+class BaseForm(flask_wtf.Form):
+    """
+    Provide a base form class.
+
+    For new versions of flask-wtf (greater than 0.10.0), this behaves exactly
+    like :class:`flask_wtf.Form`.
+
+    Versions of flask-wtf prior to 0.10.0 did not have or did not properly use
+    the 'WTF_CSRF_TIME_LIMIT' setting. This configures the self.TIME_LIMIT
+    value used by flask-wtf if the delta is not None and it's an old version of
+    flask-wtf. See https://github.com/lepture/flask-wtf/issues/131 for more
+    information.
+    """
+
+    def __init__(self, *args, **kwargs):
+        delta = APP.config.get('WTF_CSRF_TIME_LIMIT', 3600)
+
+        try:
+            version_tuple = tuple(int(v) for v in flask_wtf.__version__.split('.'))
+            old_version = version_tuple <= (0, 10, 0)
+        except AttributeError:
+            # Prior to 0.9.2, there was no __version__ attribute
+            old_version = True
+
+        if delta and old_version:
+            # Annoyingly, in the old version this needs to be a timedelta, but later
+            # versions expect it to be an integer.
+            self.TIME_LIMIT = datetime.timedelta(seconds=delta)
+
+        super(BaseForm, self).__init__(*args, **kwargs)
+
+
+class AddElectionForm(BaseForm):
     ''' Form to add a new election. '''
     election_name = wtf.TextField(
         'Election name',
@@ -97,7 +133,7 @@ class AddElectionForm(flask_wtf.Form):
             self.user_n_candidates.data = election.user_n_candidates
 
 
-class AddCandidateForm(flask_wtf.Form):
+class AddCandidateForm(BaseForm):
     ''' Form to add a candidate to an election. '''
     candidate_name = wtf.TextField(
         'Title', [wtf.validators.Required()])
@@ -124,6 +160,6 @@ class AddCandidateForm(flask_wtf.Form):
         super(AddCandidateForm, self).__init__(*args, **kwargs)
 
 
-class ConfirmationForm(flask_wtf.Form):
+class ConfirmationForm(BaseForm):
     ''' Simply, dummy form used for csrf validation. '''
     pass

@@ -45,6 +45,11 @@ except ImportError:  # pragma: no cover
     # This is for the old versions not using pillow
     import Image
 
+# There's currently a circular dependency between forms.py
+# and this module and a refacter is required to fix it.
+# until then, this needs to be set up before forms is imported.
+APP = flask.Flask(__name__)  # NOQA
+
 import nuancier.forms
 import nuancier.lib as nuancierlib
 import nuancier.proxy
@@ -57,7 +62,6 @@ import nuancier.proxy
 
 __version__ = '0.10.0'
 
-APP = flask.Flask(__name__)
 
 APP.config.from_object('nuancier.default_config')
 if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
