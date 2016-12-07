@@ -51,6 +51,33 @@ The dependency list is therefore:
 Running a development instance:
 -------------------------------
 
+You can either set up a development environment manually, or using Ansible
+with Vagrant.
+
+Vagrant
+^^^^^^^
+
+The best way to set up a development enviroment is to use `Vagrant <https://vagrantup.com/>`_.
+Vagrant provisions a new virtual machine and then runs the Ansible playbook on it automatically.
+To get started, install Vagrant::
+
+    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible
+
+Next, clone the repository and copy the example Vagrantfile from ``Vagrantfile.example``::
+
+    $ git clone https://github.com/fedora-infra/nuancier.git
+    $ cd nuancier
+    $ cp Vagrantfile.example Vagrantfile  # Edit Vagrantfile to your heart's content
+    $ vagrant up
+    $ vagrant reload
+    $ vagrant ssh
+
+All done! The VM contains all the required dependencies pre-installed.
+
+
+Manual
+^^^^^^
+
 Clone the source::
 
  git clone https://github.com/fedora-infra/nuancier.git
