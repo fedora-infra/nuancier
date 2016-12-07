@@ -13,3 +13,9 @@ cache/
 pictures/
 alembic.ini
 *.rpm
+
+# Vagrant files
+Vagrantfile
+.vagrant/
+*.retry
+.dnf-cache/

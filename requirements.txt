@@ -1,13 +1,14 @@
 # Used for when working from a virtualenv.
 # Use this file by running "$ pip install -r requirements.txt"
-wtforms
-flask-wtf
-flask
-python-fedora >= 0.3.33
-Pillow
-SQLAlchemy>=0.6
-dogpile.cache
+alembic
 blinker # required by flask for tests
+dogpile.cache
+flask
+flask-wtf
+Pillow
+python-fedora >= 0.3.33
 python-openid
 python-openid-cla
 python-openid-teams
+SQLAlchemy>=0.6
+wtforms
