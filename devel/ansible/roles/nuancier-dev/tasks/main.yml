@@ -1,0 +1,106 @@
+---
+
+- name: Install helpful development packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - git
+    - python-sphinx
+    - python-virtualenvwrapper
+    - vim-enhanced
+
+- name: Install nuancier system dependencies
+  dnf: name={{ item }} state=present
+  with_items:
+    - gcc
+    - libffi-devel
+    - openssl-devel
+    - python2-devel
+    - python3-devel
+    - redhat-rpm-config
+    - rpm-python
+
+# Add various helpful configuration files
+- name: Install a custom bashrc
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  copy: src=bashrc dest=/home/{{ ansible_env.SUDO_USER }}/.bashrc
+
+- name: Install the message of the day
+  copy: src=motd dest=/etc/motd
+
+- name: Install nuancier.cfg
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  copy: src=nuancier.cfg dest=/home/{{ ansible_env.SUDO_USER }}/nuancier.cfg
+
+- name: Install alembic.ini
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  copy: src=alembic.ini dest=/home/{{ ansible_env.SUDO_USER }}/alembic.ini
+
+
+# Add the virtualenv
+- name: Create nuancier virtualenv
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  shell: >
+      source ~/.bashrc && mkvirtualenv nuancier -a ~/devel/
+  args:
+    creates: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier
+
+- name: Install nuancier requirements into the virtualenv
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  pip:
+    requirements: "requirements.txt"
+    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
+    virtualenv_python: python2
+  args:
+    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+
+- name: Install nuancier test requirements into the virtualenv
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  pip:
+    requirements: "test-requirements.txt"
+    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
+    virtualenv_python: python2
+  args:
+    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+
+- name: Install nuancier into the virtualenv
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  pip:
+    name: "file:///home/{{ ansible_env.SUDO_USER }}/devel"
+    extra_args: "-e"
+    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
+    virtualenv_python: python2
+
+
+# Create and configure the database
+- name: Create the nuancier SQLite database
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  command: .virtualenvs/nuancier/bin/python devel/createdb.py
+  args:
+    creates: /var/tmp/nuancier_lite.sqlite
+    chdir: "/home/{{ ansible_env.SUDO_USER }}/"
+
+- name: Stamp the database with its current migration
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  shell: >
+      ~/.virtualenvs/nuancier/bin/alembic stamp
+      $(~/.virtualenvs/nuancier/bin/alembic heads | awk '{ print $1 }')
+  args:
+    chdir: "/home/{{ ansible_env.SUDO_USER }}/"
+
+
+# Set up the service unit
+- name: Create user systemd directory
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  file:
+    path: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/
+    state: directory
+
+- name: Install the nuancier systemd service file
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  copy:
+    src: nuancier.service
+    dest: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/nuancier.service
+
+- name: Reload systemd daemon
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  command: systemctl --user daemon-reload
