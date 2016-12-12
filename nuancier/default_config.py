@@ -30,9 +30,9 @@ from datetime import timedelta
 # Set the time after which the session expires
 PERMANENT_SESSION_LIFETIME = timedelta(hours=1)
 
-# The length of time a CSRF token is valid. Setting this to `None` binds
-# it to the session lifetime, but this only works if you have flask-wtf-0.10.1
-# or greater.
+# The length of time a CSRF token is valid in seconds. If you are running
+# flask-wtf-0.10.1 or greater, you can set this to ``None`` to bind the CSRF
+# lifetime to the life of the session.
 WTF_CSRF_TIME_LIMIT = 3600
 
 # url to the database server:
