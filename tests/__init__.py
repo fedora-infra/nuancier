@@ -22,6 +22,7 @@
 '''
 nuancier tests.
 '''
+from __future__ import print_function
 
 __requires__ = ['SQLAlchemy >= 0.7']
 import pkg_resources
@@ -48,7 +49,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 from nuancier.lib import model
 
 DB_PATH = 'sqlite:///:memory:'
-PICTURE_FOLDER = os.path.join(os.path.dirname(__file__), 'pictures')
+PICTURE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
 TODAY = datetime.utcnow().date()
 FAITOUT_URL = 'http://faitout.fedorainfracloud.org/'
@@ -59,7 +60,7 @@ if os.environ.get('BUILD_ID'):
         req = requests.get('%s/new' % FAITOUT_URL)
         if req.status_code == 200:
             DB_PATH = req.text
-            print 'Using faitout at: %s' % DB_PATH
+            print('Using faitout at: %s' % DB_PATH)
     except:
         pass
 
@@ -113,8 +114,8 @@ class Modeltests(unittest.TestCase):
             elif os.path.isfile(CACHE_FOLDER):
                 os.unlink(CACHE_FOLDER)
             else:
-                print >> sys.stderr, \
-                    'Check %s, it cannot be removed' % CACHE_FOLDER
+                print('Check %s, it cannot be removed' % CACHE_FOLDER,
+                      file=sys.stderr)
 
         self.session.rollback()
 
