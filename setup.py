@@ -26,7 +26,7 @@ def get_version():
         regex = r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]'
         version = re.search(regex, fd.read(), re.MULTILINE).group(1)
     if not version:
-        raise RuntimeError('No version set in hotness/__init__.py')
+        raise RuntimeError('No version set in nuancier/__init__.py')
     return version
 
 
@@ -64,4 +64,14 @@ setup(
     include_package_data=True,
     install_requires=get_requirements(),
     tests_require=get_requirements('test-requirements.txt'),
+    classifiers=[
+        'Environment :: Web Environment',
+        'Framework :: Flask',
+        'Intended Audience :: End Users/Desktop',
+        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+    ],
 )
