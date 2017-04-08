@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -26,9 +26,7 @@ WTF Forms of the nuancier Flask application.
 import datetime
 
 import wtforms as wtf
-# pylint cannot import flask extension correctly
-# pylint: disable=E0611,F0401
-from flask.ext import wtf as flask_wtf
+import flask_wtf
 
 from nuancier import APP
 
