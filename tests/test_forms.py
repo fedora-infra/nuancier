@@ -61,7 +61,7 @@ class BaseFormTests(unittest.TestCase):
     def test_old_version_using_new(self):
         """Assert that for old versions, TIME_LIMIT is set on forms"""
         with APP.test_request_context('/'):
-            for v in ('0.10.0', '0.8', '0.9'):
+            for v in ('0.8', '0.9'):
                 with mock.patch('nuancier.forms.flask_wtf.__version__', new=v):
                     form = forms.BaseForm()
                     self.assertEqual(
