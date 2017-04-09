@@ -494,6 +494,11 @@ def update_candidate(cand_id):
             'You are not the person that submitted this candidate, you may '
             'not update it', 'error')
         return flask.redirect(flask.url_for('elections_list'))
+    elif not candidate.election.allows_updating:
+        flask.flash(
+            'This election does not allow rejected candidate to be updated',
+            'error')
+        return flask.redirect(flask.url_for('elections_list'))
 
     form = nuancier.forms.AddCandidateForm(obj=candidate)
     if form.validate_on_submit():

@@ -122,6 +122,7 @@ class AddElectionForm(BaseForm):
         'Number of candidate an user can upload',
         [wtf.validators.Required(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
+    allows_updating = wtf.BooleanField('Allows updating rejected candidate')
 
     def __init__(self, *args, **kwargs):
         ''' Calls the default constructor and fill in additional information.
@@ -140,6 +141,7 @@ class AddElectionForm(BaseForm):
             self.election_n_choice.data = election.election_n_choice
             self.submission_date_start.data = election.submission_date_start
             self.user_n_candidates.data = election.user_n_candidates
+            self.allows_updating.data = election.allows_updating
 
 
 class AddCandidateForm(BaseForm):

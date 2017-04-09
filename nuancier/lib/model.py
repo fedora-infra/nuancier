@@ -101,6 +101,7 @@ class Elections(BASE):
     submission_date_start = sa.Column(sa.Date, nullable=False)
     submission_date_end = sa.Column(sa.Date, nullable=False)
     user_n_candidates = sa.Column(sa.Integer, nullable=True)
+    allows_updating = sa.Column(sa.Boolean, nullable=False, default=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
                              default=sa.func.current_timestamp())
