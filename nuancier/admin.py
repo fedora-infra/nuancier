@@ -88,6 +88,7 @@ def admin_edit(election_id):
                 election_n_choice=form.election_n_choice.data,
                 user_n_candidates=form.user_n_candidates.data,
                 election_badge_link=form.election_badge_link.data,
+                allows_updating=form.allows_updating.data,
                 user=flask.g.fas_user.username,
             )
             SESSION.commit()
@@ -136,6 +137,7 @@ def admin_new():
                 election_n_choice=form.election_n_choice.data,
                 user_n_candidates=form.user_n_candidates.data,
                 election_badge_link=form.election_badge_link.data,
+                allows_updating=form.allows_updating.data,
                 user=flask.g.fas_user.username,
             )
 
