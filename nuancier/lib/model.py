@@ -107,30 +107,6 @@ class Elections(BASE):
                              default=sa.func.current_timestamp(),
                              onupdate=sa.func.current_timestamp())
 
-    def __init__(self, election_name, election_folder, election_year,
-                 election_date_start, election_date_end,
-                 submission_date_start, election_n_choice=16,
-                 user_n_candidates=None, election_badge_link=None):
-        """ Constructor.
-
-        :arg election_name:
-        :arg election_folder:
-        :arg election_year:
-        :arg election_date_start:
-        :arg election_date_end:
-        :arg election_n_choice:
-        :arg election_badge_link:
-        """
-        self.election_name = election_name
-        self.election_folder = election_folder
-        self.election_year = election_year
-        self.election_date_start = election_date_start
-        self.election_date_end = election_date_end
-        self.submission_date_start = submission_date_start
-        self.election_n_choice = election_n_choice
-        self.user_n_candidates = user_n_candidates
-        self.election_badge_link = election_badge_link
-
     @property
     def submission_open(self):
         ''' Returns if this election is opened for contribution or not. '''
@@ -285,34 +261,6 @@ class Candidates(BASE):
         is either Approved or Pending Review.
         """
         return bool(not self.approved and self.approved_motif)
-
-    def __init__(self, candidate_file, candidate_name, candidate_author,
-                 candidate_license, candidate_submitter, submitter_email,
-                 election_id, candidate_original_url=None, approved=False):
-        """ Constructor
-
-        :arg candidate_file: the file name of the candidate
-        :arg candidate_name: the name of the candidate
-        :arg candidate_author: the name of the author of this candidate
-        :arg candidate_license: the license name of the candidate
-        :arg candidate_submitter: the name of the submitter of this candidate
-        :arg submitter_email: the email address of submitter
-        :arg election_id: the identifier of the election this candidate is
-            candidate for.
-        :kwarg candidate_original_url: if the artwork originates from
-            someone else, this should be a link to the original artwork.
-        :kwarg approved: a boolean specifying if this candidate is approved
-            or not for this election.
-        """
-        self.candidate_file = candidate_file
-        self.candidate_name = candidate_name
-        self.candidate_author = candidate_author
-        self.candidate_original_url = candidate_original_url
-        self.election_id = election_id
-        self.candidate_license = candidate_license
-        self.candidate_submitter = candidate_submitter
-        self.submitter_email = submitter_email
-        self.approved = approved
 
     def __repr__(self):
         return 'Candidates(file:%r, name:%r, election_id:%r, created:%r' % (
