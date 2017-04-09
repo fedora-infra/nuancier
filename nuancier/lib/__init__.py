@@ -151,8 +151,9 @@ def get_results(session, election_id):
 
 def add_election(session, election_name, election_folder, election_year,
                  election_date_start, election_date_end,
-                 submission_date_start, election_n_choice,
-                 user_n_candidates, election_badge_link=None, user=None):
+                 submission_date_start, submission_date_end,
+                 election_n_choice, user_n_candidates,
+                 election_badge_link=None, user=None):
     """ Add a new election to the database.
 
     :arg session:
@@ -162,6 +163,7 @@ def add_election(session, election_name, election_folder, election_year,
     :arg election_date_start:
     :arg election_date_end:
     :arg submission_date_start:
+    :arg submission_date_end:
     :arg election_n_choice:
     :arg user_n_candidates:
     :kwarg election_badge_link:
@@ -177,6 +179,7 @@ def add_election(session, election_name, election_folder, election_year,
         election_date_start=election_date_start,
         election_date_end=election_date_end,
         submission_date_start=submission_date_start,
+        submission_date_end=submission_date_end,
         election_n_choice=election_n_choice,
         user_n_candidates=user_n_candidates,
         election_badge_link=election_badge_link,
@@ -197,8 +200,9 @@ def add_election(session, election_name, election_folder, election_year,
 
 def edit_election(session, election, election_name, election_folder,
                   election_year, election_date_start, election_date_end,
-                  submission_date_start, election_n_choice,
-                  user_n_candidates, election_badge_link=None, user=None):
+                  submission_date_start, submission_date_end,
+                  election_n_choice, user_n_candidates,
+                  election_badge_link=None, user=None):
     """ Edit an election of the database.
 
     :arg session:
@@ -209,6 +213,7 @@ def edit_election(session, election, election_name, election_folder,
     :arg election_date_start:
     :arg election_date_end:
     :arg submission_date_start:
+    :arg submission_date_end:
     :arg election_n_choice:
     :arg user_n_candidates:
     :kwarg election_badge_link:
@@ -241,6 +246,10 @@ def edit_election(session, election, election_name, election_folder,
     if election.submission_date_start != submission_date_start:
         election.submission_date_start = submission_date_start
         edited.append('submission start date')
+
+    if election.submission_date_end != submission_date_end:
+        election.submission_date_end = submission_date_end
+        edited.append('submission date end')
 
     if election.election_n_choice != election_n_choice:
         election.election_n_choice = election_n_choice

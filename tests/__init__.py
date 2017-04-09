@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -138,6 +138,7 @@ def create_elections(session):
         election_date_start=TODAY - timedelta(days=10),
         election_date_end=TODAY - timedelta(days=8),
         submission_date_start=TODAY - timedelta(days=15),
+        submission_date_end=TODAY - timedelta(days=13),
     )
     session.add(election)
 
@@ -148,6 +149,7 @@ def create_elections(session):
         election_year='2013',
         election_n_choice=2,
         submission_date_start=TODAY - timedelta(days=6),
+        submission_date_end=TODAY - timedelta(days=3),
         election_date_start=TODAY - timedelta(days=2),
         election_date_end=TODAY + timedelta(days=3),
         election_badge_link="http://badges.fp.org",
@@ -162,7 +164,8 @@ def create_elections(session):
         election_n_choice=2,
         user_n_candidates=3,
         submission_date_start=TODAY - timedelta(days=2),
-        election_date_start=TODAY + timedelta(days=1),
+        submission_date_end=TODAY + timedelta(days=1),
+        election_date_start=TODAY + timedelta(days=3),
         election_date_end=TODAY + timedelta(days=6),
     )
     session.add(election)

@@ -15,6 +15,7 @@
     {{ render_field_in_row(form.election_folder) }}
     {{ render_field_in_row(form.election_year) }}
     {{ render_field_in_row(form.submission_date_start) }}
+    {{ render_field_in_row(form.submission_date_end) }}
     {{ render_field_in_row(form.election_date_start) }}
     {{ render_field_in_row(form.election_date_end) }}
     {{ render_field_in_row(form.election_badge_link) }}
@@ -44,6 +45,9 @@
             dateFormat: "yy-mm-dd",
         });
         $('#submission_date_start').datepicker({
+            dateFormat: "yy-mm-dd",
+        });
+        $('#submission_date_end').datepicker({
             dateFormat: "yy-mm-dd",
         });
     });

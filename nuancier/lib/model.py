@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -99,6 +99,7 @@ class Elections(BASE):
     election_date_start = sa.Column(sa.Date, nullable=False)
     election_date_end = sa.Column(sa.Date, nullable=False)
     submission_date_start = sa.Column(sa.Date, nullable=False)
+    submission_date_end = sa.Column(sa.Date, nullable=False)
     user_n_candidates = sa.Column(sa.Integer, nullable=True)
 
     date_created = sa.Column(sa.DateTime, nullable=False,
@@ -112,6 +113,7 @@ class Elections(BASE):
         ''' Returns if this election is opened for contribution or not. '''
         today = datetime.datetime.utcnow().date()
         return (self.submission_date_start <= today
+                and self.submission_date_end > today
                 and self.election_date_start > today
                 and self.election_date_end >= today)
 
@@ -120,6 +122,7 @@ class Elections(BASE):
         ''' Return if this election is opened or not. '''
         today = datetime.datetime.utcnow().date()
         return (self.submission_date_start <= today
+                and self.submission_date_end <= today
                 and self.election_date_start <= today
                 and self.election_date_end > today)
 
@@ -130,6 +133,7 @@ class Elections(BASE):
         '''
         today = datetime.datetime.utcnow().date()
         return (self.submission_date_start <= today
+                and self.submission_date_end <= today
                 and self.election_date_start <= today
                 and self.election_date_end <= today)
 
@@ -152,6 +156,7 @@ class Elections(BASE):
                 date_start=self.election_date_start,
                 date_end=self.election_date_end,
                 submission_date_start=self.submission_date_start,
+                submission_date_end=self.submission_date_end,
             )
         else:  # pragma: no cover
             raise NotImplementedError("Unsupported version %r" % version)
@@ -182,6 +187,8 @@ class Elections(BASE):
         ).filter(
             Elections.submission_date_start < today
         ).filter(
+            Elections.submission_date_end <= today
+        ).filter(
             Elections.election_date_start <= today
         ).filter(
             Elections.election_date_end >= today
@@ -211,6 +218,8 @@ class Elections(BASE):
             cls
         ).filter(
             Elections.submission_date_start <= today
+        ).filter(
+            Elections.submission_date_end > today
         ).filter(
             Elections.election_date_start > today
         ).order_by(
