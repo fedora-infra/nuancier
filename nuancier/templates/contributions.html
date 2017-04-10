@@ -76,10 +76,14 @@
         </td>
         <td>{{ candidate.approved_motif }} </td>
         <td>
-            {% if candidate.election.submission_open %}
+            {% if candidate.election.submission_open
+                  and candidate.election.allows_updating %}
             <a href="{{ url_for('update_candidate', cand_id=candidate.id) }}">
                 Update
             </a>
+            {% elif candidate.election.submission_open
+                    and not candidate.election.allows_updating %}
+            Your submission cannot be updated
             {% else %}
             Submission are closed
             {% endif %}
