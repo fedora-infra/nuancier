@@ -236,11 +236,42 @@ class NuancierLibtests(Modeltests):
         candidates = nuancierlib.get_candidates(self.session, 2, True)
         self.assertEqual(0, len(candidates))
 
+        # There is already a candidate test.png
         self.assertRaises(
             nuancierlib.NuancierException,
             nuancierlib.add_candidate,
             session=self.session,
             candidate_file='test.png',
+            candidate_name='test image',
+            candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
+            submitter_email='pingou@fp.o',
+            candidate_original_url='http://example.org',
+            election_id=2,
+            user='pingou',
+        )
+
+        # Add a second candidate
+        nuancierlib.add_candidate(
+            session=self.session,
+            candidate_file='test2.png',
+            candidate_name='test image',
+            candidate_author='pingou',
+            candidate_license='CC-BY-SA',
+            candidate_submitter='pingou',
+            submitter_email='pingou@fp.o',
+            candidate_original_url='http://example.org',
+            election_id=2,
+            user='pingou',
+        )
+
+        # Fails adding a third candidate (limit max reached)
+        self.assertRaises(
+            nuancierlib.NuancierException,
+            nuancierlib.add_candidate,
+            session=self.session,
+            candidate_file='test3.png',
             candidate_name='test image',
             candidate_author='pingou',
             candidate_license='CC-BY-SA',

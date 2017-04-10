@@ -1396,6 +1396,12 @@ class Nuanciertests(Modeltests):
                 '<li class="error">No election found</li>'
                 in output.data.decode('utf-8'))
 
+            output = self.app.get(
+                '/admin/review/1/all', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<li class="error">No election found</li>'
+                            in output.data)
+
         create_elections(self.session)
 
         with user_set(nuancier.APP, user):
@@ -1429,6 +1435,20 @@ class Nuanciertests(Modeltests):
             self.assertEqual(
                 output.data.decode('utf-8').count('name="candidates_id"'),
                 4)
+
+            output = self.app.get(
+                '/admin/review/3/?status=pending', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
+                            in output.data)
+            self.assertEqual(output.data.count('name="candidates_id"'), 4)
+
+            output = self.app.get(
+                '/admin/review/3/?status=approved', follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>Review election: Wallpaper F21 - 2014</h1>'
+                            in output.data)
+            self.assertEqual(output.data.count('name="candidates_id"'), 0)
 
         user.groups = ['packager', 'cla_done']
 
@@ -1668,8 +1688,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/review/3/process', data=data,
-                                   follow_redirects=True)
+            output = self.app.post(
+                '/admin/review/3/process?status=all',
+                data=data, follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(
                 '<li class="message">Candidate(s) updated</li>'

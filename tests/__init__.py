@@ -49,7 +49,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 from nuancier.lib import model
 
 DB_PATH = 'sqlite:///:memory:'
-PICTURE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pictures')
+PICTURE_FOLDER = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'pictures')
 CACHE_FOLDER = os.path.join(os.path.dirname(__file__), 'cache')
 TODAY = datetime.utcnow().date()
 FAITOUT_URL = 'http://faitout.fedorainfracloud.org/'
@@ -148,6 +149,7 @@ def create_elections(session):
         election_folder='F20',
         election_year='2013',
         election_n_choice=2,
+        user_n_candidates=2,
         submission_date_start=TODAY - timedelta(days=6),
         submission_date_end=TODAY - timedelta(days=3),
         election_date_start=TODAY - timedelta(days=2),
