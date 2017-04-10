@@ -32,6 +32,7 @@ import sys
 import os
 from datetime import timedelta
 
+import mock
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -2099,6 +2100,15 @@ class Nuanciertests(Modeltests):
                 '<li class="error">You have uploaded the maximum number of '
                 'candidates (3) you can upload for this election</li>'
                 in output.data.decode('utf-8'))
+
+    @mock.patch('flask.request')
+    def test_is_safe_url(self, host_url):
+        """ Test the is_safe_url method of nuancier/__init__.py. """
+        host_url.host_url = 'https://pagure.io'
+        self.assertTrue(nuancier.is_safe_url('https://pagure.io/pagure'))
+        self.assertTrue(nuancier.is_safe_url('http://pagure.io/pagure'))
+        self.assertFalse(nuancier.is_safe_url('https://pagure.org/pagure'))
+        self.assertFalse(nuancier.is_safe_url('http://pagure.org/pagure'))
 
 
 if __name__ == '__main__':
