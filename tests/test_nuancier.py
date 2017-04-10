@@ -2005,6 +2005,56 @@ class Nuanciertests(Modeltests):
 
             self.assertFalse(os.path.exists(upload_path))
 
+    def test_update_candidate_not_allowed(self):
+        """ Test the update_candidate function. """
+
+        create_elections(self.session)
+        create_candidates(self.session)
+        approve_candidate(self.session)
+        deny_candidate(self.session)
+
+        upload_path = os.path.join(PICTURE_FOLDER, 'F21')
+
+        user = FakeFasUser()
+        user.cla_done = True
+        with user_set(nuancier.APP, user):
+            # Election does not allow updating submissions
+            election = nuancierlib.get_election(self.session, 3)
+            election.allows_updating = False
+            self.session.add(election)
+            self.session.commit()
+
+            output = self.app.get('/contribution/6/update',
+                                  follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertIn(
+                '<li class="error">This election does not allow rejected '
+                'candidate to be updated</li>', output.data)
+
+            output = self.app.get('/election/2/vote/')
+            csrf_token = output.data.split(
+                'name="csrf_token" type="hidden" value="')[1].split('">')[0]
+
+            with open(FILE_OK) as stream:
+                data = {
+                    'candidate_name': 'name',
+                    'candidate_author': 'pingou',
+                    'candidate_file': stream,
+                    'candidate_license': 'CC-BY-SA',
+                    'csrf_token': csrf_token,
+                }
+
+                output = self.app.post('/contribution/6/update', data=data,
+                                       follow_redirects=True)
+                self.assertEqual(output.status_code, 200)
+                self.assertIn(
+                    '<li class="error">This election does not allow rejected '
+                    'candidate to be updated</li>', output.data)
+                self.assertTrue('<h1>Elections</h1>' in output.data)
+
+        self.assertFalse(os.path.exists(upload_path))
+
+
     def test_contribute_max_upload(self):
         """ Test the contribute function when the user has already submitted
         a number of candidates.
