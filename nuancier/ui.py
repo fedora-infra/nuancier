@@ -28,6 +28,7 @@ import os
 import random
 
 import flask
+import six
 
 from sqlalchemy.exc import SQLAlchemyError
 ## pylint cannot import flask dependency correctly
@@ -109,7 +110,7 @@ def contribute(election_id):
                       'election: "%s"', flask.g.fas_user.username,
                       election_id)
             LOG.exception(err)
-            flask.flash(err.message, 'error')
+            flask.flash('%s' % err, 'error')
             return flask.render_template(
                 'contribute.html',
                 election=election,
@@ -124,7 +125,7 @@ def contribute(election_id):
         if not os.path.exists(upload_folder):  # pragma: no cover
             try:
                 os.mkdir(upload_folder)
-            except OSError, err:
+            except OSError as err:
                 LOG.debug('ERROR: cannot add candidate file')
                 LOG.exception(err)
                 flask.flash(
@@ -150,7 +151,7 @@ def contribute(election_id):
                 user=flask.g.fas_user.username,
             )
         except nuancierlib.NuancierException as err:
-            flask.flash(err.message, 'error')
+            flask.flash('%s' % err, 'error')
             return flask.render_template(
                 'contribute.html',
                 election=election,
@@ -232,10 +233,10 @@ def election(election_id):
         SESSION, election_id, approved=True)
 
     if hasattr(flask.g, 'fas_user') and flask.g.fas_user:
-        random.seed(
-            int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
-            ) % 100000)
+        username = flask.g.fas_user.username
+        if not isinstance(username, six.binary_type):
+            username = username.encode('utf-8')
+        random.seed(int(hashlib.sha1(username).hexdigest(), 16) % 100000)
     random.shuffle(candidates)
 
     return flask.render_template(
@@ -266,10 +267,10 @@ def vote(election_id):
         return flask.redirect(flask.url_for('index'))
 
     if flask.g.fas_user:
-        random.seed(
-            int(
-                hashlib.sha1(flask.g.fas_user.username).hexdigest(), 16
-            ) % 100000)
+        username = flask.g.fas_user.username
+        if not isinstance(username, six.binary_type):
+            username = username.encode('utf-8')
+        random.seed(int(hashlib.sha1(username).hexdigest(), 16) % 100000)
     random.shuffle(candidates)
 
     # How many votes the user made:
@@ -505,7 +506,7 @@ def update_candidate(cand_id):
                       'election: "%s"', flask.g.fas_user.username,
                       candidate.election.id)
             LOG.exception(err)
-            flask.flash(err.message, 'error')
+            flask.flash('%s' % err, 'error')
             return flask.render_template(
                 'update_contribution.html',
                 candidate=candidate,
@@ -521,7 +522,7 @@ def update_candidate(cand_id):
         if not os.path.exists(upload_folder):  # pragma: no cover
             try:
                 os.mkdir(upload_folder)
-            except OSError, err:
+            except OSError as err:
                 LOG.debug('ERROR: cannot add candidate file')
                 LOG.exception(err)
                 flask.flash(

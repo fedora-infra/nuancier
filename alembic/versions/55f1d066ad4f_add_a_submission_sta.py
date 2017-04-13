@@ -5,6 +5,7 @@ Revises: 154f23ea945d
 Create Date: 2014-01-08 14:44:10.186368
 
 """
+from __future__ import print_function
 
 # revision identifiers, used by Alembic.
 revision = '55f1d066ad4f'
@@ -26,8 +27,8 @@ def upgrade():
         ins = "UPDATE \"Elections\" SET "\
             "submission_date_start=election_date_start;"
         op.execute(ins)
-    except Exception, err:
-        print 'ERROR', err
+    except Exception as err:
+        print('ERROR %s' % err)
 
     ## Enforce the nullable=False
     op.alter_column(
