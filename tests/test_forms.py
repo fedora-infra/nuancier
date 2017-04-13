@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2016  Red Hat, Inc.
+# Copyright © 2016-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -31,7 +31,7 @@ from nuancier import forms, APP
 
 
 try:
-    from flask.ext import wtf as flask_wtf
+    import flask_wtf
     flask_wtf.__version__
     VERY_OLD_VERSION = False
 except AttributeError:

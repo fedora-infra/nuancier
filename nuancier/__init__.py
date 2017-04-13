@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013-2014  Red Hat, Inc.
+# Copyright © 2013-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -34,7 +34,7 @@ import dogpile.cache
 from functools import wraps
 ## pylint cannot import flask extension correctly
 # pylint: disable=E0611,F0401
-from flask.ext.fas_openid import FAS
+from flask_fas_openid import FAS
 
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug import secure_filename
