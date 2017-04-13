@@ -22,6 +22,7 @@ BuildRequires:  python-setuptools
 BuildRequires:  python-dogpile-cache
 BuildRequires:  python-nose
 BuildRequires:  python-coverage
+BuildRequires:  python-six
 
 # EPEL6
 %if ( 0%{?rhel} && 0%{?rhel} == 6 )
@@ -43,6 +44,7 @@ Requires:  python-fedora >= 0.3.32.3-3
 Requires:  python-fedora-flask
 Requires:  python-dogpile-cache
 Requires:  python-setuptools
+Requires:  python-six
 Requires:  fedmsg
 Requires:  mod_wsgi
 
