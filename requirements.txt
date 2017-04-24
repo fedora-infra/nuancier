@@ -10,5 +10,6 @@ python-fedora >= 0.3.33
 python-openid
 python-openid-cla
 python-openid-teams
+six
 SQLAlchemy>=0.6
 wtforms

@@ -32,6 +32,7 @@ import os
 
 from datetime import timedelta, datetime
 
+import six
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -53,10 +54,16 @@ class NuancierModeltests(Modeltests):
         create_candidates(self.session)
 
         election = nuancierlib.get_election(self.session, 1)
-        self.assertEqual(
-            election.__repr__(),
-            "Elections(id:1, name:u'Wallpaper F19', year:2013)"
-        )
+        if six.PY2:
+            self.assertEqual(
+                election.__repr__(),
+                "Elections(id:1, name:u'Wallpaper F19', year:2013)"
+            )
+        else:
+            self.assertEqual(
+                election.__repr__(),
+                "Elections(id:1, name:'Wallpaper F19', year:2013)"
+            )
 
     def test_candidates_repr(self):
         """ Test the __repr__ function of Candidates. """
@@ -64,13 +71,22 @@ class NuancierModeltests(Modeltests):
         create_candidates(self.session)
 
         candidate = nuancierlib.get_candidate(self.session, 1)
-        self.assertTrue(
-            candidate.__repr__().startswith(
-                "Candidates(file:u'ok.JPG', "
-                "name:u'Image ok', "
-                "election_id:1, "
+        if six.PY2:
+            self.assertTrue(
+                candidate.__repr__().startswith(
+                    "Candidates(file:u'ok.JPG', "
+                    "name:u'Image ok', "
+                    "election_id:1, "
+                )
             )
-        )
+        else:
+            self.assertTrue(
+                candidate.__repr__().startswith(
+                    "Candidates(file:'ok.JPG', "
+                    "name:'Image ok', "
+                    "election_id:1, "
+                )
+            )
 
     def test_votes_repr(self):
         """ Test the __repr__ function of Votes. """
@@ -79,11 +95,18 @@ class NuancierModeltests(Modeltests):
         create_votes(self.session)
 
         votes = nuancierlib.get_votes_user(self.session, 1, 'pingou')
-        self.assertTrue(
-            votes[0].__repr__().startswith(
-                "Votes(name:u'pingou', candidate_id:1, created:"
+        if six.PY2:
+            self.assertTrue(
+                votes[0].__repr__().startswith(
+                    "Votes(name:u'pingou', candidate_id:1, created:"
+                )
             )
-        )
+        else:
+            self.assertTrue(
+                votes[0].__repr__().startswith(
+                    "Votes(name:'pingou', candidate_id:1, created:"
+                )
+            )
 
     def test_elections_api_repr(self):
         """ Test the api_repr function of Elections. """

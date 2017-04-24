@@ -28,6 +28,8 @@ Backend library for nuancier.
 ## import Image is not
 # pylint: disable=R0912
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -45,8 +47,9 @@ except ImportError:  # pragma: no cover
         # pylint: disable=F0401
         import Image
     except ImportError:
-        print >> sys.stderr, 'Could not import PIL nor Pillow, one of ' \
-            'them should be installed'
+        print(
+            'Could not import PIL nor Pillow, one of '
+            'them should be installed', file=sys.stderr)
 
 import nuancier.lib.model
 import nuancier.notifications as notifications
@@ -362,7 +365,7 @@ def generate_thumbnail(filename, picture_folder, cache_folder,
         image.thumbnail(size, Image.ANTIALIAS)
         image.save(outfile)
     except (IOError, IndexError) as err:  # pragma: no cover
-        print >> sys.stderr, "Cannot create thumbnail", err
+        print("Cannot create thumbnail for %s" % infile, file=sys.stderr)
         raise NuancierException('Cannot create thumbnail for "%s"' % infile)
 
 
@@ -430,7 +433,7 @@ def generate_cache(session, election, picture_folder, cache_folder,
                 picture_folder,
                 cache_folder,
                 size)
-        except NuancierException, err:  # pragma: no cover
+        except NuancierException as err:  # pragma: no cover
             exceptions.append(err.message)
 
     if exceptions:  # pragma: no cover

@@ -42,7 +42,7 @@ def publish(topic, msg):  # pragma: no cover
     try:
         import fedmsg
         fedmsg.publish(topic=topic, msg=msg)
-    except Exception, err:
+    except Exception as err:
         warnings.warn(str(err))
 
 

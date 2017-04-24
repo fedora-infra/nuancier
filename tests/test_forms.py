@@ -52,7 +52,11 @@ class BaseFormTests(unittest.TestCase):
         with APP.test_request_context('/'):
             with mock.patch('nuancier.forms.flask_wtf'):
                 # Demonstrate we get an AttributeError for __version__
-                self.assertRaises(AttributeError, getattr, forms.flask_wtf, '__version__')
+                self.assertRaises(
+                    AttributeError,
+                    getattr,
+                    forms.flask_wtf, '__version__'
+                )
                 form = forms.BaseForm()
                 self.assertEqual(
                     datetime.timedelta(seconds=3600), form.TIME_LIMIT)
@@ -61,7 +65,7 @@ class BaseFormTests(unittest.TestCase):
     def test_old_version_using_new(self):
         """Assert that for old versions, TIME_LIMIT is set on forms"""
         with APP.test_request_context('/'):
-            for v in ('0.10.0', '0.8', '0.9'):
+            for v in ('0.8', '0.9'):
                 with mock.patch('nuancier.forms.flask_wtf.__version__', new=v):
                     form = forms.BaseForm()
                     self.assertEqual(
@@ -80,7 +84,8 @@ class BaseFormTests(unittest.TestCase):
         """Assert that for new versions, TIME_LIMIT isn't set on forms"""
         with APP.test_request_context('/'):
             for v in ('1.0.0', '0.10.1', '2.13.0'):
-                with mock.patch('nuancier.forms.flask_wtf.__version__', new=v):
+                with mock.patch(
+                        'nuancier.forms.flask_wtf.__version__', new=v):
                     form = forms.BaseForm()
                     self.assertIs(None, form.TIME_LIMIT)
 

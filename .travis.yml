@@ -10,7 +10,3 @@ install:
  - pip install -e .
 script: python -m unittest discover
 
-matrix:
-  allow_failures:
-    - python: "3.4"
-    - python: "3.5"

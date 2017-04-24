@@ -428,6 +428,6 @@ def admin_cache(election_id):
         LOG.debug('User: "%s" could not generate cache for "%s"',
                   flask.g.fas_user.username, election_id)
         LOG.exception(err)
-        flask.flash(err.message, 'error')
+        flask.flash(str(err), 'error')
 
     return flask.redirect(next_url)

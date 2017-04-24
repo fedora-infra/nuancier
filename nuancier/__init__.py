@@ -27,15 +27,15 @@ import logging
 import logging.handlers
 import os
 import sys
-import urlparse
+
+from functools import wraps
 
 import flask
 import dogpile.cache
-from functools import wraps
-## pylint cannot import flask extension correctly
-# pylint: disable=E0611,F0401
-from flask_fas_openid import FAS
+import six
 
+from flask_fas_openid import FAS
+from six.moves.urllib.parse import urlparse, urljoin
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug import secure_filename
 
@@ -114,9 +114,9 @@ def is_safe_url(target):
     """ Checks that the target url is safe and sending to the current
     website not some other malicious one.
     """
-    ref_url = urlparse.urlparse(flask.request.host_url)
-    test_url = urlparse.urlparse(
-        urlparse.urljoin(flask.request.host_url, target))
+    ref_url = urlparse(flask.request.host_url)
+    test_url = urlparse(
+        urljoin(flask.request.host_url, target))
     return test_url.scheme in ('http', 'https') and \
         ref_url.netloc == test_url.netloc
 
@@ -130,7 +130,7 @@ def is_nuancier_admin(user):
         return False
 
     admins = APP.config['ADMIN_GROUP']
-    if isinstance(admins, basestring):  # pragma: no cover
+    if isinstance(admins, six.string_types):  # pragma: no cover
         admins = set([admins])
     else:
         admins = set(admins)
@@ -147,7 +147,7 @@ def is_nuancier_reviewer(user):
         return False
 
     reviewers = APP.config['REVIEW_GROUP']
-    if isinstance(reviewers, basestring):  # pragma: no cover
+    if isinstance(reviewers, six.string_types):  # pragma: no cover
         reviewers = set([reviewers])
     else:  # pragma: no cover
         reviewers = set(reviewers)
@@ -164,7 +164,7 @@ def has_weigthed_vote(user):
         return False
 
     voters = APP.config['WEIGHTED_GROUP']
-    if isinstance(voters, basestring):  # pragma: no cover
+    if isinstance(voters, six.string_types):  # pragma: no cover
         voters = set([voters])
     else:  # pragma: no cover
         voters = set(voters)
@@ -302,7 +302,7 @@ def format_grp(groups):
     """ Template filter to present correctly the groups given.
     In this case groups can be a string or a list
     """
-    if isinstance(groups, basestring):  # pragma: no cover
+    if isinstance(groups, six.string_types):  # pragma: no cover
         groups = set([groups])
     else:  # pragma: no cover
         groups = set(groups)
@@ -377,7 +377,7 @@ def login():  # pragma: no cover
         return flask.redirect(next_url)
     else:
         admins = APP.config['ADMIN_GROUP']
-        if isinstance(admins, basestring):  # pragma: no cover
+        if isinstance(admins, six.string_types):  # pragma: no cover
             admins = set([admins])
         else:
             admins = set(admins)
@@ -385,7 +385,7 @@ def login():  # pragma: no cover
         groups = list(admins)[:]
 
         reviewers = APP.config['REVIEW_GROUP']
-        if isinstance(reviewers, basestring):  # pragma: no cover
+        if isinstance(reviewers, six.string_types):  # pragma: no cover
             reviewers = set([reviewers])
         else:
             reviewers = set(reviewers)
@@ -393,7 +393,7 @@ def login():  # pragma: no cover
         groups.extend(reviewers)
 
         voters = APP.config['WEIGHTED_GROUP']
-        if isinstance(voters, basestring):  # pragma: no cover
+        if isinstance(voters, six.string_types):  # pragma: no cover
             voters = set([voters])
         else:
             voters = set(voters)

@@ -68,8 +68,9 @@ class BaseForm(flask_wtf.Form):
         delta = APP.config.get('WTF_CSRF_TIME_LIMIT', 3600)
 
         try:
-            version_tuple = tuple(int(v) for v in flask_wtf.__version__.split('.'))
-            old_version = version_tuple <= (0, 10, 0)
+            version_tuple = tuple(
+                int(v) for v in flask_wtf.__version__.split('.'))
+            old_version = version_tuple < (0, 10, 0)
         except AttributeError:
             # Prior to 0.9.2, there was no __version__ attribute
             old_version = True
@@ -78,6 +79,8 @@ class BaseForm(flask_wtf.Form):
             # Annoyingly, in the old version this needs to be a timedelta, but later
             # versions expect it to be an integer.
             self.TIME_LIMIT = datetime.timedelta(seconds=delta)
+        else:
+            self.TIME_LIMIT = None
 
         super(BaseForm, self).__init__(*args, **kwargs)
 
