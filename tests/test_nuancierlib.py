@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2017  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -155,6 +155,7 @@ class NuancierLibtests(Modeltests):
             election_folder='test',
             election_year='2013',
             submission_date_start=TODAY - timedelta(days=1),
+            submission_date_end=TODAY + timedelta(days=1),
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
@@ -168,6 +169,7 @@ class NuancierLibtests(Modeltests):
             election_folder='test',
             election_year='2013',
             submission_date_start=TODAY - timedelta(days=1),
+            submission_date_end=TODAY + timedelta(days=1),
             election_date_start=TODAY + timedelta(days=3),
             election_date_end=TODAY + timedelta(days=7),
             election_n_choice=2,
@@ -188,6 +190,8 @@ class NuancierLibtests(Modeltests):
             TODAY + timedelta(days=7), elections[0].election_date_end)
         self.assertEqual(
             TODAY - timedelta(days=1), elections[0].submission_date_start)
+        self.assertEqual(
+            TODAY + timedelta(days=1), elections[0].submission_date_end)
         self.assertEqual(False, elections[0].election_public)
         self.assertEqual(2, elections[0].election_n_choice)
         self.assertEqual('http://...', elections[0].election_badge_link)
@@ -280,6 +284,7 @@ class NuancierLibtests(Modeltests):
             election_date_start=TODAY,
             election_date_end=TODAY + timedelta(days=2),
             submission_date_start=TODAY - timedelta(days=2),
+            submission_date_end=TODAY - timedelta(days=1),
             election_n_choice=42,
             user_n_candidates=5,
             election_badge_link='http://badges.fp.o/1234',
@@ -294,6 +299,7 @@ class NuancierLibtests(Modeltests):
             election_date_start=TODAY,
             election_date_end=TODAY + timedelta(days=2),
             submission_date_start=TODAY - timedelta(days=2),
+            submission_date_end=TODAY - timedelta(days=1),
             election_n_choice=42,
             user_n_candidates=5,
             election_badge_link='http://badges.fp.o/1234',
@@ -308,6 +314,8 @@ class NuancierLibtests(Modeltests):
             new_election.election_date_end, TODAY + timedelta(days=2))
         self.assertEqual(
             new_election.submission_date_start, TODAY - timedelta(days=2))
+        self.assertEqual(
+            new_election.submission_date_end, TODAY - timedelta(days=1))
         self.assertEqual(new_election.election_n_choice, 42)
         self.assertEqual(
             new_election.election_badge_link, 'http://badges.fp.o/1234')

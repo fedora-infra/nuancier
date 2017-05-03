@@ -99,6 +99,9 @@ class AddElectionForm(BaseForm):
     submission_date_start = wtf.DateField(
         'Submission start date (in utc)',
         [wtf.validators.Required()])
+    submission_date_end = wtf.DateField(
+        'Submission end date (in utc)',
+        [wtf.validators.Required()])
     election_date_start = wtf.DateField(
         'Start date (in utc)',
         [wtf.validators.Required()])
@@ -127,6 +130,7 @@ class AddElectionForm(BaseForm):
             self.election_folder.data = election.election_folder
             self.election_year.data = election.election_year
             self.election_date_start.data = election.election_date_start
+            self.submission_date_end.data = election.submission_date_end
             self.election_date_end.data = election.election_date_end
             self.election_badge_link.data = election.election_badge_link
             self.election_n_choice.data = election.election_n_choice
