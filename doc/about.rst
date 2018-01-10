@@ -43,15 +43,16 @@ It was first named ``nuancier-lite`` and renamed to ``nuancier`` when support
 for uploads and moderation was added.
 
 
-On December 8, 2015 (version 0.10.0), the list looks as follow:
+On January 10, 2018 (version 0.11.0), the list looks as follow:
 
 =================  ===========
 Number of commits  Contributor
 =================  ===========
-   667              Pierre-Yves Chibon <pingou@pingoured.fr>
+   686              Pierre-Yves Chibon <pingou@pingoured.fr>
     32              Ralph Bean <rbean@redhat.com>
      9              Ryan Lerch <ryanlerch@fedoraporject.org>
      5              Jenn <jennlkotler@gmail.com>
+     5              Jeremy Cline <jeremy@jcline.org>
      4              Shagufta <methwanishagufta@gmail.com>
      3              Gaurav Kumar <aavrug@gmail.com>
      3              Michael Haynes <mhaynes.linux@gmail.com>
@@ -74,3 +75,4 @@ This list is generated using
 ::
 
   git shortlog -s -n -e
+

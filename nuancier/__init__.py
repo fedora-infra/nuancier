@@ -60,7 +60,7 @@ import nuancier.proxy
 # pylint: disable=E1101, E1103
 
 
-__version__ = '0.10.0'
+__version__ = '0.11.0'
 
 
 APP.config.from_object('nuancier.default_config')

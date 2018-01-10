@@ -1,4 +1,4 @@
-include COPYING README.rst *.sample  requirements.txt
+include COPYING README.rst *.sample requirements.txt test-requirements.txt
 include runtests.sh createdb.py nosetests
 recursive-include doc *
 recursive-include alembic *

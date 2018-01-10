@@ -2,7 +2,7 @@
 %distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 Name:           nuancier
-Version:        0.10.0
+Version:        0.11.0
 Release:        1%{?dist}
 Summary:        A web-based voting application for wallpapers
 
@@ -96,6 +96,16 @@ cp -r alembic/ $RPM_BUILD_ROOT/%{_datadir}/nuancier/
 
 
 %changelog
+* Wed Jan 10 2018 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.11.0-1
+- Update to 0.11.0
+- Change the label of the fiels from `Motif` to `Cause for rejection / Comment`
+- Encode the image title to UTF-8 when sending notifications
+- Make the CSRF token timeout configurable (Jeremy Cline)
+- Add a Vagrant dev environment (Jeremy Cline)
+- Adjust import for newer recommended flask version
+- Port nuancier to python3 while remaining compatible with python2
+- Add an submission_date_end field to the Election
+
 * Tue Dec 08 2015 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.10.0-1
 - Update to 0.10.0
 - Added progress bar when uploading candidates file (Gaurav Kumar)
