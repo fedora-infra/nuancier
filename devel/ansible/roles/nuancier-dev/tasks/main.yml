@@ -33,7 +33,7 @@
 
 - name: Install alembic.ini
   become_user: "{{ ansible_env.SUDO_USER }}"
-  copy: src=alembic.ini dest=/home/{{ ansible_env.SUDO_USER }}/alembic.ini
+  copy: src=alembic.ini.devel dest=/home/{{ ansible_env.SUDO_USER }}/alembic.ini
 
 
 # Add the virtualenv
