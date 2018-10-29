@@ -28,7 +28,7 @@ def upgrade():
         ins = "UPDATE \"Elections\" SET "\
             "submission_date_end=election_date_start;"
         op.execute(ins)
-    except Exception, err:
+    except Exception as err:
         print 'ERROR', err
 
     ## Enforce the nullable=False
