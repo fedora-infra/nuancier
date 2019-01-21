@@ -4,10 +4,6 @@
 Setup script
 """
 
-# Required to build on EL6
-__requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']  # NOQA
-import pkg_resources  # NOQA
-
 from setuptools import setup
 import os
 import re
