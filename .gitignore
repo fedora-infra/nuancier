@@ -13,6 +13,7 @@ cache/
 pictures/
 alembic.ini
 *.rpm
+.tox/
 
 # Vagrant files
 Vagrantfile
