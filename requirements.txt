@@ -16,4 +16,3 @@ wtforms
 
 gunicorn
 psycopg2
-memcached
