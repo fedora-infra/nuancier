@@ -13,3 +13,6 @@ python-openid-teams
 six
 SQLAlchemy>=0.6
 wtforms
+
+gunicorn
+psycopg2
