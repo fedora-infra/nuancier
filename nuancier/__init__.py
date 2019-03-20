@@ -256,8 +256,10 @@ def validate_input_file(input_file):
     This validation has four layers:
       - extension of the file provided
       - MIMETYPE of the file provided
+      - portrait or landscape orientation
       - size of the image (1600x1200 minimal)
-      - ratio of the image (16:9)
+      - ratio of the image (16:9) - not checked by this function,
+            it is only recommended
 
     :arg input_file: a File object of the candidate submitted/uploaded and
         for which we want to check that it compliants with our expectations.
@@ -285,6 +287,16 @@ def validate_input_file(input_file):
     width, height = image.size
     min_width = APP.config.get('PICTURE_MIN_WIDTH', 1600)
     min_height = APP.config.get('PICTURE_MIN_HEIGHT', 1200)
+    if width < height:
+       if APP.config.get('ALLOW_PORTRAIT', False):
+           # portrait allowed, turn condition by 90 deg.; width is heigh and
+           # vice versa
+           swap = min_width
+           min_width = min_height
+           min_height = swap
+       else:
+           raise nuancierlib.NuancierException(
+               'This instance does not support portrait oriented pictures.')
     if width < min_width:
         raise nuancierlib.NuancierException(
             'The submitted candidate has a width of %s pixels which is lower'
