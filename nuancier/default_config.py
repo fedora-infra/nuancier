@@ -72,6 +72,9 @@ ALLOWED_MIMETYPES = [
     'image/png',
 ]
 
+# allow portrait oriented pictures
+ALLOW_PORTRAIT = False
+
 PICTURE_MIN_WIDTH = 1600
 PICTURE_MIN_HEIGHT = 1200
 
