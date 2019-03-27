@@ -477,7 +477,7 @@ def get_stats(session, election_id):
         else:
             votes_user[user_votes[user]] = 1
 
-    data = [[key, votes_user[key]] for key in votes_user]
+    data = [[key, votes_user[key]] for key in sorted(votes_user)]
 
     # Retrieve the list of authors
     authors = set(
