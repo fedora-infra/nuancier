@@ -8,5 +8,5 @@ python:
 
 install:
  - pip install tox-travis
-script: tox -v
+script: tox -- -v
 
