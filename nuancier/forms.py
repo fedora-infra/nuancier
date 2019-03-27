@@ -27,6 +27,10 @@ import datetime
 
 import wtforms as wtf
 import flask_wtf
+try:
+    from flask_wtf import FlaskForm
+except ImportError:
+    from flask_wtf import Form as FlaskForm
 
 from nuancier import APP
 
@@ -50,7 +54,7 @@ def is_number(form, field):
         raise wtf.ValidationError('Field must contain a number')
 
 
-class BaseForm(flask_wtf.Form):
+class BaseForm(FlaskForm):
     """
     Provide a base form class.
 
