@@ -119,12 +119,12 @@ class Nuanciertests(Modeltests):
     def test_login(self):
         """ Test the login function. """
         output = self.app.get('/login')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
     def test_logout(self):
         """ Test the logout function. """
         output = self.app.get('/logout')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/logout/')
         self.assertEqual(output.status_code, 302)
@@ -192,7 +192,7 @@ class Nuanciertests(Modeltests):
         """ Test the contribute_index function. """
 
         output = self.app.get('/contribute')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/contribute/')
         self.assertEqual(output.status_code, 200)
@@ -425,7 +425,7 @@ class Nuanciertests(Modeltests):
     def test_elections_list(self):
         """ Test the elections_list function. """
         output = self.app.get('/elections')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/elections/')
         self.assertEqual(output.status_code, 200)
@@ -458,7 +458,7 @@ class Nuanciertests(Modeltests):
     def test_election(self):
         """ Test the election function. """
         output = self.app.get('/election/1')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/election/1/')
         self.assertEqual(output.status_code, 200)
@@ -570,7 +570,7 @@ class Nuanciertests(Modeltests):
         """ Test the vote function. """
         ## Login required
         output = self.app.get('/election/1/vote')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/election/1/vote/')
         self.assertEqual(output.status_code, 302)
@@ -602,7 +602,7 @@ class Nuanciertests(Modeltests):
         user.cla_done = True
         with user_set(nuancier.APP, user):
             output = self.app.get('/election/1/vote')
-            self.assertEqual(output.status_code, 301)
+            self.assertTrue(output.status_code in [301, 308])
 
             output = self.app.get('/election/1/vote/')
             self.assertEqual(output.status_code, 200)
@@ -652,7 +652,7 @@ class Nuanciertests(Modeltests):
         """ Test the process_vote function. """
         ## Login required
         output = self.app.post('/election/1/voted')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.post('/election/1/voted/')
         self.assertEqual(output.status_code, 302)
@@ -839,7 +839,7 @@ class Nuanciertests(Modeltests):
     def test_results_list(self):
         """ Test the results_list function. """
         output = self.app.get('/results')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/results/')
         self.assertEqual(output.status_code, 200)
@@ -866,7 +866,7 @@ class Nuanciertests(Modeltests):
     def test_results(self):
         """ Test the results function. """
         output = self.app.get('/results/1')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         output = self.app.get('/results/1/')
         self.assertEqual(output.status_code, 200)
@@ -906,7 +906,7 @@ class Nuanciertests(Modeltests):
     def test_admin_index(self):
         """ Test the admin_index function. """
         output = self.app.get('/admin')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         # Redirects to the OpenID page
         output = self.app.get('/admin/')
@@ -992,7 +992,7 @@ class Nuanciertests(Modeltests):
     def test_admin_edit(self):
         """ Test the admin_edit function. """
         output = self.app.get('/admin/1/edit')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         # Redirects to the OpenID page
         output = self.app.get('/admin/1/edit/')
@@ -1141,7 +1141,7 @@ class Nuanciertests(Modeltests):
     def test_admin_new(self):
         """ Test the admin_new function. """
         output = self.app.get('/admin/new')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         # Redirects to the OpenID page
         output = self.app.get('/admin/new/')
@@ -1369,7 +1369,7 @@ class Nuanciertests(Modeltests):
     def test_admin_review(self):
         """ Test the admin_review function. """
         output = self.app.get('/admin/review/1')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         # Redirects to the OpenID page
         output = self.app.get('/admin/review/1/')
@@ -1782,7 +1782,7 @@ class Nuanciertests(Modeltests):
     def test_contributions(self):
         """ Test the contributions function. """
         output = self.app.get('/contributions')
-        self.assertEqual(output.status_code, 301)
+        self.assertTrue(output.status_code in [301, 308])
 
         # Redirects to the OpenID page
         output = self.app.get('/contributions/')
