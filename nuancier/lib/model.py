@@ -362,7 +362,7 @@ class Candidates(BASE):
             Candidates.date_created,
             Candidates.date_updated
         ).order_by(
-            'votes DESC'
+            sa.text('votes DESC')
         )
         return query.all()
 
