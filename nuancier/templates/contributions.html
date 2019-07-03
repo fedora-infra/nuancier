@@ -62,12 +62,15 @@
         <td>
             {% if candidate.approved == true %}
             <img src="{{ url_for('static', filename='Approved.png') }}"
+                title="Candidate approved"
                 alt="Candidate approved"/>
             {% elif candidate.denied == true %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
+                title="Candidate denied"
                 alt="Candidate denied"/>
             {% else %}
             <img src="{{ url_for('static', filename='New.png') }}"
+                title="Candidate pending review"
                 alt="Candidate pending review"/>
             {% endif %}
         </td>
