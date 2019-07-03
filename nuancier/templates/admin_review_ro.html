@@ -22,7 +22,7 @@
 
 <h3>Overview</h3>
 <p>Here below are presented all the candidates of the election {{ election.election_name }}
-from {{ election.election_year }}, regardless of wether they are valid
+from {{ election.election_year }}, regardless of whether they are valid
 candidates or not.
 </p>
 <p>
@@ -97,12 +97,15 @@ candidates or not.
         <td>
             {% if candidate.approved == true%}
             <img src="{{ url_for('static', filename='Approved.png') }}"
+                title="Candidate approved"
                 alt="Candidate approved"/>
             {% elif candidate.denied == true %}
             <img src="{{ url_for('static', filename='Denied.png') }}"
+                title="Candidate denied"
                 alt="Candidate denied"/>
             {% else %}
             <img src="{{ url_for('static', filename='New.png') }}"
+                title="Candidate Pending Review"
                 alt="Candidate Pending Review"/>
             {% endif %}
         </td>
