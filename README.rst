@@ -1,8 +1,6 @@
 nuancier
 ========
 
-.. image:: http://shieldkins.elrod.me/fedora/nuancier
-
 :Author: Pierre-Yves Chibon <pingou@pingoured.fr>
 
 
