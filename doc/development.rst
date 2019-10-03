@@ -147,7 +147,7 @@ error or failure. For example, the command could be:
 
           ::
 
-            yum install python-coverage
+            dnf install python-coverage
 
 
 Database changes
