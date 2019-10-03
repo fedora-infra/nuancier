@@ -62,7 +62,7 @@ We are also inspecting the code using `pylint
 
           ::
 
-            yum install python-pep8 pylint
+            dnf install python-pep8 pylint
 
 
 Send patch
@@ -147,7 +147,7 @@ error or failure. For example, the command could be:
 
           ::
 
-            yum install python-coverage
+            dnf install python-coverage
 
 
 Database changes
