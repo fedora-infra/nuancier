@@ -59,7 +59,7 @@ The best way to set up a development enviroment is to use `Vagrant <https://vagr
 Vagrant provisions a new virtual machine and then runs the Ansible playbook on it automatically.
 To get started, install Vagrant::
 
-    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible
+    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible git
 
 Next, clone the repository and copy the example Vagrantfile from ``Vagrantfile.example``::
 
