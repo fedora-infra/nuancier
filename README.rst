@@ -76,21 +76,40 @@ All done! The VM contains all the required dependencies pre-installed.
 Manual
 ^^^^^^
 
+Instructions here have been tested on Fedora 30, using Python3
+
+Get git:
+
+ sudo dnf install git python3
+
 Clone the source::
 
  git clone https://github.com/fedora-infra/nuancier.git
 
+Install Python requirements
 
+ pip3 install -r requirements.txt
+ 
 Create the database scheme::
 
- python createdb.py
+ python3 createdb.py
 
+Run the server locally::
 
-Run the server::
-
- python runserver.py
+ python3 runserver.py
 
 You should be able to access the server at http://localhost:5000
+
+or to run the server externally, first open relevant port in firewall::
+
+ sudo firewall-cmd --add-port 3000/tcp --permanent
+ sudo firewall-cmd --reload 
+ 
+ then run the server::
+
+ python3 runserver.py --host 0.0.0.0
+
+You should be able to access the server at http://ip.address:5000
 
 .. note:: To tweak the configuration, you may either change
    ``default_config.py`` in the nuancier module, or copy the file
