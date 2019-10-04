@@ -102,7 +102,7 @@ You should be able to access the server at http://localhost:5000
 
 or to run the server externally, first open relevant port in firewall::
 
-    sudo firewall-cmd --add-port 3000/tcp --permanent
+    sudo firewall-cmd --add-port 5000/tcp --permanent
     sudo firewall-cmd --reload 
  
 then run the server::
