@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  # If you'd prefer to pull your boxes from Hashicorp's repository, you can
  # replace the config.vm.box and config.vm.box_url declarations with the line below.
  #
- # config.vm.box = "fedora/30-cloud-base"
+ # config.vm.box = "fedora/32-cloud-base"
  config.vm.box = "f32-cloud-libvirt"
  config.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases"\
                      "/32/Cloud/x86_64/images/Fedora-Cloud-Base-Vagrant-32-1"\
