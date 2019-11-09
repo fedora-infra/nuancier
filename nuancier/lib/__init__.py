@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2019 Red Hat, Inc. and others.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -253,7 +253,7 @@ def edit_election(session, election, election_name, election_folder,
 
     if election.election_n_choice != election_n_choice:
         election.election_n_choice = election_n_choice
-        edited.append('election name')
+        edited.append('Number of votes possible')
 
     if election.election_badge_link != election_badge_link:
         election.election_badge_link = election_badge_link
