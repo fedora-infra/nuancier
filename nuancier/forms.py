@@ -42,18 +42,6 @@ from nuancier import APP
 # Couple of our forms do not have enough methods
 # pylint: disable=R0903
 
-# Yes we do nothing with the form argument but it's required...
-# pylint: disable=W0613
-def is_number(form, field):
-    ''' Check if the data in the field is a number and raise an exception
-    if it is not.
-    '''
-    try:
-        float(field.data)
-    except ValueError:
-        raise wtf.ValidationError('Field must contain a number')
-
-
 class BaseForm(FlaskForm):
     """
     Provide a base form class.
@@ -97,9 +85,12 @@ class AddElectionForm(BaseForm):
     election_folder = wtf.TextField(
         'Name of the folder containing the pictures',
         [wtf.validators.Required()])
-    election_year = wtf.TextField(
+    election_year = wtf.IntegerField(
         'Year',
-        [wtf.validators.Required()])
+        [
+            wtf.validators.Required(),
+            wtf.validators.NumberRange(min=0)
+        ])
     submission_date_start = wtf.DateField(
         'Submission start date (in utc)',
         [wtf.validators.Required()])
@@ -115,12 +106,18 @@ class AddElectionForm(BaseForm):
     election_badge_link = wtf.TextField(
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
-    election_n_choice = wtf.TextField(
+    election_n_choice = wtf.IntegerField(
         'Number of votes an user can make',
-        [wtf.validators.Required(), is_number])
-    user_n_candidates = wtf.TextField(
+        [
+            wtf.validators.Required(),
+            wtf.validators.NumberRange(min=0)
+        ])
+    user_n_candidates = wtf.IntegerField(
         'Number of candidate an user can upload',
-        [wtf.validators.Required(), is_number])
+        [
+            wtf.validators.Required(),
+            wtf.validators.NumberRange(min=0)
+        ])
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):
