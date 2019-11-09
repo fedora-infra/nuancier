@@ -1222,8 +1222,18 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>New election</h1>' in output.data.decode('utf-8'))
-            self.assertTrue('<td class="error">Field must contain a '
-                            'number</td>' in output.data.decode('utf-8'))
+            # From wtforms docs: Erroneous input is ignored and will not be accepted as a value.
+            self.assertTrue('<td class="error">This field is required.'
+                            '</td>' in output.data.decode('utf-8'))
+
+            # election_n_choice should be a positive number
+            data.update({'election_n_choice': -1})
+            output = self.app.post('/admin/new/', data=data,
+                                   follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>New election</h1>' in output.data.decode('utf-8'))
+            self.assertTrue('<td class="error">Number must be at least 0.'
+                            '</td>' in output.data.decode('utf-8'))
 
             data = {
                 'election_name': 'election1',
