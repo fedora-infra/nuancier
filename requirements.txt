@@ -3,6 +3,7 @@
 alembic
 blinker # required by flask for tests
 dogpile.cache
+fedora-messaging
 flask
 flask-wtf
 Pillow

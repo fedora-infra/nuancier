@@ -32,6 +32,7 @@ import sys
 import os
 from datetime import timedelta
 
+from fedora_messaging import testing as fml_testing
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -41,6 +42,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import nuancier
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
+from nuancier_schema import ElectionEdited, CandidateApproved, CandidateCreated
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, FakeFasUser, user_set, approve_candidate,
                    deny_candidate, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
@@ -378,8 +380,9 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/3', data=data,
-                                       follow_redirects=True)
+                with fml_testing.mock_sends(CandidateCreated):
+                    output = self.app.post('/contribute/3', data=data,
+                                           follow_redirects=True)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="message">Thanks for your submission</li>'
@@ -1067,8 +1070,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/1/edit/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionEdited):
+                output = self.app.post('/admin/1/edit/', data=data,
+                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the edit
             self.assertTrue(
@@ -1602,8 +1606,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/review/3/process', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(CandidateApproved):
+                output = self.app.post('/admin/review/3/process', data=data,
+                                       follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(
                 '<li class="message">Candidate(s) updated</li>'

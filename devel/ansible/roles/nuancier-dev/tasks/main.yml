@@ -65,7 +65,9 @@
 - name: Install nuancier into the virtualenv
   become_user: "{{ ansible_env.SUDO_USER }}"
   pip:
-    name: "file:///home/{{ ansible_env.SUDO_USER }}/devel"
+    name:
+      - "file:///home/{{ ansible_env.SUDO_USER }}/devel"
+      - "file:///home/{{ ansible_env.SUDO_USER }}/devel/nuancier_schema"
     extra_args: "-e"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
     virtualenv_python: python2
