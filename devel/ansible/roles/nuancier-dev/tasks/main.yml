@@ -18,10 +18,9 @@
     - gcc
     - libffi-devel
     - openssl-devel
-    - python2-devel
     - python3-devel
     - redhat-rpm-config
-    - rpm-python
+    - python3-rpm
 
 # Add various helpful configuration files
 - name: Install a custom bashrc
