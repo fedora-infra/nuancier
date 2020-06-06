@@ -37,7 +37,7 @@ order to increase the loading speed of the pages.
 
 The dependency list is therefore:
 
-- `python`_ (2.5 minimum)
+- `python`_ (3.7 minimum)
 - `python-flask`_
 - `python-flask-wtf`_
 - `python-wtforms`_
