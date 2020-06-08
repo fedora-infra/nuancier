@@ -31,7 +31,7 @@ From system-wide packages
 
 Start by install nuancier::
 
-  yum install nuancier
+  dnf install nuancier
 
 Adjust the configuration files: ``/etc/nuancier/nuancier.cfg``.
 See :doc:`configuration` for detailed information about the configuration.
@@ -48,7 +48,7 @@ Set-up WSGI
 
 Start by installing ``mod_wsgi``::
 
-  yum install mod_wsgi
+  dnf install mod_wsgi
 
 
 Then configure apache::

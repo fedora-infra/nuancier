@@ -1,8 +1,6 @@
 nuancier
 ========
 
-.. image:: http://shieldkins.elrod.me/fedora/nuancier
-
 :Author: Pierre-Yves Chibon <pingou@pingoured.fr>
 
 
@@ -39,7 +37,7 @@ order to increase the loading speed of the pages.
 
 The dependency list is therefore:
 
-- `python`_ (2.5 minimum)
+- `python`_ (3.7 minimum)
 - `python-flask`_
 - `python-flask-wtf`_
 - `python-wtforms`_
@@ -61,7 +59,7 @@ The best way to set up a development enviroment is to use `Vagrant <https://vagr
 Vagrant provisions a new virtual machine and then runs the Ansible playbook on it automatically.
 To get started, install Vagrant::
 
-    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible
+    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible git
 
 Next, clone the repository and copy the example Vagrantfile from ``Vagrantfile.example``::
 
@@ -78,21 +76,40 @@ All done! The VM contains all the required dependencies pre-installed.
 Manual
 ^^^^^^
 
+Instructions here have been tested on Fedora 30, using Python3
+
+Get git and python3:
+
+    sudo dnf install git python3
+
 Clone the source::
 
- git clone https://github.com/fedora-infra/nuancier.git
+    git clone https://github.com/fedora-infra/nuancier.git
 
+Install Python requirements
 
+    pip3 install -r requirements.txt
+ 
 Create the database scheme::
 
- python createdb.py
+    python3 createdb.py
 
+Run the server locally::
 
-Run the server::
-
- python runserver.py
+    python3 runserver.py
 
 You should be able to access the server at http://localhost:5000
+
+or to run the server externally, first open relevant port in firewall::
+
+    sudo firewall-cmd --add-port 5000/tcp --permanent
+    sudo firewall-cmd --reload 
+ 
+then run the server::
+
+    python3 runserver.py --host 0.0.0.0
+
+You should be able to access the server at http://ip.address:5000
 
 .. note:: To tweak the configuration, you may either change
    ``default_config.py`` in the nuancier module, or copy the file

@@ -1,16 +1,20 @@
 ---
 
 - name: Install helpful development packages
-  dnf: name={{ item }} state=present
-  with_items:
+  dnf: 
+    name: "{{ item }}" 
+    state: present
+  loop:
     - git
-    - python-sphinx
-    - python-virtualenvwrapper
+    - python3-sphinx
+    - python3-virtualenvwrapper
     - vim-enhanced
 
 - name: Install nuancier system dependencies
-  dnf: name={{ item }} state=present
-  with_items:
+  dnf: 
+    name: "{{ item }}" 
+    state: present
+  loop:
     - gcc
     - libffi-devel
     - openssl-devel
@@ -49,7 +53,7 @@
   pip:
     requirements: "requirements.txt"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
   args:
     chdir: /home/{{ ansible_env.SUDO_USER }}/devel
 
@@ -58,7 +62,7 @@
   pip:
     requirements: "test-requirements.txt"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
   args:
     chdir: /home/{{ ansible_env.SUDO_USER }}/devel
 
@@ -70,7 +74,7 @@
       - "file:///home/{{ ansible_env.SUDO_USER }}/devel/nuancier_schema"
     extra_args: "-e"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
 
 
 # Create and configure the database
