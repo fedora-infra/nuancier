@@ -18,7 +18,6 @@
     - gcc
     - libffi-devel
     - openssl-devel
-    - python2-devel
     - python3-devel
     - redhat-rpm-config
     - rpm-python
