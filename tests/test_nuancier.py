@@ -42,7 +42,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import nuancier
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
-from nuancier_schema import ElectionEdited, CandidateApproved, CandidateCreated
+from nuancier_schema import ElectionCreated, ElectionEdited, CandidateApproved, CandidateCreated, CandidateDenied
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, FakeFasUser, user_set, approve_candidate,
                    deny_candidate, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
@@ -1232,6 +1232,7 @@ class Nuanciertests(Modeltests):
 
             # election_n_choice should be a positive number
             data.update({'election_n_choice': -1})
+            
             output = self.app.post('/admin/new/', data=data,
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
@@ -1254,8 +1255,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/new/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionCreated):
+                output = self.app.post('/admin/new/', data=data,
+                                        follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
             self.assertTrue(
@@ -1299,8 +1301,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/new/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionCreated): #election.api_repr(version=1)))):
+                output = self.app.post('/admin/new/', data=data,
+                                        follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
             self.assertTrue(
@@ -1683,8 +1686,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/review/3/process', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(CandidateDenied):
+                output = self.app.post('/admin/review/3/process', data=data,
+                                       follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(
                 '<li class="message">Candidate(s) updated</li>'
