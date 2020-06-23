@@ -1,0 +1,2 @@
+APP_MODULE=./app
+UPGRADE_PIP_TO_LATEST=true
