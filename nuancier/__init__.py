@@ -34,7 +34,8 @@ import flask
 import dogpile.cache
 import six
 
-from flask_fas_openid import FAS
+#from flask_fas_openid import FAS
+from flask_oidc import OpenIDConnect                                                                                   
 from six.moves.urllib.parse import urlparse, urljoin
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.utils import secure_filename
@@ -68,7 +69,8 @@ if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('NUANCIER_CONFIG')
 
 # Set up FAS extension
-FAS = FAS(APP)
+#FAS = FAS(APP)
+OIDC = OpenIDConnect(APP, credentials_store=flask.session)
 APP.wsgi_app = nuancier.proxy.ReverseProxied(APP.wsgi_app)
 
 # Initialize the cache.
@@ -121,12 +123,17 @@ def is_safe_url(target):
         ref_url.netloc == test_url.netloc
 
 
-def is_nuancier_admin(user):
+#def is_nuancier_admin(user):
+def is_nuancier_admin(user, user_groups=None):
     ''' Is the user a nuancier admin.
     '''
+    if not user_groups:
+        user_groups = []
+
     if not user:
         return False
-    if not user.cla_done or len(user.groups) < 1:
+    #if not user.cla_done or len(user.groups) < 1:
+    if not user.cla_done or len(user_groups) < 1:
         return False
 
     admins = APP.config['ADMIN_GROUP']
@@ -135,7 +142,8 @@ def is_nuancier_admin(user):
     else:
         admins = set(admins)
 
-    return len(set(user.groups).intersection(admins)) > 0
+    #return len(set(user.groups).intersection(admins)) > 0
+    return len(set(user_groups).intersection(admins)) > 0
 
 
 def is_nuancier_reviewer(user):
@@ -143,7 +151,8 @@ def is_nuancier_reviewer(user):
     '''
     if not user:
         return False
-    if not user.cla_done or len(user.groups) < 1:
+    #if not user.cla_done or len(user.groups) < 1:
+    if not user.cla_done or len(user_groups) < 1:
         return False
 
     reviewers = APP.config['REVIEW_GROUP']
@@ -152,7 +161,8 @@ def is_nuancier_reviewer(user):
     else:  # pragma: no cover
         reviewers = set(reviewers)
 
-    return len(set(user.groups).intersection(reviewers)) > 0
+    #return len(set(user.groups).intersection(reviewers)) > 0
+    return len(set(user_groups).intersection(reviewers)) > 0
 
 
 def has_weigthed_vote(user):
@@ -160,7 +170,8 @@ def has_weigthed_vote(user):
     '''
     if not user:  # pragma: no cover
         return False
-    if not user.cla_done or len(user.groups) < 1:  # pragma: no cover
+    #if not user.cla_done or len(user.groups) < 1:  # pragma: no cover
+    if not user.cla_done or len(user_groups) < 1:  # pragma: no cover
         return False
 
     voters = APP.config['WEIGHTED_GROUP']
@@ -169,7 +180,8 @@ def has_weigthed_vote(user):
     else:  # pragma: no cover
         voters = set(voters)
 
-    return len(set(user.groups).intersection(voters)) > 0
+    #return len(set(user.groups).intersection(voters)) > 0
+    return len(set(user_groups).intersection(voters)) > 0
 
 
 def fas_login_required(function):
@@ -211,10 +223,16 @@ def contributor_required(function):
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif len(flask.g.fas_user.groups) == 0:
-            flask.flash('You must be in one more group than the CLA',
-                        'error')
-            return flask.redirect(flask.url_for('index'))
+        #elif len(flask.g.fas_user.groups) == 0:
+        #    flask.flash('You must be in one more group than the CLA',
+        #                'error')
+        #    return flask.redirect(flask.url_for('index'))
+        else:
+            user_groups = OIDC.user_getfield('groups')
+            if len(user_groups) == 0:
+                flask.flash('You must be in one more group than the CLA',    
+                            'error')
+                return flask.redirect(flask.url_for('index'))
         return function(*args, **kwargs)
     return decorated_function
 
@@ -228,6 +246,7 @@ def nuancier_admin_required(function):
         ''' Wrapped function actually checking if the user is an admin for
         nuancier.
         '''
+        user_groups = OIDC.user_getfield('groups')
         if not hasattr(flask.g, 'fas_user') or flask.g.fas_user is None:
             return flask.redirect(flask.url_for('.login',
                                                 next=flask.request.url))
@@ -235,7 +254,8 @@ def nuancier_admin_required(function):
             flask.flash('You must sign the CLA (Contributor License '
                         'Agreement to use nuancier', 'error')
             return flask.redirect(flask.url_for('index'))
-        elif len(flask.g.fas_user.groups) == 0:
+        #elif len(flask.g.fas_user.groups) == 0:
+        elif len(user_groups) == 0:
             flask.flash(
                 'You must be in one more group than the CLA', 'error')
             return flask.redirect(flask.url_for('index'))
