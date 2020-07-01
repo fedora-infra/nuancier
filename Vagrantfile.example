@@ -9,11 +9,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  # If you'd prefer to pull your boxes from Hashicorp's repository, you can
  # replace the config.vm.box and config.vm.box_url declarations with the line below.
  #
- # config.vm.box = "fedora/25-cloud-base"
- config.vm.box = "f25-cloud-libvirt"
+ # config.vm.box = "fedora/32-cloud-base"
+ config.vm.box = "f32-cloud-libvirt"
  config.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases"\
-                     "/25/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-25-1"\
-                     ".3.x86_64.vagrant-libvirt.box"
+                     "/32/Cloud/x86_64/images/Fedora-Cloud-Base-Vagrant-32-1"\
+                     ".6.x86_64.vagrant-libvirt.box"
 
  # Forward traffic on the host to the development server on the guest.
  # You can change the host port that is forwarded to 5000 on the guest
@@ -31,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  # Vagrant can share the source directory using rsync, NFS, or SSHFS (with the vagrant-sshfs
  # plugin). Consult the Vagrant documentation if you do not want to use SSHFS.
  config.vm.synced_folder ".", "/vagrant", disabled: true
- config.vm.synced_folder ".", "/home/vagrant/devel", type: "sshfs", sshfs_opts_append: "-o nonempty"
+ config.vm.synced_folder ".", "/home/vagrant/devel", type: "sshfs"
 
  # To cache update packages (which is helpful if frequently doing `vagrant destroy && vagrant up`)
  # you can create a local directory and share it to the guest's DNF cache. Uncomment the lines below
@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  config.vm.provision "shell", inline: "sudo dnf upgrade -y"
 
  # bootstrap and run with ansible
- config.vm.provision "shell", inline: "sudo dnf -y install python2-dnf libselinux-python"
+ config.vm.provision "shell", inline: "sudo dnf -y install python3-dnf python3-libselinux"
  config.vm.provision "ansible" do |ansible|
      ansible.playbook = "devel/ansible/vagrant-playbook.yml"
  end
