@@ -66,7 +66,7 @@ if os.environ.get('BUILD_ID'):
 
 
 @contextmanager
-def user_set(APP, user):
+def user_set(APP, user, oidc_id_token=None):
     """ Set the provided user as fas_user in the provided application."""
 
     # Hack used to remove the before_request function set by
@@ -76,6 +76,7 @@ def user_set(APP, user):
 
     def handler(sender, **kwargs):
         g.fas_user = user
+        g.oidc_id_token = oidc_id_token
 
     with appcontext_pushed.connected_to(handler, APP):
         yield
