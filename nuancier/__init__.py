@@ -394,6 +394,7 @@ def msg():
 
 
 @APP.route('/login/', methods=['GET', 'POST'])
+@OIDC.require_login
 def login():  # pragma: no cover
     ''' Login mechanism for this application.
     '''
