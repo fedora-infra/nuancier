@@ -146,7 +146,7 @@ def is_nuancier_admin(user, user_groups=None):
     return len(set(user_groups).intersection(admins)) > 0
 
 
-def is_nuancier_reviewer(user):
+def is_nuancier_reviewer(user,  user_groups=None):
     ''' Is the user a nuancier reviewer.
     '''
     if not user:
@@ -165,7 +165,7 @@ def is_nuancier_reviewer(user):
     return len(set(user_groups).intersection(reviewers)) > 0
 
 
-def has_weigthed_vote(user):
+def has_weigthed_vote(user, user_groups=None):
     ''' Has the user a weigthed vote or not.
     '''
     if not user:  # pragma: no cover
