@@ -432,7 +432,7 @@ def login():  # pragma: no cover
 
         groups.extend(voters)
 
-        return FAS.login(return_url=next_url, groups=groups)
+        return flask.redirect(return_point)
 
 
 @APP.route('/logout/')
@@ -449,7 +449,7 @@ def logout():  # pragma: no cover
         next_url = flask.url_for('.index')
 
     if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
-        FAS.logout()
+        OIDC.logout()
         flask.flash('You are no longer logged-in')
 
     return flask.redirect(next_url)
