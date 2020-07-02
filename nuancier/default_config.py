@@ -94,3 +94,8 @@ NUANCIER_EMAIL_ERROR_TO = 'pingou@pingoured.fr'
 
 FEDMENU_URL = 'https://apps.fedoraproject.org/fedmenu'
 FEDMENU_DATA_URL = 'https://apps.fedoraproject.org/js/data.js'
+
+OIDC_CLIENT_SECRETS = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), 'client_secrets.json')
+OIDC_SCOPES = ['openid', 'email', 'profile', 'fedora']
+OIDC_OPENID_REALM = 'http://localhost:5005/oidc_callback'
