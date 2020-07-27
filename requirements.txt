@@ -6,7 +6,6 @@ dogpile.cache
 fedora-messaging
 flask
 flask-wtf
--e git+https://github.com/jontrossbach/flask-oidc.git@master#egg=flask-oidc
 Pillow
 python-fedora >= 0.3.33
 python-openid
