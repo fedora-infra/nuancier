@@ -25,6 +25,6 @@ If you're submitting patches to nuancier, please observe the following:
    idea but don't know how to implement it, you just have something bugging
    you?
 
-   Come to see us on IRC: ``#fedora-apps`` on irc.freenode.net or via its
+   Come to see us on IRC: ``#fedora-apps`` on irc.libera.chat or via its
    `github tracker <https://github.com/fedora-infra/nuancier/issues>`_.
 
