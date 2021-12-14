@@ -33,7 +33,10 @@ import six
 from sqlalchemy.exc import SQLAlchemyError
 ## pylint cannot import flask dependency correctly
 # pylint: disable=E0611
-from werkzeug import secure_filename
+try:
+    from werkzeug import secure_filename
+except ImportError: # pragma: no cover
+    from werkzeug.utils import secure_filename
 
 import nuancier
 import nuancier.lib as nuancierlib

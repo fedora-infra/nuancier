@@ -13,3 +13,4 @@ python-openid-teams
 six
 SQLAlchemy>=0.6
 wtforms
+ipaddress

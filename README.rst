@@ -61,18 +61,29 @@ The best way to set up a development enviroment is to use `Vagrant <https://vagr
 Vagrant provisions a new virtual machine and then runs the Ansible playbook on it automatically.
 To get started, install Vagrant::
 
-    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible
+    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs vagrant-hostmanager ansible 
 
 Next, clone the repository and copy the example Vagrantfile from ``Vagrantfile.example``::
 
     $ git clone https://github.com/fedora-infra/nuancier.git
     $ cd nuancier
-    $ cp Vagrantfile.example Vagrantfile  # Edit Vagrantfile to your heart's content
     $ vagrant up
-    $ vagrant reload
+
+Next SSH into the newly created vagrant machine with:
+
     $ vagrant ssh
 
-All done! The VM contains all the required dependencies pre-installed.
+And start the nuancier service with:
+
+    $ systemctl --user start nuancier.service
+
+And on your host machine, go to the following address to see the nuancier app:
+
+    http://nuancier.tinystage.test:5000
+
+Finally, to view the logs for the nuancier web app, use the command:
+
+    $ journalctl --user-unit nuancier.service
 
 
 Manual

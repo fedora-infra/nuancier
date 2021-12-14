@@ -1,23 +1,19 @@
 ---
-
-- name: Install helpful development packages
-  dnf: name={{ item }} state=present
-  with_items:
+- name: Install basic packages & nuancier system dependencies
+  dnf:
+    name:
     - git
     - python-sphinx
     - python-virtualenvwrapper
     - vim-enhanced
-
-- name: Install nuancier system dependencies
-  dnf: name={{ item }} state=present
-  with_items:
     - gcc
     - libffi-devel
     - openssl-devel
     - python2-devel
     - python3-devel
     - redhat-rpm-config
-    - rpm-python
+    - python3-rpm
+    state: present
 
 # Add various helpful configuration files
 - name: Install a custom bashrc
@@ -40,7 +36,7 @@
 - name: Create nuancier virtualenv
   become_user: "{{ ansible_env.SUDO_USER }}"
   shell: >
-      source ~/.bashrc && mkvirtualenv nuancier -a ~/devel/
+      source ~/.bashrc && mkvirtualenv -p python2 nuancier -a /vagrant/
   args:
     creates: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier
 
@@ -51,7 +47,7 @@
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
     virtualenv_python: python2
   args:
-    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+    chdir: /vagrant/
 
 - name: Install nuancier test requirements into the virtualenv
   become_user: "{{ ansible_env.SUDO_USER }}"
@@ -60,12 +56,12 @@
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
     virtualenv_python: python2
   args:
-    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+    chdir: /vagrant/
 
 - name: Install nuancier into the virtualenv
   become_user: "{{ ansible_env.SUDO_USER }}"
   pip:
-    name: "file:///home/{{ ansible_env.SUDO_USER }}/devel"
+    name: "file:///vagrant/"
     extra_args: "-e"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
     virtualenv_python: python2
@@ -74,7 +70,7 @@
 # Create and configure the database
 - name: Create the nuancier SQLite database
   become_user: "{{ ansible_env.SUDO_USER }}"
-  command: .virtualenvs/nuancier/bin/python devel/createdb.py
+  command: .virtualenvs/nuancier/bin/python /vagrant/createdb.py
   args:
     creates: /var/tmp/nuancier_lite.sqlite
     chdir: "/home/{{ ansible_env.SUDO_USER }}/"
