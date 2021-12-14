@@ -9,7 +9,6 @@
     - gcc
     - libffi-devel
     - openssl-devel
-    - python2-devel
     - python3-devel
     - redhat-rpm-config
     - python3-rpm
@@ -36,7 +35,7 @@
 - name: Create nuancier virtualenv
   become_user: "{{ ansible_env.SUDO_USER }}"
   shell: >
-      source ~/.bashrc && mkvirtualenv -p python2 nuancier -a /vagrant/
+      source ~/.bashrc && mkvirtualenv -p python3 nuancier -a /vagrant/
   args:
     creates: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier
 
@@ -45,7 +44,7 @@
   pip:
     requirements: "requirements.txt"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
   args:
     chdir: /vagrant/
 
@@ -54,7 +53,7 @@
   pip:
     requirements: "test-requirements.txt"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
   args:
     chdir: /vagrant/
 
@@ -64,7 +63,7 @@
     name: "file:///vagrant/"
     extra_args: "-e"
     virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+    virtualenv_python: python3
 
 
 # Create and configure the database

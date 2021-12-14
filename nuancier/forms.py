@@ -91,36 +91,36 @@ class BaseForm(FlaskForm):
 
 class AddElectionForm(BaseForm):
     ''' Form to add a new election. '''
-    election_name = wtf.TextField(
+    election_name = wtf.StringField(
         'Election name',
-        [wtf.validators.Required()])
-    election_folder = wtf.TextField(
+        [wtf.validators.InputRequired()])
+    election_folder = wtf.StringField(
         'Name of the folder containing the pictures',
-        [wtf.validators.Required()])
-    election_year = wtf.TextField(
+        [wtf.validators.InputRequired()])
+    election_year = wtf.StringField(
         'Year',
-        [wtf.validators.Required()])
+        [wtf.validators.InputRequired()])
     submission_date_start = wtf.DateField(
         'Submission start date (in utc)',
-        [wtf.validators.Required()])
+        [wtf.validators.InputRequired()])
     submission_date_end = wtf.DateField(
         'Submission end date (in utc)',
-        [wtf.validators.Required()])
+        [wtf.validators.InputRequired()])
     election_date_start = wtf.DateField(
         'Start date (in utc)',
-        [wtf.validators.Required()])
+        [wtf.validators.InputRequired()])
     election_date_end = wtf.DateField(
         'End date (in utc)',
-        [wtf.validators.Required()])
-    election_badge_link = wtf.TextField(
+        [wtf.validators.InputRequired()])
+    election_badge_link = wtf.StringField(
         'URL to claim a badge for voting',
         [wtf.validators.URL(), wtf.validators.Optional()])
-    election_n_choice = wtf.TextField(
+    election_n_choice = wtf.StringField(
         'Number of votes an user can make',
-        [wtf.validators.Required(), is_number])
-    user_n_candidates = wtf.TextField(
+        [wtf.validators.InputRequired(), is_number])
+    user_n_candidates = wtf.StringField(
         'Number of candidate an user can upload',
-        [wtf.validators.Required(), is_number])
+        [wtf.validators.InputRequired(), is_number])
     generate_cache = wtf.BooleanField('Generate cache')
 
     def __init__(self, *args, **kwargs):
@@ -144,16 +144,16 @@ class AddElectionForm(BaseForm):
 
 class AddCandidateForm(BaseForm):
     ''' Form to add a candidate to an election. '''
-    candidate_name = wtf.TextField(
-        'Title', [wtf.validators.Required()])
-    candidate_author = wtf.TextField(
-        'Author', [wtf.validators.Required()])
-    candidate_original_url = wtf.TextField(
+    candidate_name = wtf.StringField(
+        'Title', [wtf.validators.InputRequired()])
+    candidate_author = wtf.StringField(
+        'Author', [wtf.validators.InputRequired()])
+    candidate_original_url = wtf.StringField(
         'URL to the original artwork')
     candidate_file = wtf.FileField(
-        'File', [wtf.validators.Required()])
+        'File', [wtf.validators.InputRequired()])
     candidate_license = wtf.SelectField(
-        'License', [wtf.validators.Required()],
+        'License', [wtf.validators.InputRequired()],
         choices=[
             (None, ''),
             ('CC0', 'CC0'),

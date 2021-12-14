@@ -5,7 +5,7 @@ Documentation=https://github.com/fedora-infra/nuancier/
 
 [Service]
 Environment="NUANCIER_CONFIG=/home/vagrant/nuancier.cfg"
-ExecStart=/home/vagrant/.virtualenvs/nuancier/bin/python %h/devel/runserver.py --host 0.0.0.0 --port 5000
+ExecStart=/home/vagrant/.virtualenvs/nuancier/bin/python /vagrant/runserver.py --host 0.0.0.0 --port 5000
 Type=simple
 
 [Install]

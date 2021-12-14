@@ -37,10 +37,7 @@ import six
 from flask_fas_openid import FAS
 from six.moves.urllib.parse import urlparse, urljoin
 from sqlalchemy.exc import SQLAlchemyError
-try:
-    from werkzeug import secure_filename
-except ImportError: # pragma: no cover
-    from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename
 
 try:
     from PIL import Image
