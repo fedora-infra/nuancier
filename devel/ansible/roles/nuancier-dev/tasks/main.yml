@@ -4,7 +4,6 @@
     name:
     - git
     - python-sphinx
-    - python-virtualenvwrapper
     - vim-enhanced
     - gcc
     - libffi-devel
@@ -31,45 +30,28 @@
   copy: src=alembic.ini.devel dest=/home/{{ ansible_env.SUDO_USER }}/alembic.ini
 
 
-# Add the virtualenv
-- name: Create nuancier virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  shell: >
-      source ~/.bashrc && mkvirtualenv -p python3 nuancier -a /vagrant/
-  args:
-    creates: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier
-
-- name: Install nuancier requirements into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier requirements
   pip:
     requirements: "requirements.txt"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python3
   args:
     chdir: /vagrant/
 
-- name: Install nuancier test requirements into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier test requirements
   pip:
     requirements: "test-requirements.txt"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python3
   args:
     chdir: /vagrant/
 
-- name: Install nuancier into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier
   pip:
     name: "file:///vagrant/"
     extra_args: "-e"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python3
 
 
 # Create and configure the database
 - name: Create the nuancier SQLite database
   become_user: "{{ ansible_env.SUDO_USER }}"
-  command: .virtualenvs/nuancier/bin/python /vagrant/createdb.py
+  command: python /vagrant/createdb.py
   args:
     creates: /var/tmp/nuancier_lite.sqlite
     chdir: "/home/{{ ansible_env.SUDO_USER }}/"
@@ -77,25 +59,22 @@
 - name: Stamp the database with its current migration
   become_user: "{{ ansible_env.SUDO_USER }}"
   shell: >
-      ~/.virtualenvs/nuancier/bin/alembic stamp
-      $(~/.virtualenvs/nuancier/bin/alembic heads | awk '{ print $1 }')
+      alembic stamp
+      $(alembic heads | awk '{ print $1 }')
   args:
     chdir: "/home/{{ ansible_env.SUDO_USER }}/"
 
 
 # Set up the service unit
-- name: Create user systemd directory
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  file:
-    path: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/
-    state: directory
-
-- name: Install the nuancier systemd service file
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install the systemd unit file for nuancier service
   copy:
     src: nuancier.service
-    dest: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/nuancier.service
+    dest: /etc/systemd/system/nuancier.service
+    mode: 0644
 
-- name: Reload systemd daemon
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  command: systemctl --user daemon-reload
+- name: Start nuancier service using systemd
+  systemd:
+    state: started
+    name: nuancier
+    daemon_reload: yes
+    enabled: yes
