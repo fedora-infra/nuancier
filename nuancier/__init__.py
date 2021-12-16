@@ -32,9 +32,10 @@ from functools import wraps
 
 import flask
 import dogpile.cache
+import munch
 import six
 
-from flask_fas_openid import FAS
+from flask_oidc import OpenIDConnect
 from six.moves.urllib.parse import urlparse, urljoin
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.utils import secure_filename
@@ -67,9 +68,11 @@ APP.config.from_object('nuancier.default_config')
 if 'NUANCIER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('NUANCIER_CONFIG')
 
-# Set up FAS extension
-FAS = FAS(APP)
+OIDC = OpenIDConnect(APP, credentials_store=flask.session)
+
 APP.wsgi_app = nuancier.proxy.ReverseProxied(APP.wsgi_app)
+
+
 
 # Initialize the cache.
 CACHE = dogpile.cache.make_region().configure(
@@ -346,6 +349,22 @@ def shutdown_session(exception=None):
 def set_session():
     """ Set the flask session as permanent. """
     flask.session.permanent = True
+    if OIDC.user_loggedin:
+        if not hasattr(flask.session, "fas_user") or not flask.session.fas_user:
+            flask.session.fas_user = munch.Munch(
+                {
+                    "username": OIDC.user_getfield("nickname"),
+                    "email": OIDC.user_getfield("email") or "",
+                    "timezone": OIDC.user_getfield("zoneinfo"),
+                    "cla_done": "signed_fpca" in (OIDC.user_getfield("groups") or []),
+                    'groups': OIDC.user_getfield('groups'),
+                }
+            )
+        flask.g.fas_user = flask.session.fas_user
+
+    else:
+        flask.session.fas_user = None
+        flask.g.fas_user = None
 
 
 @CACHE.cache_on_arguments(expiration_time=3600)
@@ -374,6 +393,7 @@ def msg():
 
 
 @APP.route('/login/', methods=['GET', 'POST'])
+@OIDC.require_login
 def login():  # pragma: no cover
     ''' Login mechanism for this application.
     '''
@@ -385,34 +405,8 @@ def login():  # pragma: no cover
     if not next_url or next_url == flask.url_for('.login'):
         next_url = flask.url_for('.index')
 
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
-        return flask.redirect(next_url)
-    else:
-        admins = APP.config['ADMIN_GROUP']
-        if isinstance(admins, six.string_types):  # pragma: no cover
-            admins = set([admins])
-        else:
-            admins = set(admins)
-
-        groups = list(admins)[:]
-
-        reviewers = APP.config['REVIEW_GROUP']
-        if isinstance(reviewers, six.string_types):  # pragma: no cover
-            reviewers = set([reviewers])
-        else:
-            reviewers = set(reviewers)
-
-        groups.extend(reviewers)
-
-        voters = APP.config['WEIGHTED_GROUP']
-        if isinstance(voters, six.string_types):  # pragma: no cover
-            voters = set([voters])
-        else:
-            voters = set(voters)
-
-        groups.extend(voters)
-
-        return FAS.login(return_url=next_url, groups=groups)
+    return flask.redirect(next_url)
+   
 
 
 @APP.route('/logout/')
@@ -428,8 +422,10 @@ def logout():  # pragma: no cover
     if not next_url or next_url == flask.url_for('.login'):
         next_url = flask.url_for('.index')
 
-    if hasattr(flask.g, 'fas_user') and flask.g.fas_user is not None:
-        FAS.logout()
+    if hasattr(flask.g, "fas_user") and flask.g.fas_user is not None:
+        OIDC.logout()
+        flask.g.fas_user = None
+        flask.session.fas_user = None
         flask.flash('You are no longer logged-in')
 
     return flask.redirect(next_url)

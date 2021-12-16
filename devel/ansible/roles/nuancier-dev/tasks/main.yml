@@ -2,6 +2,7 @@
 - name: Install basic packages & nuancier system dependencies
   dnf:
     name:
+    - freeipa-client
     - git
     - python-sphinx
     - vim-enhanced
@@ -46,6 +47,52 @@
   pip:
     name: "file:///vagrant/"
     extra_args: "-e"
+
+# setup OIDC to tinystage
+- name: Enroll system as IPA client
+  shell: ipa-client-install --hostname nuancier.tinystage.test --domain tinystage.test --realm TINYSTAGE.TEST --server ipa.tinystage.test -p admin -w password -U -N --force-join
+
+- name: Generate and get SSL cert
+  shell: ipa-getcert request -f /etc/pki/tls/certs/server.pem -k /etc/pki/tls/private/server.key -K HTTP/nuancier.tinystage.test
+
+- name: Check the cert is there
+  wait_for:
+    path: /etc/pki/tls/certs/server.pem
+    state: present
+
+- name: Check the key is there
+  wait_for:
+    path: /etc/pki/tls/private/server.key
+    state: present
+
+- name: install oidc_register with pip
+  pip:
+    name: oidc-register
+
+- name: Determine Python version
+  command:
+    argv:
+      - python3
+      - -c
+      - "from sys import version_info as vi; print(f'{vi[0]}.{vi[1]}')"
+  register: _python3_version_result
+  changed_when: False
+
+- name: Set Python version fact
+  set_fact:
+    py3ver: "{{ _python3_version_result.stdout | trim }}"
+
+# not sure of how to do this another way, but without this, oidc_register fails
+- name: Put tinystage root CA in the list of CA's for httplib2
+  shell: cat /etc/ipa/ca.crt >> /usr/local/lib/python{{ py3ver }}/site-packages/httplib2/cacerts.txt
+
+- name: register the application with oidc-register
+  shell: oidc-register --debug https://ipsilon.tinystage.test/idp/openidc/ https://nuancier.tinystage.test/oidc_callback
+  become: yes
+  become_user: vagrant
+  args:
+    chdir: /home/vagrant/
+
 
 
 # Create and configure the database
