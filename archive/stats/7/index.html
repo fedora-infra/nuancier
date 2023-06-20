@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title> Fedora supplementary wallpapers </title>
+    
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon"
+        href="https://fedoraproject.org/static/images/favicon.ico"/>
+    <link rel='stylesheet' type='text/css'
+        href="../../static/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="../../static/koji.css"/>
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="../../static/nuancier.css"/>
+    <link rel='stylesheet' type='text/css'
+         href='https://fonts.googleapis.com/css?family=Comfortaa'/>
+
+  </head>
+  <body id=".*">
+      <div style="height:50px;background:red;font-weight:bold; font-size:larger; color:white; text-align: center; padding-top: 5px;"><a href="https://github.com/fedora-infra/nuancier/">Nuancier</a> was decommissioned in 2023.<br/> This is an archived snapshot of the application when it was turned off.</div>
+
+    <div id="wrap">
+      <div id="innerwrap">
+
+        <!-- HEADER -->
+        <div id="header">
+          <img src="../../static/nuancier-logo.png"
+            alt="Nuancier Logo" id="kojiLogo"/>
+        </div><!-- end header -->
+
+        <!-- MAIN NAVIGATION -->
+        <div id="mainNav">
+          <h4 class="hide">Main Site Links:</h4>
+          <ul>
+            <li id="indexTab"><a href="../../index.html">Home</a></li>
+            <li id="contributeTab"><a href="../../contribute/index.html">Contribute</a></li>
+            <li id="electionsTab"><a href="../../elections/index.html">Elections</a></li>
+            <li id="resultsTab"><a href="../../results/index.html">Results</a></li>
+            
+            
+          </ul>
+        </div><!-- end mainNav -->
+
+
+
+        <div id="content">
+
+            
+                
+
+                
+            
+
+            
+
+<h1>Election statistics</h1>
+
+<h3>Fedora 26 - 2017</h3>
+
+<table>
+    <tr>
+        <th>Total number of candidates</th>
+        <td>106</td>
+    </tr>
+    <tr>
+        <th>Number of candidates approved</th>
+        <td>92</td>
+    </tr>
+    <tr>
+        <th>Number of authors</th>
+        <td>65</td>
+    </tr>
+    <tr>
+        <th>Number of votes</th>
+        <td>3416</td>
+    </tr>
+    <tr>
+        <th>Number of participants</th>
+        <td>257</td>
+    </tr>
+    <tr>
+        <th>Average number of votes per participant</th>
+        <td>13.2918287938</td>
+        
+    </tr>
+    <tr>
+        <th>Maximum number of votes per participant</th>
+        <td>16</td>
+    </tr>
+</table>
+
+<h3>Distribution of the number of votes</h3>
+<div class="demo-container">
+    <div id="placeholder" class="demo-placeholder"></div>
+</div>
+
+
+<h3>Distribution of vote</h3>
+<div class="demo-container">
+    <div id="vote_distribution" class="demo-placeholder"></div>
+</div>
+
+
+
+        </div>
+
+        
+
+        <p id="footer">
+          Copyright &copy; 2013-2014 Red Hat
+          <a href="https://github.com/fedora-infra/nuancier/"
+          target="_blank">nuancier</a> -
+
+        -- version: 0.11.0
+        </p>
+
+      </div>
+    </div>
+
+    
+
+      <script language="javascript" type="text/javascript"
+        src="../../static/jquery.js"></script>
+      
+
+      
+
+    
+<script language="javascript" type="text/javascript"
+    src="../../static/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript"
+    src="../../static/jquery.flot.categories.js"></script>
+<script type="text/javascript">
+
+    var data = [{'color': '#1F77B4',
+                'bars': {'order': 1, 'barWidth': 0.8, 'show': 1},
+                'data': [[1, 7], [2, 9], [3, 4], [4, 3], [5, 7], [6, 12], [7, 10], [8, 13], [9, 3], [10, 8], [11, 8], [12, 9], [13, 6], [14, 1], [15, 1], [16, 156]],
+                'label': 'Votes'}
+                ];
+
+    var data2 = [{'color': '#1F77B4',
+                 'bars': {'order': 1, 'barWidth': 0.8, 'show': 1},
+                 'data': [[1, 112], [2, 89], [3, 87], [4, 78], [5, 78], [6, 76], [7, 75], [8, 74], [9, 73], [10, 68], [11, 66], [12, 65], [13, 64], [14, 64], [15, 63], [16, 61], [17, 59], [18, 58], [19, 57], [20, 57], [21, 57], [22, 55], [23, 54], [24, 54], [25, 53], [26, 47], [27, 46], [28, 46], [29, 45], [30, 45], [31, 45], [32, 44], [33, 43], [34, 42], [35, 41], [36, 40], [37, 40], [38, 40], [39, 39], [40, 38], [41, 37], [42, 37], [43, 37], [44, 36], [45, 34], [46, 34], [47, 33], [48, 33], [49, 33], [50, 32], [51, 32], [52, 32], [53, 31], [54, 31], [55, 29], [56, 28], [57, 27], [58, 27], [59, 25], [60, 24], [61, 23], [62, 23], [63, 22], [64, 22], [65, 21], [66, 21], [67, 21], [68, 20], [69, 19], [70, 17], [71, 17], [72, 16], [73, 16], [74, 15], [75, 14], [76, 14], [77, 13], [78, 12], [79, 11], [80, 11], [81, 11], [82, 11], [83, 11], [84, 10], [85, 10], [86, 9], [87, 8], [88, 8], [89, 7], [90, 5], [91, 5], [92, 3]],
+                 'label': 'Votes'}
+                 ];
+
+    $(function() {
+        var plot = $.plot("#placeholder", data, {
+            series: {
+                clickable: true,
+                hoverable: true
+            },
+            grid: { hoverable: true, clickable: true },
+            xaxis: {
+                mode: "categories",
+                points: { show: true },
+                lines: { show: true },
+                tickLength: 0,
+                show: false
+            }
+        });
+
+        var plot2 = $.plot("#vote_distribution", data2, {
+            series: {
+                clickable: true,
+                hoverable: true
+            },
+            grid: { hoverable: true, clickable: true },
+            xaxis: {
+                mode: "categories",
+                points: { show: true },
+                lines: { show: true },
+                tickLength: 0,
+                show: false
+            }
+        });
+
+        // Add 'details' label to the charts.
+        var placeHolderCanvas;
+        var placeHolderCanvasContext;
+        placeHolderCanvas = $("#placeholder canvas")[0];
+        if(placeHolderCanvas != null){
+            placeHolderCanvasContext = placeHolderCanvas.getContext("2d")
+            placeHolderCanvasContext.fillStyle = "#545454";
+            placeHolderCanvasContext.font = "8pt Arial";
+            placeHolderCanvasContext.fillText("Hover Over A Bar For Additional Details", 25, 30);
+        };
+
+        var voteDistributionCanvas;
+        var voteDistributionCanvasContext;
+        voteDistributionCanvas = $("#vote_distribution canvas")[0];
+        if(voteDistributionCanvas != null){
+            voteDistributionCanvasContext = voteDistributionCanvas.getContext("2d");
+            voteDistributionCanvasContext.fillStyle = "#545454";
+            voteDistributionCanvasContext.font = "8pt Arial";
+            voteDistributionCanvasContext.fillText("Hover Over A Bar For Additional Details", 25, 30);
+        }
+
+        // show the tooltip
+        function showTooltip(x, y, contents) {
+            $('<div id="tooltip">' + contents + '</div>').css( {
+                position: 'absolute',
+                display: 'none',
+                top: y + 5,
+                left: x + 5,
+                border: '1px solid #fdd',
+                padding: '2px',
+                'background-color': '#fee',
+                opacity: 0.80
+            }).appendTo("body").fadeIn(200);
+        }
+
+        $("#placeholder").bind("plothover", function (event, pos, item) {
+            $("#x").text(pos.x);
+            $("#y").text(pos.y);
+
+            if (item) {
+                $("#tooltip").remove();
+                var x = item.datapoint[0],
+                    y = item.datapoint[1];
+
+                if (item.series.label == 'Votes') {
+                    showTooltip(item.pageX, item.pageY,
+                            y + " user(s) voted on "
+                            + data[0].data[item.dataIndex][0]
+                            + " wallpaper(s)");
+                }
+            } else {
+                document.body.style.cursor = 'default';
+                $("#tooltip").remove();
+            }
+        });
+
+        $("#vote_distribution").bind("plothover", function (event, pos, item) {
+            $("#x").text(pos.x);
+            $("#y").text(pos.y);
+
+            if (item) {
+                $("#tooltip").remove();
+                var x = item.datapoint[0],
+                    y = item.datapoint[1];
+
+                if (item.series.label == 'Votes') {
+                    var u = 'user';
+                    if ( y > 1 ) {
+                        u = 'users'
+                    }
+                    showTooltip(item.pageX, item.pageY,
+                            y + " " + u + " voted the wallpaper n°:"
+                            + data2[0].data[item.dataIndex][0]);
+                }
+            } else {
+                document.body.style.cursor = 'default';
+                $("#tooltip").remove();
+            }
+        });
+    });
+</script>
+
+
+  </body>
+</html>
