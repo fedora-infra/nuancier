@@ -5,11 +5,13 @@ blinker # required by flask for tests
 dogpile.cache
 flask
 flask-wtf
+flask-oidc
 Pillow
 python-fedora >= 0.3.33
-python-openid
+python3-openid
 python-openid-cla
 python-openid-teams
 six
 SQLAlchemy>=0.6
 wtforms
+ipaddress

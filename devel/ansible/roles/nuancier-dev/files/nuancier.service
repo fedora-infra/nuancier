@@ -1,12 +1,16 @@
 [Unit]
 Description=Nuancier
 After=network.target
+Wants=network-online.target
 Documentation=https://github.com/fedora-infra/nuancier/
 
 [Service]
 Environment="NUANCIER_CONFIG=/home/vagrant/nuancier.cfg"
-ExecStart=/home/vagrant/.virtualenvs/nuancier/bin/python %h/devel/runserver.py --host 0.0.0.0 --port 5000
-Type=simple
+Environment=FLASK_APP=/vagrant/nuancier/__init__.py
+Environment=FLASK_DEBUG=1
+User=root
+WorkingDirectory=/vagrant/
+ExecStart=flask run -p 443 -h "0.0.0.0" --cert=/etc/pki/tls/certs/server.pem --key=/etc/pki/tls/private/server.key
 
 [Install]
 WantedBy=multi-user.target

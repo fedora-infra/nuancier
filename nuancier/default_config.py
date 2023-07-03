@@ -94,3 +94,6 @@ NUANCIER_EMAIL_ERROR_TO = 'pingou@pingoured.fr'
 
 FEDMENU_URL = 'https://apps.fedoraproject.org/fedmenu'
 FEDMENU_DATA_URL = 'https://apps.fedoraproject.org/js/data.js'
+
+OIDC_CLIENT_SECRETS = 'client_secrets.json'
+OIDC_SCOPES = ['openid', 'email', 'profile', 'https://id.fedoraproject.org/scope/groups', 'https://id.fedoraproject.org/scope/agreements']

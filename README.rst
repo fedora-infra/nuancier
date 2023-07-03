@@ -1,8 +1,6 @@
 nuancier
 ========
 
-.. image:: http://shieldkins.elrod.me/fedora/nuancier
-
 :Author: Pierre-Yves Chibon <pingou@pingoured.fr>
 
 
@@ -59,20 +57,36 @@ Vagrant
 
 The best way to set up a development enviroment is to use `Vagrant <https://vagrantup.com/>`_.
 Vagrant provisions a new virtual machine and then runs the Ansible playbook on it automatically.
-To get started, install Vagrant::
 
-    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs ansible
+Nuancier now uses OpenID Connect (oidc), and to log in to your test instance of nuancier, you will
+need to run a development environment of the Fedora Accounts stack. Luckily this is easily achievable
+using the Fedora Tiny Stage.
+
+For the following instructions to work, you will need to get the base VMs of tinystage running first:
+
+https://github.com/fedora-infra/tiny-stage
+
+After installing tinystage, you should already have these packages installed, but to get started, install Vagrant::
+
+    $ sudo dnf install vagrant libvirt vagrant-libvirt vagrant-sshfs vagrant-hostmanager ansible 
 
 Next, clone the repository and copy the example Vagrantfile from ``Vagrantfile.example``::
 
     $ git clone https://github.com/fedora-infra/nuancier.git
     $ cd nuancier
-    $ cp Vagrantfile.example Vagrantfile  # Edit Vagrantfile to your heart's content
     $ vagrant up
-    $ vagrant reload
+
+Next SSH into the newly created vagrant machine with:
+
     $ vagrant ssh
 
-All done! The VM contains all the required dependencies pre-installed.
+And on your host machine, go to the following address to see the nuancier app:
+
+    http://nuancier.tinystage.test:5000
+
+Finally, to view the logs for the nuancier web app, use the command:
+
+    $ sudo journalctl -u nuancier.service
 
 
 Manual

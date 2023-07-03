@@ -1,23 +1,18 @@
 ---
-
-- name: Install helpful development packages
-  dnf: name={{ item }} state=present
-  with_items:
+- name: Install basic packages & nuancier system dependencies
+  dnf:
+    name:
+    - freeipa-client
     - git
     - python-sphinx
-    - python-virtualenvwrapper
     - vim-enhanced
-
-- name: Install nuancier system dependencies
-  dnf: name={{ item }} state=present
-  with_items:
     - gcc
     - libffi-devel
     - openssl-devel
-    - python2-devel
     - python3-devel
     - redhat-rpm-config
-    - rpm-python
+    - python3-rpm
+    state: present
 
 # Add various helpful configuration files
 - name: Install a custom bashrc
@@ -36,45 +31,74 @@
   copy: src=alembic.ini.devel dest=/home/{{ ansible_env.SUDO_USER }}/alembic.ini
 
 
-# Add the virtualenv
-- name: Create nuancier virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  shell: >
-      source ~/.bashrc && mkvirtualenv nuancier -a ~/devel/
-  args:
-    creates: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier
-
-- name: Install nuancier requirements into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier requirements
   pip:
     requirements: "requirements.txt"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
   args:
-    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+    chdir: /vagrant/
 
-- name: Install nuancier test requirements into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier test requirements
   pip:
     requirements: "test-requirements.txt"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
   args:
-    chdir: /home/{{ ansible_env.SUDO_USER }}/devel
+    chdir: /vagrant/
 
-- name: Install nuancier into the virtualenv
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install nuancier
   pip:
-    name: "file:///home/{{ ansible_env.SUDO_USER }}/devel"
+    name: "file:///vagrant/"
     extra_args: "-e"
-    virtualenv: /home/{{ ansible_env.SUDO_USER }}/.virtualenvs/nuancier/
-    virtualenv_python: python2
+
+# setup OIDC to tinystage
+- name: Enroll system as IPA client
+  shell: ipa-client-install --hostname nuancier.tinystage.test --domain tinystage.test --realm TINYSTAGE.TEST --server ipa.tinystage.test -p admin -w password -U -N --force-join
+
+- name: Generate and get SSL cert
+  shell: ipa-getcert request -f /etc/pki/tls/certs/server.pem -k /etc/pki/tls/private/server.key -K HTTP/nuancier.tinystage.test
+
+- name: Check the cert is there
+  wait_for:
+    path: /etc/pki/tls/certs/server.pem
+    state: present
+
+- name: Check the key is there
+  wait_for:
+    path: /etc/pki/tls/private/server.key
+    state: present
+
+- name: install oidc_register with pip
+  pip:
+    name: oidc-register
+
+- name: Determine Python version
+  command:
+    argv:
+      - python3
+      - -c
+      - "from sys import version_info as vi; print(f'{vi[0]}.{vi[1]}')"
+  register: _python3_version_result
+  changed_when: False
+
+- name: Set Python version fact
+  set_fact:
+    py3ver: "{{ _python3_version_result.stdout | trim }}"
+
+# not sure of how to do this another way, but without this, oidc_register fails
+- name: Put tinystage root CA in the list of CA's for httplib2
+  shell: cat /etc/ipa/ca.crt >> /usr/local/lib/python{{ py3ver }}/site-packages/httplib2/cacerts.txt
+
+- name: register the application with oidc-register
+  shell: oidc-register --debug https://ipsilon.tinystage.test/idp/openidc/ https://nuancier.tinystage.test/oidc_callback
+  become: yes
+  become_user: vagrant
+  args:
+    chdir: /home/vagrant/
+
 
 
 # Create and configure the database
 - name: Create the nuancier SQLite database
   become_user: "{{ ansible_env.SUDO_USER }}"
-  command: .virtualenvs/nuancier/bin/python devel/createdb.py
+  command: python /vagrant/createdb.py
   args:
     creates: /var/tmp/nuancier_lite.sqlite
     chdir: "/home/{{ ansible_env.SUDO_USER }}/"
@@ -82,25 +106,22 @@
 - name: Stamp the database with its current migration
   become_user: "{{ ansible_env.SUDO_USER }}"
   shell: >
-      ~/.virtualenvs/nuancier/bin/alembic stamp
-      $(~/.virtualenvs/nuancier/bin/alembic heads | awk '{ print $1 }')
+      alembic stamp
+      $(alembic heads | awk '{ print $1 }')
   args:
     chdir: "/home/{{ ansible_env.SUDO_USER }}/"
 
 
 # Set up the service unit
-- name: Create user systemd directory
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  file:
-    path: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/
-    state: directory
-
-- name: Install the nuancier systemd service file
-  become_user: "{{ ansible_env.SUDO_USER }}"
+- name: Install the systemd unit file for nuancier service
   copy:
     src: nuancier.service
-    dest: /home/{{ ansible_env.SUDO_USER }}/.config/systemd/user/nuancier.service
+    dest: /etc/systemd/system/nuancier.service
+    mode: 0644
 
-- name: Reload systemd daemon
-  become_user: "{{ ansible_env.SUDO_USER }}"
-  command: systemctl --user daemon-reload
+- name: Start nuancier service using systemd
+  systemd:
+    state: started
+    name: nuancier
+    daemon_reload: yes
+    enabled: yes

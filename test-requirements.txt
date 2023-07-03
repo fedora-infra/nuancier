@@ -1,4 +1,5 @@
 flake8
-nose
+nose-py3
+numpy
 mock
 coverage
