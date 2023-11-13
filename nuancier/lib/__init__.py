@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2019 Red Hat, Inc. and others.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -52,6 +52,7 @@ except ImportError:  # pragma: no cover
             'them should be installed', file=sys.stderr)
 
 import nuancier.lib.model
+from nuancier_schema import ElectionCreated, ElectionEdited, CandidateCreated
 import nuancier.notifications as notifications
 
 
@@ -187,14 +188,8 @@ def add_election(session, election_name, election_folder, election_year,
     session.add(election)
     session.flush()
 
-    notifications.publish(
-        topic='election.new',
-        msg=dict(
-            agent=user,
-            election=election.api_repr(version=1),
-        )
-    )
-
+    msg = ElectionCreated(body=dict(agent=user, election=election.api_repr(version=1)))
+    notifications.publish(msg)
     return election
 
 
@@ -253,7 +248,7 @@ def edit_election(session, election, election_name, election_folder,
 
     if election.election_n_choice != election_n_choice:
         election.election_n_choice = election_n_choice
-        edited.append('election name')
+        edited.append('Number of votes possible')
 
     if election.election_badge_link != election_badge_link:
         election.election_badge_link = election_badge_link
@@ -267,14 +262,13 @@ def edit_election(session, election, election_name, election_folder,
         session.add(election)
         session.flush()
 
-    notifications.publish(
-        topic='election.update',
-        msg=dict(
+    msg = ElectionEdited(body=dict(
             agent=user,
             election=election.api_repr(version=1),
             updated=edited,
         )
     )
+    notifications.publish(msg)
 
     return election
 
@@ -331,14 +325,13 @@ def add_candidate(session, candidate_file, candidate_name, candidate_author,
     session.add(candidate)
     session.flush()
 
-    notifications.publish(
-        topic='candidate.new',
-        msg=dict(
+    msg = CandidateCreated(body=dict(
             agent=user,
             election=election.api_repr(version=1),
             candidate=candidate.api_repr(version=1),
         )
     )
+    notifications.publish(msg)
 
 
 def add_vote(session, candidate_id, username, value=1):

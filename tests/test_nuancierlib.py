@@ -31,6 +31,7 @@ import sys
 import os
 from datetime import timedelta
 
+from fedora_messaging import testing as fml_testing
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -39,6 +40,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
+from nuancier_schema import ElectionCreated, ElectionEdited, CandidateCreated
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
 
@@ -163,20 +165,21 @@ class NuancierLibtests(Modeltests):
             election_badge_link='http://...',
         )
 
-        nuancierlib.add_election(
-            session=self.session,
-            election_name='Test',
-            election_folder='test',
-            election_year='2013',
-            submission_date_start=TODAY - timedelta(days=1),
-            submission_date_end=TODAY + timedelta(days=1),
-            election_date_start=TODAY + timedelta(days=3),
-            election_date_end=TODAY + timedelta(days=7),
-            election_n_choice=2,
-            user_n_candidates=5,
-            election_badge_link='http://...',
-            user='pingou',
-        )
+        with fml_testing.mock_sends(ElectionCreated):
+            nuancierlib.add_election(
+                session=self.session,
+                election_name='Test',
+                election_folder='test',
+                election_year=2013,
+                submission_date_start=TODAY - timedelta(days=1),
+                submission_date_end=TODAY + timedelta(days=1),
+                election_date_start=TODAY + timedelta(days=3),
+                election_date_end=TODAY + timedelta(days=7),
+                election_n_choice=2,
+                user_n_candidates=5,
+                election_badge_link='http://...',
+                user='pingou',
+            )
         self.session.commit()
 
         elections = nuancierlib.get_elections(self.session)
@@ -214,18 +217,19 @@ class NuancierLibtests(Modeltests):
             election_id=2,
         )
 
-        nuancierlib.add_candidate(
-            session=self.session,
-            candidate_file='test.png',
-            candidate_name='test image',
-            candidate_author='pingou',
-            candidate_license='CC-BY-SA',
-            candidate_submitter='pingou',
-            submitter_email='pingou@fp.o',
-            candidate_original_url=None,
-            election_id=2,
-            user='pingou',
-        )
+        with fml_testing.mock_sends(CandidateCreated):
+            nuancierlib.add_candidate(
+                session=self.session,
+                candidate_file='test.png',
+                candidate_name='test image',
+                candidate_author='pingou',
+                candidate_license='CC-BY-SA',
+                candidate_submitter='pingou',
+                submitter_email='pingou@fp.o',
+                candidate_original_url=None,
+                election_id=2,
+                user='pingou',
+            )
         self.session.commit()
 
         candidates = nuancierlib.get_candidates(self.session, 2, False)
@@ -290,21 +294,22 @@ class NuancierLibtests(Modeltests):
             election_badge_link='http://badges.fp.o/1234',
         )
 
-        new_election = nuancierlib.edit_election(
-            self.session,
-            election=election,
-            election_name='elec name',
-            election_folder='Test',
-            election_year=2048,
-            election_date_start=TODAY,
-            election_date_end=TODAY + timedelta(days=2),
-            submission_date_start=TODAY - timedelta(days=2),
-            submission_date_end=TODAY - timedelta(days=1),
-            election_n_choice=42,
-            user_n_candidates=5,
-            election_badge_link='http://badges.fp.o/1234',
-            user='pingou',
-        )
+        with fml_testing.mock_sends(ElectionEdited):
+            new_election = nuancierlib.edit_election(
+                self.session,
+                election=election,
+                election_name='elec name',
+                election_folder='Test',
+                election_year=2048,
+                election_date_start=TODAY,
+                election_date_end=TODAY + timedelta(days=2),
+                submission_date_start=TODAY - timedelta(days=2),
+                submission_date_end=TODAY - timedelta(days=1),
+                election_n_choice=42,
+                user_n_candidates=5,
+                election_badge_link='http://badges.fp.o/1234',
+                user='pingou',
+            )
 
         self.assertEqual(new_election.election_name, 'elec name')
         self.assertEqual(new_election.election_folder, 'Test')
