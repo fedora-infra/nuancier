@@ -113,16 +113,21 @@ class NuancierModeltests(Modeltests):
         create_elections(self.session)
         create_candidates(self.session)
 
+        expected_date_end = TODAY - timedelta(days=8)
+        expected_date_start = TODAY - timedelta(days=10)
+        expected_submission_date_start = TODAY - timedelta(days=15)
+        expected_submission_date_end = TODAY - timedelta(days=13)
+
         election = nuancierlib.get_election(self.session, 1)
         self.assertEqual(
             election.api_repr(1),
             {
-                'date_end': TODAY - timedelta(days=8),
-                'date_start': TODAY - timedelta(days=10),
+                'date_end': expected_date_end.isoformat(),
+                'date_start': expected_date_start.isoformat(),
                 'id': 1,
                 'name': u'Wallpaper F19',
-                'submission_date_start': TODAY - timedelta(days=15),
-                'submission_date_end': TODAY - timedelta(days=13),
+                'submission_date_start': expected_submission_date_start.isoformat(),
+                'submission_date_end': expected_submission_date_end.isoformat(),
                 'year': 2013
             }
         )

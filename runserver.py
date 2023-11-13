@@ -23,7 +23,7 @@ parser.add_argument(
     default=False,
     help='Profile the web application.')
 parser.add_argument(
-    '--port', '-p', default=5000,
+    '--port', '-p', default=5005,
     help='Port where the app should run.')
 parser.add_argument(
     '--host', default="127.0.0.1",

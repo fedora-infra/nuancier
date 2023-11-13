@@ -32,6 +32,7 @@ import sys
 import os
 from datetime import timedelta
 
+from fedora_messaging import testing as fml_testing
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
@@ -41,6 +42,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import nuancier
 import nuancier.lib as nuancierlib
 from nuancier.lib import model
+from nuancier_schema import ElectionCreated, ElectionEdited, CandidateApproved, CandidateCreated, CandidateDenied
 from tests import (Modeltests, create_elections, create_candidates,
                    create_votes, FakeFasUser, user_set, approve_candidate,
                    deny_candidate, CACHE_FOLDER, PICTURE_FOLDER, TODAY)
@@ -378,8 +380,9 @@ class Nuanciertests(Modeltests):
                     'csrf_token': csrf_token,
                 }
 
-                output = self.app.post('/contribute/3', data=data,
-                                       follow_redirects=True)
+                with fml_testing.mock_sends(CandidateCreated):
+                    output = self.app.post('/contribute/3', data=data,
+                                           follow_redirects=True)
                 self.assertEqual(output.status_code, 200)
                 self.assertTrue(
                     '<li class="message">Thanks for your submission</li>'
@@ -1067,8 +1070,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/1/edit/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionEdited):
+                output = self.app.post('/admin/1/edit/', data=data,
+                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the edit
             self.assertTrue(
@@ -1222,8 +1226,19 @@ class Nuanciertests(Modeltests):
                                    follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue('<h1>New election</h1>' in output.data.decode('utf-8'))
-            self.assertTrue('<td class="error">Field must contain a '
-                            'number</td>' in output.data.decode('utf-8'))
+            # From wtforms docs: Erroneous input is ignored and will not be accepted as a value.
+            self.assertTrue('<td class="error">This field is required.'
+                            '</td>' in output.data.decode('utf-8'))
+
+            # election_n_choice should be a positive number
+            data.update({'election_n_choice': -1})
+            
+            output = self.app.post('/admin/new/', data=data,
+                                   follow_redirects=True)
+            self.assertEqual(output.status_code, 200)
+            self.assertTrue('<h1>New election</h1>' in output.data.decode('utf-8'))
+            self.assertTrue('<td class="error">Number must be at least 0.'
+                            '</td>' in output.data.decode('utf-8'))
 
             data = {
                 'election_name': 'election1',
@@ -1240,8 +1255,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/new/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionCreated):
+                output = self.app.post('/admin/new/', data=data,
+                                        follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
             self.assertTrue(
@@ -1285,8 +1301,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/new/', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(ElectionCreated): #election.api_repr(version=1)))):
+                output = self.app.post('/admin/new/', data=data,
+                                        follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             # Redirected to the admin index page, after the creation
             self.assertTrue(
@@ -1592,8 +1609,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/review/3/process', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(CandidateApproved):
+                output = self.app.post('/admin/review/3/process', data=data,
+                                       follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(
                 '<li class="message">Candidate(s) updated</li>'
@@ -1668,8 +1686,9 @@ class Nuanciertests(Modeltests):
                 'csrf_token': csrf_token,
             }
 
-            output = self.app.post('/admin/review/3/process', data=data,
-                                   follow_redirects=True)
+            with fml_testing.mock_sends(CandidateDenied):
+                output = self.app.post('/admin/review/3/process', data=data,
+                                       follow_redirects=True)
             self.assertEqual(output.status_code, 200)
             self.assertTrue(
                 '<li class="message">Candidate(s) updated</li>'

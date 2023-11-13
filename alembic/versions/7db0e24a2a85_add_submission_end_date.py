@@ -29,7 +29,7 @@ def upgrade():
             "submission_date_end=election_date_start;"
         op.execute(ins)
     except Exception as err:
-        print 'ERROR', err
+        print('ERROR', err)
 
     ## Enforce the nullable=False
     op.alter_column(

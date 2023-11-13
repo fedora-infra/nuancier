@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013-2017  Red Hat, Inc.
+# Copyright © 2013-2019  Red Hat, Inc. and others.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -153,10 +153,10 @@ class Elections(BASE):
                 id=self.id,
                 name=self.election_name,
                 year=self.election_year,
-                date_start=self.election_date_start,
-                date_end=self.election_date_end,
-                submission_date_start=self.submission_date_start,
-                submission_date_end=self.submission_date_end,
+                date_start=self.election_date_start.isoformat(),
+                date_end=self.election_date_end.isoformat(),
+                submission_date_start=self.submission_date_start.isoformat(),
+                submission_date_end=self.submission_date_end.isoformat(),
             )
         else:  # pragma: no cover
             raise NotImplementedError("Unsupported version %r" % version)

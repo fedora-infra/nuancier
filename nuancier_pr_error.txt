@@ -1,0 +1,84 @@
+(nuancier) [vagrant@nuancier-dev devel]$ ./runtests.sh -x
+...S.............E
+======================================================================
+ERROR: Test the admin_new function.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vagrant/devel/tests/test_nuancier.py", line 1257, in test_admin_new
+    output = self.app.post('/admin/new/', data=data,
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/werkzeug/test.py", line 1016, in post
+    return self.open(*args, **kw)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/testing.py", line 222, in open
+    return Client.open(
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/werkzeug/test.py", line 970, in open
+    response = self.run_wsgi_app(environ.copy(), buffered=buffered)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/werkzeug/test.py", line 861, in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/werkzeug/test.py", line 1096, in run_wsgi_app
+    app_rv = app(environ, start_response)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/vagrant/devel/nuancier/proxy.py", line 65, in __call__
+    return self.app(environ, start_response)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/vagrant/devel/nuancier/__init__.py", line 249, in decorated_function
+    return function(*args, **kwargs)
+  File "/home/vagrant/devel/nuancier/admin.py", line 128, in admin_new
+    election = nuancierlib.add_election(
+  File "/home/vagrant/devel/nuancier/lib/__init__.py", line 192, in add_election
+    notifications.publish(msg)
+  File "/home/vagrant/devel/nuancier/notifications.py", line 43, in publish
+    fm_api.publish(msg)
+  File "/home/vagrant/.virtualenvs/nuancier/lib/python3.8/site-packages/fedora_messaging/api.py", line 321, in publish
+    raise wrapper
+fedora_messaging.exceptions.PublishTimeout: Publishing timed out after waiting 30 seconds.
+-------------------- >> begin captured logging << --------------------
+twisted: INFO: Log opened.
+fedora_messaging.twisted.factory: DEBUG: Waiting for <Deferred at 0x7f631274f340> to fire with new connection
+twisted: INFO: Starting factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+twisted: INFO: <twisted.internet.tcp.Connector instance at 0x7f631274f370 disconnected IPv4Address(type='TCP', host='localhost', port=5672)> will retry in 3 seconds
+twisted: INFO: Stopping factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+twisted: INFO: Starting factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+twisted: INFO: <twisted.internet.tcp.Connector instance at 0x7f631274f370 disconnected IPv4Address(type='TCP', host='localhost', port=5672)> will retry in 8 seconds
+twisted: INFO: Stopping factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+twisted: INFO: Starting factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+twisted: INFO: <twisted.internet.tcp.Connector instance at 0x7f631274f370 disconnected IPv4Address(type='TCP', host='localhost', port=5672)> will retry in 23 seconds
+twisted: INFO: Stopping factory FedoraMessagingFactoryV2(parameters=<URLParameters host=localhost port=5672 virtual_host=/ ssl=False>, confirms=True)
+fedora_messaging.api: DEBUG: Canceled publish of ElectionCreated(id='afad0a08-97d7-4fd8-b258-049170b78a59', topic='nuancier.election.new', body={'agent': 'pingou', 'election': {'id': 4, 'name': 'election1', 'year': 2014, 'date_start': '2020-05-31', 'date_end': '2020-06-02', 'submission_date_start': '2020-05-26', 'submission_date_end': '2020-05-28'}}) to amq.topic due to timeout
+--------------------- >> end captured logging << ---------------------
+
+Name                         Stmts   Miss  Cover
+------------------------------------------------
+nuancier/__init__.py           147     46    69%
+nuancier/admin.py              202    121    40%
+nuancier/default_config.py      26      0   100%
+nuancier/forms.py               57      3    95%
+nuancier/lib/__init__.py       156     63    60%
+nuancier/lib/model.py          144     12    92%
+nuancier/notifications.py        7      0   100%
+nuancier/proxy.py               18      6    67%
+nuancier/ui.py                 233    185    21%
+------------------------------------------------
+TOTAL                          990    436    56%
+----------------------------------------------------------------------
+Ran 18 tests in 31.141s
+
+FAILED (SKIP=1, errors=1)
+

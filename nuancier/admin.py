@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2019  Red Hat, Inc. and others.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -33,6 +33,7 @@ import nuancier
 import nuancier.lib as nuancierlib
 
 from nuancier import APP, SESSION, LOG, nuancier_admin_required
+from nuancier_schema import CandidateApproved, CandidateDenied
 
 
 ## Some of the object we use here have inherited methods which apparently
@@ -360,7 +361,7 @@ def admin_process_review(election_id):
 
             SESSION.add(candidate)
             msgs.append({
-                'topic': 'candidate.%s' % (action.lower()),
+                'action': action,
                 'msg': dict(
                     agent=flask.g.fas_user.username,
                     election=election.api_repr(version=1),
@@ -382,10 +383,11 @@ def admin_process_review(election_id):
     flask.flash('Candidate(s) updated')
 
     for msg in msgs:
-        nuancierlib.notifications.publish(
-            topic=msg['topic'],
-            msg=msg['msg'],
-        )
+        if msg['action'] == 'Approved':
+            fmsg = CandidateApproved(body=msg['msg'])
+        else:
+            fmsg = CandidateDenied(body=msg['msg'])
+        nuancierlib.notifications.publish(fmsg)
 
     return flask.redirect(flask.url_for(
         endpoint, election_id=election_id, status=status))

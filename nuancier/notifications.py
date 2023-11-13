@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2013  Red Hat, Inc.
+# Copyright © 2013-2019  Red Hat, Inc. and others.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions
@@ -27,23 +27,26 @@ import smtplib
 import warnings
 
 from email.mime.text import MIMEText
+from fedora_messaging import api as fm_api
+from fedora_messaging.exceptions import PublishReturned, ConnectionException
 
 import nuancier
 
 
 ## Let's ignore the warning about a global variable being in lower case
 # pylint: disable=C0103
-## Let's ignore the fact that pylint cannot import fedmsg
-# pylint: disable=F0401
 
 
-def publish(topic, msg):  # pragma: no cover
-    ''' Send a message on the fedmsg bus. '''
+def publish(msg):  # pragma: no cover
+    ''' Send a message via Fedora Messaging. '''
     try:
-        import fedmsg
-        fedmsg.publish(topic=topic, msg=msg)
-    except Exception as err:
-        warnings.warn(str(err))
+        fm_api.publish(msg)
+    except PublishReturned as e:
+        nuancier.LOG.exception(
+            'Fedora Messaging broker rejected message %s: %s',
+            message.id, e)
+    except ConnectionException as e:
+        nuancier.LOG.exception('Error sending message %s: %s', message.id, e)
 
 
 def email_publish(to_email, img_title, motif):  # pragma: no cover
